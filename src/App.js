@@ -1,13 +1,17 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Sidebar from './components/Sidebar';
+import Layout from './components/Layout';
+import Home from './components/Home';
 
 function App() {
   return (
-    <div  className='bg-black'>
-      <Sidebar></Sidebar>
-
-     
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Layout/>}>
+          <Route path='' element={<Home/>}/>
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 

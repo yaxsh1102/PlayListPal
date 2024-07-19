@@ -7,7 +7,7 @@ const Sidebar = () => {
 
     }
   return (
-    <>
+    <div className='fixed'>
       <p className={` md:hidden flex absolute top-10 left-3`} onClick={menuHandler}>
         {!showMenu ? ( <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="black" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path></svg>
 ) : (<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#f1e9e9" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path></svg>)}
@@ -49,7 +49,7 @@ const Sidebar = () => {
         <p className='text-2xl'>Liked</p>
       </div>
     </div>
-    </>
+    </div>
   );
 }
 
