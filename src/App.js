@@ -8,58 +8,26 @@ import useGetArtists from './hooks/useGetArtists';
 import useGetToken from './hooks/useGetToken';
 import useGetPlaylist from './hooks/useGetPlaylist';
 import LandingPage from './components/LandingPage';
+import MusicPlayer from './components/MusicPlayer';
+import Searchbar from './components/Searchbar';
+import { useSelector } from 'react-redux';
 
 
 
 function App() {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
+  const nowPlaying = useSelector((store)=>store.player.nowPlaying)
 
 
   
 
-  // useGetToken()
+  useGetToken()
   useGetTracks()
   useGetPlaylist()
   useGetArtists()
   useNewRelease()
 
-  useEffect(() => {
-
  
-
-  //   const handleSearch = async () => {
-  //     if (access_token ) {
-  //       const response = await axios.get(SEARCH_ENDPOINT, {
-  //         headers: {
-  //           Authorization: `Bearer ${access_token}`,
-  //         },
-  //         params: {
-  //           q: "Baller",
-  //           type: 'album,artist,track', // Specify all types
-
-            
-  //         },
-  //       });
-  //       console.log(response)
-  //       const obj = {
-  //         album:response.data.albums ,
-  //         artists:response.data.artists ,
-  //         tracks :response.data.tracks 
-  //       }
-
-  //       console.log(obj)
-
-  //       dispatch(addResult(obj))
-
-  //     }
-
-  // };
-
-
-
-
-
-} ,[])
 
 
   
@@ -70,7 +38,9 @@ function App() {
   };
 
   return (
+    <>
     <LandingPage></LandingPage>
+  </>
  
   );
 }

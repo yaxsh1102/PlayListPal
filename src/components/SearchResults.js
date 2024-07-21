@@ -14,20 +14,7 @@ const SearchResults = () => {
     console.log(img)
 
   }
-  let counter = 0 ;
 
-  // const img = result.tracks.items[0].album.images[0].url
-  // const name = results.tracks.items[0].name ;
-  // const duration= (results.tracks.items[0].duration_ms/(60*1000)).toFixed(2)
-
-  //   const artist= results.tracks.items[0].artists[0].name;
-  //   const singer = result.tracks.items[0].artists[1].name ;
-  // console.log(img)
-  // console.log(name)
-  // console.log(duration) 
-  // console.log(artist)
-  // console.log(result.album.items[0].album_type)
-  // console.log(JSON.stringify(results.album.items[0].album_type))
 
   
     
@@ -44,6 +31,7 @@ const SearchResults = () => {
           artist={track.artists[0]?.name}
           duration = {track.duration_ms} 
           singer={track?.artists[1]?.name}
+          url={track?.preview_url}
         />
       ))}
       </div>
