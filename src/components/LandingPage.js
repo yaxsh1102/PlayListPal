@@ -41,16 +41,18 @@ const LandingPage = () => {
     };
   
     return ( 
-      <div className='flex w-[100vw] bg-gradient-to-tr from-[#000000] to-[#434343] h-[100vh] fixed '>
-        <Sidebar toggleSearchBarVisibility={toggleSearchBarVisibility}></Sidebar>
-        <div className='flex flex-col w-full items-center bg-gradient-to-tr  h-full'>
-            {!searchToggle ? ( <><Navbar />
-        <div className='overflow-y-scroll w-[100%]  flex justify-center items-center h-[100vh] overflow-x-hidden '> <Discover></Discover> </div></>) : (<><Searchbar/><SearchResults></SearchResults> </>)}
+      <>
+        <div className='flex flex-col w-full items-center bg-gradient-to-tr from-[#000000] to-[#434343] fixed h-full'>
+          {!searchToggle ? ( <><Navbar />
+        <div className='pb-[8rem] overflow-y-scroll w-[100%]  flex justify-center items-center h-[90vh] overflow-x-hidden '> 
+          <Discover></Discover>
+         </div></>) 
+         : (<><Searchbar/><SearchResults></SearchResults> </>)}
         
         </div>
-  
-        
-      </div>
+
+      </>
+
     );
 }
 
