@@ -14,14 +14,27 @@ const SearchResults = () => {
     console.log(img)
 
   }
+  let counter = 0 ;
 
+  // const img = result.tracks.items[0].album.images[0].url
+  // const name = results.tracks.items[0].name ;
+  // const duration= (results.tracks.items[0].duration_ms/(60*1000)).toFixed(2)
+
+  //   const artist= results.tracks.items[0].artists[0].name;
+  //   const singer = result.tracks.items[0].artists[1].name ;
+  // console.log(img)
+  // console.log(name)
+  // console.log(duration) 
+  // console.log(artist)
+  // console.log(result.album.items[0].album_type)
+  // console.log(JSON.stringify(results.album.items[0].album_type))
 
   
     
   return (
-    <div className="w-full  mt-8 overflow-y-scroll h-[80vh]">
-      <div className='flex flex-col justify-center items-center'>
-      <p className="justify-self-start md:w-8/12 w-11/12    text-white py-4  font-semibold md:text-3xl text-2xl">Songs</p>
+    <div className="pb-[8rem] w-full flex flex-col gap-8 mt-8 overflow-y-scroll h-[80vh]">
+      <div className='w-full flex flex-col justify-center items-start md:pl-24'>
+      <p className=" w-full justify-self-start md:w-8/12 text-white py-4  font-semibold md:text-3xl pl-4 md:pl-0 text-2xl">Songs</p>
 
       {  results.tracks.items.slice(0,4).map((track, index) => (
         <Searchitems
@@ -36,8 +49,8 @@ const SearchResults = () => {
       ))}
       </div>
 
-      <div className='flex flex-col justify-center items-center'>
-      <p className="justify-self-start md:w-8/12 w-11/12    text-white py-4  font-semibold md:text-3xl text-2xl mt-8">Albums</p>
+      <div className='w-full flex flex-col justify-center items-start md:pl-24'>
+      <p className="justify-self-start md:w-8/12 w-11/12  text-white py-4  font-semibold md:text-3xl pl-4 md:pl-0  text-2xl ">Albums</p>
 
       {results.album.items.slice(0,4).map((album, index) => (
         <Searchitems
