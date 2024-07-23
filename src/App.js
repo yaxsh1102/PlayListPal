@@ -12,6 +12,8 @@ import Profile from './components/Profile';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Playlist from './components/Playlist';
+import LikedSongs from './components/LikedSongs';
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
         <Route path='/' element={<Layout/>}>
           <Route path='' element={<LandingPage/>}/>
           <Route path='profile' element={<Profile/>}/>
+          {/* <Route path='playlist' element={<Playlist/>}/> */}
+          <Route path='likedsongs' element={<LikedSongs/>}/>
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>

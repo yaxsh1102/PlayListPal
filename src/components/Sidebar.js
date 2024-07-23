@@ -53,14 +53,14 @@ const Sidebar = ({toggleSearchBarVisibility}) => {
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#f1e9e9" viewBox="0 0 256 256">
           <path d="M32,64a8,8,0,0,1,8-8H216a8,8,0,0,1,0,16H40A8,8,0,0,1,32,64Zm8,72H160a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16Zm72,48H40a8,8,0,0,0,0,16h72a8,8,0,0,0,0-16Zm135.66-57.7a8,8,0,0,1-10,5.36L208,122.75V192a32.05,32.05,0,1,1-16-27.69V112a8,8,0,0,1,10.3-7.66l40,12A8,8,0,0,1,247.66,126.3ZM192,192a16,16,0,1,0-16,16A16,16,0,0,0,192,192Z"></path>
         </svg>
-        <p className="text-1xl">Playlist</p>
+        <Link to="/playlist" >Playlist</Link>
       </div>
 
       <div className='flex flex-row my-8 justify-start items-center gap-x-2 ml-[3.2rem] hover:text-gray-600'>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#f1e9e9" viewBox="0 0 256 256">
           <path d="M223,57a58.07,58.07,0,0,0-81.92-.1L128,69.05,114.91,56.86A58,58,0,0,0,33,139l89.35,90.66a8,8,0,0,0,11.4,0L223,139a58,58,0,0,0,0-82Zm-11.35,70.76L128,212.6,44.3,127.68a42,42,0,0,1,59.4-59.4l.2.2,18.65,17.35a8,8,0,0,0,10.9,0L152.1,68.48l.2-.2a42,42,0,1,1,59.36,59.44Z"></path>
         </svg>
-        <p className='text-1xl'>Liked</p>
+        <Link to="/likedsongs" >Liked</Link>
       </div>
     </div>
 
