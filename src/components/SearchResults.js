@@ -34,7 +34,7 @@ const SearchResults = () => {
   return (
     <div className="pb-[8rem] w-full flex flex-col gap-8 mt-8 overflow-y-scroll h-[80vh]">
       <div className='w-full flex flex-col justify-center items-start md:pl-24'>
-      <p className=" w-full justify-self-start md:w-8/12 text-white py-4  font-semibold md:text-3xl pl-4 md:pl-0 text-2xl">Songs</p>
+      <p className=" w-full justify-self-start md:w-8/12 text-white py-4  md:text-2xl pl-4 md:pl-0 text-xxl">Songs</p>
 
       {  results.tracks.items.slice(0,4).map((track, index) => (
         <Searchitems
@@ -50,7 +50,7 @@ const SearchResults = () => {
       </div>
 
       <div className='w-full flex flex-col justify-center items-start md:pl-24'>
-      <p className="justify-self-start md:w-8/12 w-11/12  text-white py-4  font-semibold md:text-3xl pl-4 md:pl-0  text-2xl ">Albums</p>
+      <p className="justify-self-start md:w-8/12 w-11/12  text-white py-4   md:text-2xl pl-4 md:pl-0   text-xl">Albums</p>
 
       {results.album.items.slice(0,4).map((album, index) => (
         <Searchitems

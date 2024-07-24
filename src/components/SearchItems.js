@@ -1,8 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addNowPlaying } from '../redux/playerSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Searchitems = ({image ,name , artist , duration , singer , type,url}) => {
+  const navigate = useNavigate()
   const dur= (duration/((60*1000))).toFixed(2)
 
   const dispatch = useDispatch()
@@ -16,6 +18,7 @@ const Searchitems = ({image ,name , artist , duration , singer , type,url}) => {
       url: url
     }
     dispatch(addNowPlaying(nowPlayingObj))
+    navigate("/play-music")
    
   }
 
@@ -26,7 +29,7 @@ const Searchitems = ({image ,name , artist , duration , singer , type,url}) => {
       <img src={image} alt="image.logo"   className="w-20 h-20 ml-2 p-1 group-hover:opacity-50">
       </img>
       <div className='px-4 group-hover:text-gray-600'>
-        <p className=" md:text-lg lg:text-xl xl:text-2xl group-hover:text-opacity-50 ">{name}</p>
+        <p className=" xl:text-xl lg:text-[1rem] md:text-[0.9rem] group-hover:text-opacity-50 ">{name}</p>
         <div className=' md:flex hidden  gap-x-4 '>
         { artist &&  <p>{artist}   </p>}
           {  singer && <p>• {singer}</p>}
