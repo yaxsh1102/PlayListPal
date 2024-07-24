@@ -3,29 +3,30 @@ import { createSlice } from "@reduxjs/toolkit";
 const playlistSlice = createSlice({
     name: "playlist",
     initialState: {
-        playList: {},
+        playlist: {},
         likedSongs:[]
     },
     reducers: {
         createPlaylist: (state, action) => {
-            const playListName = action.payload.playList.toUpperCase();
-            if (!state.playList[playListName]) {
-                state.playList[playListName] = [];
+            const playlistName = action.payload.playlist.toUpperCase();
+            console.log(playlistName)
+            if (!state.playlist[playlistName]) {
+                state.playlist[playlistName] = [];
             }
             if (action.payload.song) {
-                state.playList[playListName].push(action.payload.song);
+                state.playlist[playlistName].push(action.payload.song);
             }
         },
         addToPlaylist: (state, action) => {
-            const playListName = action.payload.playList.toUpperCase();
-            if (state.playList[playListName]) {
-                state.playList[playListName].push(action.payload.song);
+            const playlistName = action.payload.playlist.toUpperCase();
+            if (state.playlist[playlistName]) {
+                state.playlist[playlistName].push(action.payload.song);
             }
         },
         removeFromPlaylist: (state, action) => {
-            const playListName = action.payload.playList.toUpperCase();
-            if (state.playList[playListName]) {
-                state.playList[playListName] = state.playList[playListName].filter(song => song.name !== action.payload.song.name);
+            const playlistName = action.payload.playlist.toUpperCase();
+            if (state.playlist[playlistName]) {
+                state.playlist[playlistName] = state.playlist[playlistName].filter(song => song.name !== action.payload.song.name);
             }
         },
         addToLikedSongs :(state,action)=>{

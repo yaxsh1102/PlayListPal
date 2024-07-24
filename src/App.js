@@ -20,6 +20,9 @@ import { useSelector } from 'react-redux';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import useGetPlaying from './hooks/useGetPlaying';
 import MusicContainer from './components/MusicContainer';
+import LikedSongs from './components/DisplayPlaylist';
+import Playlist from './components/Playlist';
+import DisplayPlaylist from './components/DisplayPlaylist';
 
 
 
@@ -52,8 +55,10 @@ useGetPlaying()
         <Route path='/' element={<Layout/>}>
           <Route path='' element={<LandingPage/>}/>
           <Route path='profile' element={<Profile/>}/>
-          <Route path = "/play-music" element={<MusicContainer></MusicContainer>}></Route>
-
+          <Route path = "play-music" element={<MusicContainer/>}></Route>
+          <Route path="likedsongs" element={<DisplayPlaylist playlist={false}/>}/>
+          <Route path="playlist" element={<Playlist/>}/>
+          <Route path='playlist/:playlistName' element={<DisplayPlaylist playlist={true} />} />
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>

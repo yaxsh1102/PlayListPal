@@ -1,0 +1,59 @@
+import React, { useState } from 'react';
+import { createPlaylist } from '../redux/playlistSlice';
+import { useDispatch } from 'react-redux';
+import useGetUserPlaylist from '../hooks/useGetUserPlaylist';
+
+const CreatePlaylistPopup = ({ onClose}) => {
+  const [playlistName, setPlaylistName] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useDispatch();
+  const availablePlaylists = useGetUserPlaylist();
+  const availablePlaylistsNames = Object.keys(availablePlaylists)
+
+  const handleCreateClick = () => {
+    if (!playlistName.trim()) {
+      setErrorMessage('Please enter a playlist name.');
+    } else if (availablePlaylistsNames.includes(playlistName.toUpperCase())){
+      setErrorMessage('Playlist name already exists.');
+    }
+    else {
+      setErrorMessage('');
+      dispatch(createPlaylist({playlist:playlistName}));
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+      <div className="bg-gradient-to-tr from-[#1b1a1a] to-[#222020] p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-[1.5rem] text-white font-semibold mb-4">Create Playlist</h2>
+        <input
+          type="text"
+          className="w-full px-3 py-2 mb-4 rounded bg-[#4e4b48] outline-none text-white" 
+          placeholder="Playlist Name"
+          value={playlistName}
+          onChange={(e) => setPlaylistName(e.target.value)}
+        />
+        {errorMessage && (
+          <p className="text-red-500 mb-4">{errorMessage}</p>
+        )}
+        <div className="flex justify-end space-x-4">
+          <button
+            className="px-4 py-2 bg-gray-700 rounded text-white hover:bg-gray-600"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+            onClick={handleCreateClick}
+          >
+            Create Playlist
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreatePlaylistPopup;

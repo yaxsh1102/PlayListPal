@@ -7,7 +7,7 @@ import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import { BiDotsVerticalRounded } from 'react-icons/bi'; // Importing the vertical dots icon
 import Popup from './Popup'; // Import the Popup component
-import { addToLikedSongs,removeFromLikedSongs } from '../redux/playlistSlice';
+import { addToLikedSongs,removeFromLikedSongs,addToPlaylist } from '../redux/playlistSlice';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
@@ -53,6 +53,10 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   function closePopup() {
     setShowPopup(false);
   }
+
+  // const randomfunc =()=>{
+  //   dispatch(addToPlaylist({playlist:"A" , song:{ image, name, artist, duration, singer, type, url }}))
+  // }
 
   return (
     <div className="w-full flex">
