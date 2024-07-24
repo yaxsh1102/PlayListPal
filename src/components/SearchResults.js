@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Searchitems from './SearchItems';
@@ -51,3 +52,4 @@ const SearchResults = () => {
 };
 
 export default SearchResults
+

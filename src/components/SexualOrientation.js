@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 
 const options = [
@@ -31,7 +32,7 @@ const SexualOrientation = ({ isEditingMatchesProfile }) => {
   };
 
   return (
-    <div ref={dropdownRef} className="relative mt-1">
+    <div ref={dropdownRef} className="relative mt-1 b">
       <button 
         onClick={toggleDropdown}
         className={`w-full px-3 py-2 text-black bg-gray-300 border border-gray-500 rounded-md focus:ring focus:ring-indigo-400 focus:border-indigo-400 ${!isEditingMatchesProfile && 'cursor-not-allowed'}`} 
@@ -40,7 +41,7 @@ const SexualOrientation = ({ isEditingMatchesProfile }) => {
         {selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select orientations...'}
       </button>
       {isOpen && (
-        <div className="absolute z-10 w-full mt-2 bg-gray-300 border border-gray-500 rounded-md shadow-lg">
+        <div className="absolute z-10 w-full mt-2 bg-black border border-gray-500 rounded-md shadow-lg ">
           {options.map(option => (
             <div 
               key={option} 
@@ -63,3 +64,4 @@ const SexualOrientation = ({ isEditingMatchesProfile }) => {
 };
 
 export default SexualOrientation;
+

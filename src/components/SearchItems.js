@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNowPlaying } from '../redux/playerSlice';
@@ -96,3 +97,4 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
 };
 
 export default Searchitems;
+
