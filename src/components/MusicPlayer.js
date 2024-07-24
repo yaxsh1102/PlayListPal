@@ -96,3 +96,5 @@ const MusicPlayer = ({nowPlaying }) => {
   );
 };
 
+export default MusicPlayer ;
+
