@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { toggleSearch } from '../redux/toggleSlice';
@@ -29,3 +30,4 @@ const Navbar = () => {
 }
 
 export default Navbar;
+

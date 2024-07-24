@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { nextButton, prevButton } from '../redux/playerSlice';
@@ -95,4 +96,3 @@ const MusicPlayer = ({nowPlaying }) => {
   );
 };
 
-export default MusicPlayer;

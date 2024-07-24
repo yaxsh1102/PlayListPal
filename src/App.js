@@ -1,3 +1,4 @@
+
 // App.js
 import React, { useState } from 'react';
 import './App.css';
@@ -36,44 +37,6 @@ useGetPlaying()
   useGetArtists()
   useNewRelease()
 
-  useEffect(() => {
-
- 
-
-  //   const handleSearch = async () => {
-  //     if (access_token ) {
-  //       const response = await axios.get(SEARCH_ENDPOINT, {
-  //         headers: {
-  //           Authorization: `Bearer ${access_token}`,
-  //         },
-  //         params: {
-  //           q: "Baller",
-  //           type: 'album,artist,track', // Specify all types
-
-            
-  //         },
-  //       });
-  //       console.log(response)
-  //       const obj = {
-  //         album:response.data.albums ,
-  //         artists:response.data.artists ,
-  //         tracks :response.data.tracks 
-  //       }
-
-  //       console.log(obj)
-
-  //       dispatch(addResult(obj))
-
-  //     }
-
-  // };
-
-
-
-
-
-} ,[])
-
 
   
 
@@ -102,4 +65,3 @@ useGetPlaying()
 }
 
 export default App;
- 

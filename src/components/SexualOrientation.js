@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 
 const options = [
@@ -63,3 +64,4 @@ const SexualOrientation = ({ isEditingMatchesProfile }) => {
 };
 
 export default SexualOrientation;
+
