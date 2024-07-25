@@ -37,9 +37,12 @@ const playlistSlice = createSlice({
         },
         removeFromLikedSongs :(state,action)=>{
             state.likedSongs=state.likedSongs.filter(song => song.name !== action.payload.name);
-        }
+        },
+        setSelectedSong : (state , action)=>{
+        state.selectedSong = action.payload
+     }
     }
 });
 
-export const { createPlaylist, addToPlaylist, removeFromPlaylist,addToLikedSongs,removeFromLikedSongs } = playlistSlice.actions;
+export const { createPlaylist, addToPlaylist, removeFromPlaylist,addToLikedSongs,removeFromLikedSongs,setSelectedSong } = playlistSlice.actions;
 export default playlistSlice.reducer;
