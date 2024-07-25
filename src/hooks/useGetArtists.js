@@ -28,4 +28,4 @@ const useGetArtists = ()=>{
     
     };
 
-    export default useGetArtists
+    export default useGetArtists;

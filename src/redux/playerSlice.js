@@ -1,5 +1,5 @@
 
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, } from "@reduxjs/toolkit";
 
 const playerSlice = createSlice({
   name: "player",

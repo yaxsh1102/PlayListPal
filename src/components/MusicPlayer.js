@@ -2,12 +2,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { nextButton, prevButton } from '../redux/playerSlice';
+import { useNavigate } from 'react-router-dom';
 
 const MusicPlayer = ({nowPlaying }) => {
   const{url} = nowPlaying
   const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef(null);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (audioRef.current) {
@@ -55,6 +57,10 @@ const MusicPlayer = ({nowPlaying }) => {
     dispatch(nextButton())
 
   }
+  function clickHandler(){
+    navigate("/play-music")
+    
+  }
 
   return (
     <div className='absolute md:bottom-4 bottom-0 w-[100vw] right-0  xl:h-[4rem] md:h-[3rem] 2rem flex justify-center'>
@@ -71,7 +77,7 @@ const MusicPlayer = ({nowPlaying }) => {
       <svg xmlns="http://www.w3.org/2000/svg"  class=" lg:w-[32px] lg:h-[32px] md:w-[28px] md:h-[28px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M200,32a8,8,0,0,0-8,8v69.23L72.43,34.45A15.95,15.95,0,0,0,48,47.88V208.12a16,16,0,0,0,24.43,13.43L192,146.77V216a8,8,0,0,0,16,0V40A8,8,0,0,0,200,32ZM64,207.93V48.05l127.84,80Z"></path></svg>
       </button>
       </div>
-      <div className='flex justify-start items-center px-2 md:w-3/12 w-6/12 gap-x-5'>
+      <div className='flex justify-start items-center px-2 md:w-3/12 w-6/12 gap-x-5' onClick={clickHandler}>
       <img src ={nowPlaying.image} alt='11.png' className='lg:w-[5.5rem] lg:h-[5rem] md:w-[4rem] h-[3.5rem] '></img>
 
         <div>

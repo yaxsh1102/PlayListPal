@@ -11,7 +11,7 @@ const Discover = () => {
   const newPlayList = useSelector((store)=>store.discover.playlist)
 
   return (
-    <div className="flex flex-col scrollbar-hide mt-8 w-[80%]  xl:pt-[52rem] lg:pt-[52rem] md:pt-[44rem] pt-[24rem] scroll-x-hidden  h-lg:pt-[20rem] mobile:pt-[12rem]">
+    <div className="flex flex-col scrollbar-hide mt-8 w-[80%]  xl:pt-[52rem] lg:pt-[52rem] md:pt-[44rem] pt-[18rem] scroll-x-hidden  h-lg:pt-[20rem] mobile:pt-[12rem] small-mobile:pt-[24rem]">
       <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Trending Album </p>
       <div className='flex lg:w-[80rem] md:[rem] w-[40rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
         {newAlbums.map((element) => (
