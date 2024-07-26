@@ -22,7 +22,6 @@ const MusicContainer = () => {
                 </div>
                 <div className=" lg:flex hidden flex-col xl:w-full lg:w-[80%] lg:gap-y-4  gap-y-2 xl:pt-0 lg:pt-0 px-0   overflow-y-scroll no-scrollbar">
                 {queue.map((element, index) => {
-                         console.log(element); // This will log each element to the console
                                      return (
                                                <MusiContainerItems 
                                                 name={element.name} 

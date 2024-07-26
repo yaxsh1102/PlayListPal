@@ -1,14 +1,24 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa'; // Import the cross icon
+import { useDispatch, useSelector } from 'react-redux';
+import { addToQueue } from '../redux/playerSlice';
 
 const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup}) => {
+  const dispatch = useDispatch()
+  const currentSong = useSelector((store)=>store.playlist.selectedSong)
     function AddToPlaylist(option ){
         console.log(typeof option)
         const data = option.split(" ") 
         if (data[2]==='Playlist'){
             setShowAddToPlayList(true)
             setShowCenterPopup(false)
+        } else {
+          console.log(currentSong)
+          dispatch(addToQueue(currentSong ))
+          
+
         }
+        console.log(data)
 
 
 

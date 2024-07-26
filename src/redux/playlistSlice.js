@@ -88,7 +88,7 @@ const playlistSlice = createSlice({
         removeFromLikedSongs :(state,action)=>{
             state.likedSongs=state.likedSongs.filter(song => song.name !== action.payload.name);
         },
-            setSelectedSong : (state , action)=>{
+        setSelectedSong : (state , action)=>{
             state.selectedSong = action.payload
          }
     }

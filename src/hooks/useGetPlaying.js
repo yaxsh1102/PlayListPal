@@ -8,7 +8,7 @@ const useGetPlaying = () =>{
     const searchHindiSongs = async () => {
         const token = localStorage.getItem('token')
         const searchUrl = 'https://api.spotify.com/v1/search';
-        const query = 'hindi'; // You can use a more specific query like 'hindi pop' or a specific artist
+        const query = 'hindi good songs'; 
       
         const response = await axios.get(searchUrl, {
           headers: {
@@ -17,7 +17,6 @@ const useGetPlaying = () =>{
           params: {
             q: query,
             type: 'track',
-            market: 'IN', // Optional: Specify market to get localized results
             limit: 10, // Number of search results to return
           },
         });

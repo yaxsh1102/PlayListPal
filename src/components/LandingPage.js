@@ -3,7 +3,7 @@ import useGetTracks from '../hooks/useGetTracks';
 import Navbar from './Navbar';
 import Discover from './Discover';
 import useNewRelease from '../hooks/useNewRelease';
-import useGetArtists from '../hooks/useGetArtists';
+import useGetArtists from '../hooks/useGetArtists'; 
 import useGetToken from '../hooks/useGetToken';
 import useGetPlaylist from '../hooks/useGetPlaylist';
 import { useSelector } from 'react-redux';

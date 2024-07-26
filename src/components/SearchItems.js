@@ -23,7 +23,7 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
 
   const options = [
     { label: 'Add to Queue', onClick: () => console.log('Add to Queue clicked') },
-    { label: 'Add to Playlist', onClick: () => setShowAddToPlayList(true) }, // Set showAddToPlayList to true
+    { label: 'Add to Playlist', onClick: () => setShowAddToPlayList(true) }, 
   ];
 
   // Check if the song is liked
@@ -41,7 +41,7 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   };
 
   const toggleCenterPopup = () => {setShowCenterPopup((prev) => !prev)
-    dispatch(setSelectedSong(nowPlayingObj));}
+    dispatch(setSelectedSong(nowPlayingObj));} 
 
   return (
     <div className={`relative w-full flex`}>

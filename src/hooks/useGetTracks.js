@@ -15,6 +15,7 @@ const useGetTracks = ()=>{
              headers: {
                Authorization: `Bearer ${access_token}`,
              },
+            
            });
            dispatch(addNewTracks(response.data.tracks.items))
            console.log(response.data)

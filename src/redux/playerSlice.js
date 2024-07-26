@@ -33,10 +33,13 @@ const playerSlice = createSlice({
         }
         state.nowPlaying =state.queue[state.current] 
 
+    } ,
+    addToQueue : (state , action)=>{
+      state.queue.unshift(action.payload)
     }
   
   },
 });
 
-export const { addNowPlaying, initiateQueue , prevButton , nextButton } = playerSlice.actions;
+export const { addNowPlaying, initiateQueue , prevButton , nextButton  , addToQueue} = playerSlice.actions;
 export default playerSlice.reducer;
