@@ -1,5 +1,5 @@
 
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, } from "@reduxjs/toolkit";
 
 const playerSlice = createSlice({
   name: "player",
@@ -33,10 +33,17 @@ const playerSlice = createSlice({
         }
         state.nowPlaying =state.queue[state.current] 
 
-    }
+    } ,
+    addToQueue : (state , action)=>{
+      state.queue.unshift(action.payload)
+    } ,
+    removeFromQueue :(state , action)=>{
+      state.queue= state.queue.filter((song)=>song.url!==action.payload.url)
+    } ,
+    
   
   },
 });
 
-export const { addNowPlaying, initiateQueue , prevButton , nextButton } = playerSlice.actions;
+export const { addNowPlaying, initiateQueue , prevButton , nextButton  , addToQueue ,removeFromQueue} = playerSlice.actions;
 export default playerSlice.reducer;

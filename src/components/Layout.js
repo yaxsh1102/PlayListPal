@@ -3,7 +3,6 @@ import Sidebar from "./Sidebar"
 import { useState } from "react";
 import MusicPlayer from "./MusicPlayer";
 import { useSelector } from "react-redux";
-import ErrorPage from "./ErrorPage";
 
 
 const Layout =()=>{

@@ -24,9 +24,12 @@ const playlistSlice = createSlice({
             }
         },
         removeFromPlaylist: (state, action) => {
+            console.log("Reached Here")
+            console.log(action.payload.playlist)
+            console.log(action.payload.name)
             const playlistName = action.payload.playlist.toUpperCase();
             if (state.playlist[playlistName]) {
-                state.playlist[playlistName] = state.playlist[playlistName].filter(song => song.name !== action.payload.song.name);
+                state.playlist[playlistName] = state.playlist[playlistName].filter(song => song.name !== action.payload.name);
             }
         },
         addToLikedSongs :(state,action)=>{

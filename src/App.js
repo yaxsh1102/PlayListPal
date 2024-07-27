@@ -56,9 +56,12 @@ useGetPlaying()
           <Route path='' element={<LandingPage/>}/>
           <Route path='profile' element={<Profile/>}/>
           <Route path = "play-music" element={<MusicContainer/>}></Route>
-          <Route path="likedsongs" element={<DisplayPlaylist playlist={false}/>}/>
+          <Route path="likedsongs" element={<DisplayPlaylist type={'likedsong'}/>}/>
           <Route path="playlist" element={<Playlist/>}/>
-          <Route path='playlist/:playlistName' element={<DisplayPlaylist playlist={true} />} />
+          <Route path='userplaylists/:param' element={<DisplayPlaylist type={'userplaylist'} />} />
+          <Route path='albums/:param' element={<DisplayPlaylist type={'album'} />} />
+          <Route path='artists/:param' element={<DisplayPlaylist type={'artist'} />} />
+          <Route path='playlists/:param' element={<DisplayPlaylist type={'playlist'} />} />
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>

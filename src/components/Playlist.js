@@ -6,6 +6,7 @@ import useGetUserPlaylist from '../hooks/useGetUserPlaylist';
 import PlaylistCardItems from './PlaylistCardItems';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import "../App.css"
 
 const Playlist = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -20,9 +21,9 @@ const Playlist = () => {
   };
 
   return (
-    <div className="pb-[8rem] w-full flex flex-col overflow-y-scroll h-[100vh] bg-gradient-to-tr from-[#000000] to-[#434343]">
+    <div className="pb-[8rem] w-full flex flex-col overflow-y-scroll h-[100vh] bg-gradient-to-tr from-[#000000] to-[#434343] no-scrollbar">
       <div className='w-full flex flex-col justify-center items-start md:pl-24'>
-        <h1 className="w-full md:text-[5rem] text-[3rem] md:text-left text-center text-white font-bold mb-8 mt-16 border-b-[3px] border-black">Playlists</h1>
+        <h1 className="w-full md:text-[4rem] text-[2rem] md:text-left text-center text-white font-bold mb-8 mt-16 border-b-[3px] border-black">Playlists</h1>
         <div className="w-full flex flex-wrap mt-8 md:gap-28 gap-5">
           {Object.keys(availablePlaylists).length === 0 ? (<div className='w-full text-center'>
             <p className="mt-[8rem] text-[3rem] text-gray-300 ">No playlists have been created yet. </p>

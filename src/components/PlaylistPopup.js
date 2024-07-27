@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import { addToPlaylist, createPlaylist } from '../redux/playlistSlice';
 
-const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setShowCenterPopup }) => {
+const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setShowCenterPopup ,setShowPopup,setPopupMessage }) => {
   const playlist = useSelector((store) => store.playlist.playlist);
   const selectedSong = useSelector((store) => store.playlist.selectedSong);
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,7 +15,7 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
     console.log("Use Effect")
     const status = {};
     Object.keys(playlist).forEach(option => {
-      status[option] = playlist[option].some(song => song.id === selectedSong.id);
+      status[option] = playlist[option].some(song => song.name === selectedSong.name);
     });
     setSongStatus(status);
     console.log(songStatus)
@@ -45,6 +45,11 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
 
   function toPlaylist(name) {
     dispatch(addToPlaylist({ playlist: name, song: selectedSong }));
+    setPopupMessage("Song Added to "+name)
+          setShowPopup(true);
+          setTimeout(() => {
+            setShowPopup(false);
+          }, 2000);
     setShowAddToPlayList(false);
   }
 

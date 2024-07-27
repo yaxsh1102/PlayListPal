@@ -1,22 +1,26 @@
 
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Searchitems from './SearchItems';
 
 const SearchResults = () => {
-  const results = useSelector((store)=>store.result.results)
-  if(!results || results.length===0) return
+  const tracks = useSelector((store)=>store.result.tracks)
+  const albums = useSelector((store)=>store.result.albums)
+  const albumArtists = Object.keys(albums)
+  console.log(tracks)
+  if(!tracks || tracks.length===0) return
 
-  console.log(results)
-  if(results)  {const img = results.album ;
-    console.log(img)
+  // console.log(tracks)
+  // if(tracks)  {const img = results.album ;
+  //   console.log(img)
 
-  } 
+  // } 
   return (
     <div className="pb-[8rem] w-full flex flex-col gap-8 mt-8 overflow-y-scroll h-[80vh]">
       <div className='w-full flex flex-col justify-center items-start md:pl-24 md:w-[67%]'>
       <p className=" w-full justify-self-start md:w-8/12 text-white py-4  font-semibold md:text-3xl pl-4 md:pl-0 text-2xl">Songs</p>
-      {  results.tracks.items.slice(0,4).map((track, index) => (
+
+      {  tracks.slice(0,4).map((track, index) => (
         <Searchitems
           key={index}
           image={track.album?.images[0]?.url}
@@ -32,14 +36,14 @@ const SearchResults = () => {
       <div className='w-full flex flex-col justify-center items-start md:pl-24 md:w-[67%]'>
       <p className="justify-self-start md:w-8/12 w-11/12  text-white py-4  font-semibold md:text-3xl pl-4 md:pl-0  text-2xl ">Albums</p>
 
-      {results.album.items.slice(0,4).map((album, index) => (
+      {albumArtists.slice(0,4 ).map((album, index) => (
         <Searchitems
           key={index}
-          image={album?.images[0]?.url}
-          name={album.name}
-          artist={album.artists[0]?.name}
-          type={album.album_type}
-          singer={album?.artists[1]?.name}
+          image={albums[album].image}
+          name={album}
+          artist={albums[album].artist}
+          type={albums[album].type}
+          singer={null}
           duration={null}
 
         />
@@ -51,4 +55,3 @@ const SearchResults = () => {
 };
 
 export default SearchResults
-

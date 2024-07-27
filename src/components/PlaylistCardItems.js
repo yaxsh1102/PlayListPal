@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const PlaylistCardItems = ({ imageUrl, playlistName, totalSongs }) => {
   return (
-    <Link to= {`/playlist/${playlistName}`} className="w-[12rem] h-[18rem]  text-white rounded overflow-hidden shadow-lg bg-[#191818cf] hover:scale-105">
+    <Link to= {`/userplaylists/${playlistName}`} className="w-[12rem] h-[18rem]  text-white rounded overflow-hidden shadow-lg bg-[#191818cf] hover:scale-105">
       <img
         className="w-full h-[12rem] "
         src={imageUrl}

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 
 const Popup = ({ message, onClose , visible }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose();
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     onClose();
+  //   }, 2000);
 
-    return () => clearTimeout(timer);
-  }, [visible, onClose]);
+  //   return () => clearTimeout(timer);
+  // }, [visible, onClose]);
 
   return (
     <div

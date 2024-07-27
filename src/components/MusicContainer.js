@@ -6,7 +6,7 @@ const MusicContainer = () => {
     const queue= useSelector((store)=>store.player.queue) ;
     console.log(queue )
   return (
-    <div className="h-[100vh] flex lg:justify-end  md:justify-center w-full   bg-gradient-to-tr from-[#000000] to-[#434343] items-center overflow-y-hidden">
+    <div className="h-[100vh] flex lg:justify-end  md:justify-center w-full bg-gradient-to-tr from-[#000000] to-[#434343] items-center overflow-y-hidden">
         <div className="flex md:w-[100%] w-full lg:justify-around  justify-center md:pb-0 pb-20 items-center">
         <div>
             <img src={nowPlaying.image} alt="1212.png" className="xl:w-[32rem] xl:h-[32rem] lg:w-[28rem] lg:h-[27rem] md:w-[32rem] md:h-[32rem] sm:w-[28rem] sm:h-[28rem] h-[18rem] w-[18rem] lg:pl-6"></img>
@@ -20,15 +20,19 @@ const MusicContainer = () => {
                     </p>
                
                 </div>
-                <div className=" lg:flex hidden flex-col xl:w-full lg:w-[80%] lg:gap-y-4  gap-y-2 xl:pt-0 lg:pt-0 px-0   overflow-y-scroll no-scrollbar">
+                <div className=" pb-14 lg:flex hidden flex-col xl:w-full lg:w-[80%] lg:gap-y-4  gap-y-2 xl:pt-0 lg:pt-0 px-0 overflow-y-scroll no-scrollbar">
                 {queue.map((element, index) => {
                          console.log(element); // This will log each element to the console
                                      return (
                                                <MusiContainerItems 
                                                 name={element.name} 
                                                         image={element.image} 
-                                                        singer={element.singer} 
+                                                        singer={element.singer}
+                                                        url={element.url}
                                                         key={index}
+                                                        artist={element.artist}
+                                                        duration={element.duration}
+                                                        type={element.type}
                                                         />
                                                          );
 })}
