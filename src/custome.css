@@ -1,0 +1,37 @@
+/* custom.css */
+@media (width: 414px) and (height: 896px) {
+    .dynamic-pt {
+      padding-top: 10rem;
+    }
+  }
+  
+  @media (width: 375px) and (height: 667px) {
+    .dynamic-pt {
+      padding-top: 22rem;
+    }
+  }
+  
+  @media (width: 390px) and (height: 844px) {
+    .dynamic-pt {
+      padding-top: 14rem;
+    }
+  }
+  
+  @media (width: 430px) and (height: 932px) {
+    .dynamic-pt {
+      padding-top: 10rem;
+    }
+  }
+  
+  @media (width: 360px) and (height: 740px) {
+    .dynamic-pt {
+      padding-top: 18rem;
+    }
+  }
+  
+  @media (width: 412px) and (height: 915px) {
+    .dynamic-pt {
+      padding-top: 10rem;
+    }
+  }
+  

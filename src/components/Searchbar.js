@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SEARCH_ENDPOINT } from "../utils/constants";
 import { useDispatch } from "react-redux";
-import { addResult } from "../redux/resultsSlice";
+import { addAlbums , addTracks } from "../redux/resultsSlice";
 import { useEffect, useRef } from "react";
 
 const Searchbar = () => {
@@ -18,7 +18,6 @@ const Searchbar = () => {
 
   const handleSearch = async () => {
     const access_token = localStorage.getItem("token");
-    // const access_token = "BQBX_snykL5-vXynka2C3LAeaWSgrIU51HrC-Q0BvPjBceebzHuzhT3q-6wdscyrQPyR3kIbf_zJ2aTvTw1swNKFAe-PPLADAzvv9B2simbCCY8lqf0"
     console.log(access_token)
 
     try {
@@ -29,19 +28,31 @@ const Searchbar = () => {
           },
           params: {
             q: `${input.current.value}`,
-            type: 'album,artist,track', 
+            type: 'album,track', 
           },
         });
 
         console.log(response);
-        const obj = {
-          album: response.data.albums,
-          artists: response.data.artists,
-          tracks: response.data.tracks,
-        };
-        console.log(obj);
+        const albumsWithTracks = await Promise.all(
+          response.data.albums.items.map(async (album) => {
+            const tracks = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+             
+            })
+            return { album, tracks: tracks.data.items };
 
-        dispatch(addResult(obj));
+      }))
+
+      console.log(albumsWithTracks)
+
+      dispatch(addTracks(response.data.tracks.items))
+      dispatch(addAlbums ({albumsWithTracks}))
+
+        
+     
+
       }
     } catch (error) {
       console.error("Error fetching search results:", error);

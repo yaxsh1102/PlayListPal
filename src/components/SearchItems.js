@@ -68,7 +68,7 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
             <div className="md:flex hidden gap-x-4">
               {artist && <p>{artist}</p>}
               {singer && <p>• {singer}</p>}
-              {duration ? <p>• {dur}</p> : <p>• {type}</p>}
+              {duration ? <p>• {dur}</p> : <p className="capitalize">• {type}</p>}
             </div>
           </div>
         </div>

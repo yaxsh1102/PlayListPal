@@ -36,10 +36,14 @@ const playerSlice = createSlice({
     } ,
     addToQueue : (state , action)=>{
       state.queue.unshift(action.payload)
-    }
+    } ,
+    removeFromQueue :(state , action)=>{
+      state.queue= state.queue.filter((song)=>song.url!==action.payload.url)
+    } ,
+    
   
   },
 });
 
-export const { addNowPlaying, initiateQueue , prevButton , nextButton  , addToQueue} = playerSlice.actions;
+export const { addNowPlaying, initiateQueue , prevButton , nextButton  , addToQueue ,removeFromQueue} = playerSlice.actions;
 export default playerSlice.reducer;

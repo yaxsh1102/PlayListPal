@@ -8,7 +8,7 @@ const discoverSlice = createSlice({
         albums:{} ,
         artists:{},
         tracks:[],
-        playlist:{}
+        playlists:{}
     }
     ,
     reducers:{
@@ -79,7 +79,7 @@ const discoverSlice = createSlice({
                   artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
                 }));
         
-                state.playlist[name] = {
+                state.playlists[name] = {
                   songs: songs,
                   image: image,
                 };

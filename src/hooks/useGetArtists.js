@@ -50,7 +50,7 @@ const useGetArtists = () => {
     };
 
     getNewArtists();
-  }, [dispatch]);
+  }, []);
 };
 
 export default useGetArtists;

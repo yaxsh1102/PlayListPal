@@ -1,15 +1,27 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { nextButton, prevButton } from '../redux/playerSlice';
-import { useNavigate } from 'react-router-dom';
 
-const MusicPlayer = ({nowPlaying }) => {
-  const{url} = nowPlaying
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToQueue, initiateQueue, nextButton, prevButton, removeFromQueue } from '../redux/playerSlice';
+import { useNavigate } from 'react-router-dom';
+import Popup from './Popup';
+
+const MusicPlayer = ({ nowPlaying }) => {
+  const { url } = nowPlaying;
   const [isPlaying, setIsPlaying] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
+
   const audioRef = useRef(null);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const nowPlayingObj = useSelector((store) => store.player.nowPlaying);
+  const queue = useSelector((store) => store.player.queue);
+  console.log(queue);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -46,20 +58,68 @@ const MusicPlayer = ({nowPlaying }) => {
         setIsPlaying(false);
       });
     }
-  }; 
+  };
 
-  const prevHandler = () =>{
-    dispatch(prevButton())
-
+  function closePopup() {
+    setShowPopup(false);
   }
 
-  const nextHandler = ()=>{
-    dispatch(nextButton())
+  const prevHandler = () => {
+    dispatch(prevButton());
+  };
 
+  const nextHandler = () => {
+    dispatch(nextButton());
+  };
+
+  function clickHandler() {
+    navigate("/play-music");
   }
-  function clickHandler(){
-    navigate("/play-music")
-    
+
+  function likeHandler() {
+    const index = queue.findIndex((item) => item.url === nowPlayingObj.url);
+
+    if (index === -1) {
+     
+      dispatch(addToQueue(nowPlayingObj));
+    } else {
+      if(queue[0].url === nowPlayingObj.url){
+        console.log("hii")
+        
+        setPopupMessage("Song Added To LOL")
+      } else {
+        const updatedQueue = [...queue];
+        const songIndex = updatedQueue.findIndex(song => song.id === nowPlayingObj.id);
+        if (songIndex !== -1) {
+          updatedQueue.splice(songIndex, 1);
+        }
+        updatedQueue.unshift(nowPlayingObj);
+        dispatch(initiateQueue(updatedQueue));
+        
+
+      }
+      
+    }
+
+    // setPopupMessage("Added to the top of the queue");
+    // setShowPopup(true);
+    // setIsLiked(true);
+  }
+
+  function dislikeHandler() {
+    dispatch(removeFromQueue(nowPlayingObj))
+    setIsLiked(false);
+  }
+
+  function shuffleHandler() {
+    const arrayCopy = [...queue];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+    }
+    dispatch(initiateQueue(arrayCopy));
+    setPopupMessage("Queue Shuffled");
+    setShowPopup(true);
   }
 
   return (
@@ -81,23 +141,25 @@ const MusicPlayer = ({nowPlaying }) => {
       <img src ={nowPlaying.image} alt='11.png' className='lg:w-[5.5rem] lg:h-[5rem] md:w-[4rem] h-[3.5rem] '></img>
 
         <div>
-        <p className='text-white lg:text-[1.1rem] md:text-[1rem] text-[0.6rem] '> {nowPlaying.name}</p>
+        <p className='text-white lg:text-[1.1rem] md:text-[1rem] text-[0.9rem] '> {nowPlaying.name}</p>
         <p className="text-slate-300 sm:flex hidde opacity-90 text-[0.9rem]">{nowPlaying.singer}</p>
       </div>
       </div>
 
 
       <div className='w-3/12 md:flex hidden justify-evenly'>
-        <p>
-        <svg xmlns="http://www.w3.org/2000/svg"    class="lg:w-[32px] lg:h-[32px] md:w-[32px] md:h-[32px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z" className='lg:w-10 lg:h-10 md:w-8 md:h-8'></path></svg></p>     
-        <p>
+        <p onClick={likeHandler}>
+        <svg xmlns="http://www.w3.org/2000/svg"    className={`lg:w-[32px] lg:h-[32px] md:w-[28px] md:h-[28px] w-[32px] h-[32px] ${isLiked ? 'fill-red-500' : 'fill-[#f5f0f0]'}`}  viewBox="0 0 256 256"><path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z" className='lg:w-10 lg:h-10 md:w-8 md:h-8'></path></svg></p>     
+        <p onClick={shuffleHandler}>
         <svg xmlns="http://www.w3.org/2000/svg"  class="lg:w-[32px] lg:h-[32px] md:w-[32px] md:h-[32px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M237.66,178.34a8,8,0,0,1,0,11.32l-24,24a8,8,0,0,1-11.32-11.32L212.69,192H200.94a72.12,72.12,0,0,1-58.59-30.15l-41.72-58.4A56.1,56.1,0,0,0,55.06,80H32a8,8,0,0,1,0-16H55.06a72.12,72.12,0,0,1,58.59,30.15l41.72,58.4A56.1,56.1,0,0,0,200.94,176h11.75l-10.35-10.34a8,8,0,0,1,11.32-11.32ZM143,107a8,8,0,0,0,11.16-1.86l1.2-1.67A56.1,56.1,0,0,1,200.94,80h11.75L202.34,90.34a8,8,0,0,0,11.32,11.32l24-24a8,8,0,0,0,0-11.32l-24-24a8,8,0,0,0-11.32,11.32L212.69,64H200.94a72.12,72.12,0,0,0-58.59,30.15l-1.2,1.67A8,8,0,0,0,143,107Zm-30,42a8,8,0,0,0-11.16,1.86l-1.2,1.67A56.1,56.1,0,0,1,55.06,176H32a8,8,0,0,0,0,16H55.06a72.12,72.12,0,0,0,58.59-30.15l1.2-1.67A8,8,0,0,0,113,149Z"></path></svg></p>
-            <p>
+            <p onClick={dislikeHandler}>
          <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-[32px] lg:h-[32px] md:w-[32px] md:h-[32px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M239.82,157l-12-96A24,24,0,0,0,204,40H32A16,16,0,0,0,16,56v88a16,16,0,0,0,16,16H75.06l37.78,75.58A8,8,0,0,0,120,240a40,40,0,0,0,40-40V184h56a24,24,0,0,0,23.82-27ZM72,144H32V56H72Zm150,21.29a7.88,7.88,0,0,1-6,2.71H152a8,8,0,0,0-8,8v24a24,24,0,0,1-19.29,23.54L88,150.11V56H204a8,8,0,0,1,7.94,7l12,96A7.87,7.87,0,0,1,222,165.29Z"></path></svg>         </p>
         
               </div>
       
     </div>
+    {showPopup && <Popup message={popupMessage} onClose={closePopup} visible={showPopup} />}
+
     </div>
   );
 };
