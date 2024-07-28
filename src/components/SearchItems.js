@@ -10,12 +10,14 @@ import Popup from './Popup'; // Import the Popup component
 import { addToLikedSongs,removeFromLikedSongs,removeFromPlaylist,setSelectedSong } from '../redux/playlistSlice';
 import OptionPopup from './OptionPopup';
 import PlayListPopup from './PlaylistPopup';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
+  console.log(duration )
+  const navigate = useNavigate()
   const dispatch = useDispatch();
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(false); 
   const [popupMessage, setPopupMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const likedSongs = useSelector((state) => state.playlist.likedSongs || []);
@@ -40,7 +42,11 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   }
 
   const clickHandler = () => {
+    if(!type){
     dispatch(addNowPlaying(nowPlayingObj));
+    }else{
+      navigate(`result/${name}`)
+    }
   };
 
   const toggleLike = () => {
@@ -79,7 +85,7 @@ return (
         <div className="px-4 group-hover:text-gray-600">
           <p className="md:text-lg lg:text-xl xl:text-2xl group-hover:text-opacity-50">{name}</p>
           <div className="md:flex hidden gap-x-4">
-            {artist && <p>{artist}</p>}
+            {artist && <p className="max-w-[140px]">{artist}</p>}
             {singer && <p>• {singer}</p>}
             {duration ? <p>• {dur}</p> : <p>• {type}</p>}
           </div>

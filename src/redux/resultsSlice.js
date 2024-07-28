@@ -26,6 +26,7 @@ const resultSlice = createSlice({
               image: image,
               singer: track.artists[0].name,
               artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
+              duration : track.duration_ms
             }));
     
             state.albums[name] = {
