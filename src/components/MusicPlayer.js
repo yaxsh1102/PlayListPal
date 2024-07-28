@@ -144,6 +144,7 @@ const MusicPlayer = ({ nowPlaying }) => {
       </button>
       </div>
       <div className='flex justify-start items-center px-2 md:w-3/12 w-6/12 gap-x-5' onClick={clickHandler}>
+      <div className='flex justify-start items-center px-2 md:w-3/12 w-6/12 gap-x-5' onClick={clickHandler}>
       <img src ={nowPlaying.image} alt='11.png' className='lg:w-[5.5rem] lg:h-[5rem] md:w-[4rem] h-[3.5rem] '></img>
 
         <div>

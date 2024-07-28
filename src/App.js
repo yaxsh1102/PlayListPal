@@ -10,14 +10,11 @@ import useGetToken from './hooks/useGetToken';
 import useGetPlaylist from './hooks/useGetPlaylist';
 import LandingPage from './components/LandingPage';
 import { Route, BrowserRouter as Router,Routes } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
 import Layout from './components/Layout';
 import Profile from './components/Profile';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import MusicPlayer from './components/MusicPlayer';
 import { useSelector } from 'react-redux';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import useGetPlaying from './hooks/useGetPlaying';
 import MusicContainer from './components/MusicContainer';
 import LikedSongs from './components/DisplayPlaylist';
@@ -28,7 +25,6 @@ import DisplayPlaylist from './components/DisplayPlaylist';
 
 function App() {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
-  const nowPlaying = useSelector((store)=>store.player.nowPlaying)
 
 
   
