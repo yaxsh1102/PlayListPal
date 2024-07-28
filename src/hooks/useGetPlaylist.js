@@ -15,10 +15,12 @@ const useGetPlaylist = () => {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
-         
+          params: {
+            limit: 6
+          }
         });
         const playlists = response.data.playlists.items;
-        console.log(playlists )
+        console.log(playlists);
 
         const playlistsWithTracks = await Promise.all(
           playlists.map(async (playlist) => {
@@ -26,17 +28,16 @@ const useGetPlaylist = () => {
               headers: {
                 Authorization: `Bearer ${access_token}`,
               },
-              params:{
-                limit:10 ,
+              params: {
+                limit: 8,
               }
             });
 
             const tracks = tracksResponse.data.items.map((item) => item.track);
-
             return { playlist, tracks };
           })
         );
-        console.log(playlistsWithTracks)
+        console.log(playlistsWithTracks);
 
         dispatch(addNewPlaylist({ playlistsWithTracks }));
       } catch (err) {
@@ -45,7 +46,7 @@ const useGetPlaylist = () => {
     };
 
     getNewReleases();
-  }, []);
+  }, [dispatch]);
 
   return null;
 };

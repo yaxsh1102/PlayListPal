@@ -1,27 +1,29 @@
-
-
-
-
-
+import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToQueue, initiateQueue, nextButton, prevButton, removeFromQueue } from '../redux/playerSlice';
 import { useNavigate } from 'react-router-dom';
 import Popup from './Popup';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { addToLikedSongs, removeFromLikedSongs } from '../redux/playlistSlice';
 
 const MusicPlayer = ({ nowPlaying }) => {
   const { url } = nowPlaying;
   const [isPlaying, setIsPlaying] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-  const [isLiked, setIsLiked] = useState(false);
 
   const audioRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const nowPlayingObj = useSelector((store) => store.player.nowPlaying);
   const queue = useSelector((store) => store.player.queue);
+  const likedSongs = useSelector((store)=>store.playlist.likedSongs)
+  const index = likedSongs.filter((song)=>song.url===nowPlayingObj.url)
   console.log(queue);
+  const [isLiked, setIsLiked] = useState(index === -1 ? false:true);
+
 
   useEffect(() => {
     if (audioRef.current) {
@@ -36,7 +38,7 @@ const MusicPlayer = ({ nowPlaying }) => {
       console.error('Error playing audio:', error);
       setIsPlaying(false);
     });
-
+ 
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -76,40 +78,44 @@ const MusicPlayer = ({ nowPlaying }) => {
     navigate("/play-music");
   }
 
-  function likeHandler() {
+  function likeHandler(){
+    if(isLiked){
+      setIsLiked(false)
+      setPopupMessage("Removed From Liked Songs")
+      setShowPopup(true)
+      dispatch(removeFromLikedSongs(nowPlayingObj))
+    } else {
+      setIsLiked(true)
+      setPopupMessage("Added Liked Songs")
+      setShowPopup(true)
+      dispatch(addToLikedSongs(nowPlayingObj))
+
+    }
+  }
+
+  function adddToQueueHandler() {
     const index = queue.findIndex((item) => item.url === nowPlayingObj.url);
+    console.log(index)
 
     if (index === -1) {
      
       dispatch(addToQueue(nowPlayingObj));
+      setPopupMessage("Song Added To Queue")
+      
     } else {
-      if(queue[0].url === nowPlayingObj.url){
-        console.log("hii")
-        
-        setPopupMessage("Song Added To LOL")
-      } else {
-        const updatedQueue = [...queue];
-        const songIndex = updatedQueue.findIndex(song => song.id === nowPlayingObj.id);
-        if (songIndex !== -1) {
-          updatedQueue.splice(songIndex, 1);
-        }
-        updatedQueue.unshift(nowPlayingObj);
-        dispatch(initiateQueue(updatedQueue));
+      setPopupMessage("Song Already In Queue")
+     
         
 
       }
+      setShowPopup(true)
       
     }
 
-    // setPopupMessage("Added to the top of the queue");
-    // setShowPopup(true);
-    // setIsLiked(true);
-  }
+ 
+  
 
-  function dislikeHandler() {
-    dispatch(removeFromQueue(nowPlayingObj))
-    setIsLiked(false);
-  }
+  
 
   function shuffleHandler() {
     const arrayCopy = [...queue];
@@ -148,13 +154,16 @@ const MusicPlayer = ({ nowPlaying }) => {
 
 
       <div className='w-3/12 md:flex hidden justify-evenly'>
-        <p onClick={likeHandler}>
-        <svg xmlns="http://www.w3.org/2000/svg"    className={`lg:w-[32px] lg:h-[32px] md:w-[28px] md:h-[28px] w-[32px] h-[32px] ${isLiked ? 'fill-red-500' : 'fill-[#f5f0f0]'}`}  viewBox="0 0 256 256"><path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z" className='lg:w-10 lg:h-10 md:w-8 md:h-8'></path></svg></p>     
+      <button onClick={likeHandler} className="focus:outline-none">
+            <FontAwesomeIcon
+              icon={isLiked ? faSolidHeart : faRegularHeart}
+              className={isLiked ? 'text-red-500   class="lg:w-[28px] lg:h-[28px] md:w-[28px] md:h-[28px] w-[28px] h-[28px]' : 'text-white class="lg:w-[28px] lg:h-[28px] md:w-[28px] md:h-[28px] w-[28px] h-[28px]'}
+            />
+          </button>
         <p onClick={shuffleHandler}>
         <svg xmlns="http://www.w3.org/2000/svg"  class="lg:w-[32px] lg:h-[32px] md:w-[32px] md:h-[32px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M237.66,178.34a8,8,0,0,1,0,11.32l-24,24a8,8,0,0,1-11.32-11.32L212.69,192H200.94a72.12,72.12,0,0,1-58.59-30.15l-41.72-58.4A56.1,56.1,0,0,0,55.06,80H32a8,8,0,0,1,0-16H55.06a72.12,72.12,0,0,1,58.59,30.15l41.72,58.4A56.1,56.1,0,0,0,200.94,176h11.75l-10.35-10.34a8,8,0,0,1,11.32-11.32ZM143,107a8,8,0,0,0,11.16-1.86l1.2-1.67A56.1,56.1,0,0,1,200.94,80h11.75L202.34,90.34a8,8,0,0,0,11.32,11.32l24-24a8,8,0,0,0,0-11.32l-24-24a8,8,0,0,0-11.32,11.32L212.69,64H200.94a72.12,72.12,0,0,0-58.59,30.15l-1.2,1.67A8,8,0,0,0,143,107Zm-30,42a8,8,0,0,0-11.16,1.86l-1.2,1.67A56.1,56.1,0,0,1,55.06,176H32a8,8,0,0,0,0,16H55.06a72.12,72.12,0,0,0,58.59-30.15l1.2-1.67A8,8,0,0,0,113,149Z"></path></svg></p>
-            <p onClick={dislikeHandler}>
-         <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-[32px] lg:h-[32px] md:w-[32px] md:h-[32px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M239.82,157l-12-96A24,24,0,0,0,204,40H32A16,16,0,0,0,16,56v88a16,16,0,0,0,16,16H75.06l37.78,75.58A8,8,0,0,0,120,240a40,40,0,0,0,40-40V184h56a24,24,0,0,0,23.82-27ZM72,144H32V56H72Zm150,21.29a7.88,7.88,0,0,1-6,2.71H152a8,8,0,0,0-8,8v24a24,24,0,0,1-19.29,23.54L88,150.11V56H204a8,8,0,0,1,7.94,7l12,96A7.87,7.87,0,0,1,222,165.29Z"></path></svg>         </p>
-        
+            <p onClick={adddToQueueHandler}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-[32px] lg:h-[32px] md:w-[32px] md:h-[32px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z"></path></svg> </p>       
               </div>
       
     </div>
@@ -162,7 +171,7 @@ const MusicPlayer = ({ nowPlaying }) => {
 
     </div>
   );
-};
+}
+;
 
 export default MusicPlayer ;
-

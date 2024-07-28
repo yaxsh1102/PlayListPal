@@ -17,7 +17,9 @@ import Login from './components/Login';
 import { useSelector } from 'react-redux';
 import useGetPlaying from './hooks/useGetPlaying';
 import MusicContainer from './components/MusicContainer';
-import LikedSongs from './components/LikedSongs';
+import LikedSongs from './components/DisplayPlaylist';
+import Playlist from './components/Playlist';
+import DisplayPlaylist from './components/DisplayPlaylist';
 
 
 
@@ -27,12 +29,6 @@ function App() {
 
   
 
-  useGetToken()
-useGetPlaying()
-  useGetTracks()
-  useGetPlaylist()
-  useGetArtists()
-  useNewRelease()
 
 
   
@@ -49,9 +45,14 @@ useGetPlaying()
         <Route path='/' element={<Layout/>}>
           <Route path='' element={<LandingPage/>}/>
           <Route path='profile' element={<Profile/>}/>
-          <Route path = "/play-music" element={<MusicContainer></MusicContainer>}></Route>
-          <Route path='/likedsongs' element={<LikedSongs></LikedSongs>}></Route>
-
+          <Route path = "play-music" element={<MusicContainer/>}></Route>
+          <Route path="likedsongs" element={<DisplayPlaylist type={'likedsong'}/>}/>
+          <Route path="playlist" element={<Playlist/>}/>
+          <Route path='userplaylists/:param' element={<DisplayPlaylist type={'userplaylist'} />} />
+          <Route path='albums/:param' element={<DisplayPlaylist type={'album'} />} />
+          <Route path='artists/:param' element={<DisplayPlaylist type={'artist'} />} />
+          <Route path='playlists/:param' element={<DisplayPlaylist type={'playlist'} />} />
+          <Route path='result/:param' element={<DisplayPlaylist type={'result'} />} />
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>

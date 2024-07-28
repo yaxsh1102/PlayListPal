@@ -23,6 +23,7 @@ const discoverSlice = createSlice({
                 image: image,
                 singer: track.artists[0].name,
                 artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
+                duration : track.duration_ms
               }));
       
               state.albums[name] = {
@@ -50,6 +51,8 @@ const discoverSlice = createSlice({
                     image: track.album.images[0]?.url,
                     singer: track.artists[0].name,
                     artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
+                    duration : track.duration_ms
+
                   }));
               
                   state.artists[name] = {
@@ -77,6 +80,8 @@ const discoverSlice = createSlice({
                   image: track.album.images[0]?.url,
                   singer: track.artists[0].name,
                   artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
+                  duration : track.duration_ms
+
                 }));
         
                 state.playlists[name] = {

@@ -53,8 +53,7 @@ const playlistSlice = createSlice({
     name: "playlist",
     initialState: {
         playlist: {},
-        likedSongs:[] , 
-        selectedSong:null
+        likedSongs:[]
     },
     reducers: {
         createPlaylist: (state, action) => {
@@ -74,9 +73,12 @@ const playlistSlice = createSlice({
             }
         },
         removeFromPlaylist: (state, action) => {
+            console.log("Reached Here")
+            console.log(action.payload.playlist)
+            console.log(action.payload.name)
             const playlistName = action.payload.playlist.toUpperCase();
             if (state.playlist[playlistName]) {
-                state.playlist[playlistName] = state.playlist[playlistName].filter(song => song.name !== action.payload.song.name);
+                state.playlist[playlistName] = state.playlist[playlistName].filter(song => song.name !== action.payload.name);
             }
         },
         addToLikedSongs :(state,action)=>{
@@ -89,10 +91,10 @@ const playlistSlice = createSlice({
             state.likedSongs=state.likedSongs.filter(song => song.name !== action.payload.name);
         },
         setSelectedSong : (state , action)=>{
-            state.selectedSong = action.payload
-         }
+        state.selectedSong = action.payload
+     }
     }
 });
 
-export const { createPlaylist, addToPlaylist, removeFromPlaylist,addToLikedSongs,removeFromLikedSongs  , setSelectedSong} = playlistSlice.actions;
+export const { createPlaylist, addToPlaylist, removeFromPlaylist,addToLikedSongs,removeFromLikedSongs,setSelectedSong } = playlistSlice.actions;
 export default playlistSlice.reducer;

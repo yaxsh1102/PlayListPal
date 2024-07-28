@@ -7,7 +7,6 @@ const Navbar = () => {
   const dispatch = useDispatch()
   function clickHandler (){ 
      dispatch(toggleSearch())
-
   }
   return (
     <div className="h-[6.5rem] w-full flex md:flex-row md:justify-between  items-center bg-transparent pl-[20%] md:px-10 ">

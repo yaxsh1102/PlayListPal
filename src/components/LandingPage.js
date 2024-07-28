@@ -9,14 +9,17 @@ import useGetPlaylist from '../hooks/useGetPlaylist';
 import { useSelector } from 'react-redux';
 import SearchResults from './SearchResults';
 import Searchbar from './Searchbar';
+import useGetPlaying from '../hooks/useGetPlaying';
 
 const LandingPage = () => {
     const searchToggle = useSelector((store)=>store.toggle.searchToggle)
     console.log(searchToggle)
 
     useGetToken()
-    useGetTracks()
     useGetPlaylist()
+    useGetPlaying()
+
+    useGetTracks()
     useGetArtists()
     useNewRelease()
 
