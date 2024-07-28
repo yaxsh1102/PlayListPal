@@ -23,11 +23,11 @@ const Playlist = () => {
   return (
     <div className="pb-[8rem] w-full flex flex-col overflow-y-scroll h-[100vh] bg-gradient-to-tr from-[#000000] to-[#434343] no-scrollbar">
       <div className='w-full flex flex-col justify-center items-start md:pl-24'>
-        <h1 className="w-full md:text-[4rem] text-[2rem] md:text-left text-center text-white font-bold mb-8 mt-16 border-b-[3px] border-black">Playlists</h1>
-        <div className="w-full flex flex-wrap mt-8 md:gap-28 gap-5">
+        <h1 className="w-full xl:text-[2.5rem] text-[1.5rem] md:text-left text-center text-white  mb-8 mt-16 border-b-[3px] border-black">Playlists</h1>
+        <div className="w-full flex flex-wrap mt-8 md:gap-28 gap-5 md:pr-40  md:mx-0 mx-auto">
           {Object.keys(availablePlaylists).length === 0 ? (<div className='w-full text-center'>
-            <p className="mt-[8rem] text-[3rem] text-gray-300 ">No playlists have been created yet. </p>
-              <button className="text-blue-600 text-lg underline hover:text-blue-800" onClick={handleCreatePlaylistClick}>Click here to create your first playlist</button>
+            <p className="mt-[8rem] md:text-[1.4rem] text-[1rem] text-gray-300 ">No playlists have been created yet. </p>
+              <button className="text-blue-600 text-lg underline hover:text-blue-800 " onClick={handleCreatePlaylistClick}>Click here to create your first playlist</button>
             </div>
           ) : (
             <>

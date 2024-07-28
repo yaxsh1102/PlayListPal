@@ -33,12 +33,7 @@ function App() {
 
   
 
-  // useGetToken()
-useGetPlaying()
-  useGetTracks()
-  useGetPlaylist()
-  useGetArtists()
-  useNewRelease()
+
 
 
   
@@ -62,6 +57,7 @@ useGetPlaying()
           <Route path='albums/:param' element={<DisplayPlaylist type={'album'} />} />
           <Route path='artists/:param' element={<DisplayPlaylist type={'artist'} />} />
           <Route path='playlists/:param' element={<DisplayPlaylist type={'playlist'} />} />
+          <Route path='result/:param' element={<DisplayPlaylist type={'result'} />} />
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>

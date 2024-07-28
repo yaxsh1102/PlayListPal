@@ -15,7 +15,8 @@ const DisplayPlaylist = ({type}) => {
   const albums = useSelector((store)=>store.discover.albums)
   const artists = useSelector((store)=>store.discover.artists)
   const playlists = useSelector((store)=>store.discover.playlists)
-  console.log("albumssssssssssssss")
+  const resAlbums = useSelector((store)=>store.result.albums)
+  console.log(resAlbums)
   console.log(albums)
   const currentPlaylist = getCurrentPlaylist(type,name);
   console.log(currentPlaylist)
@@ -25,18 +26,20 @@ const DisplayPlaylist = ({type}) => {
   function getCurrentPlaylist(type,name){
     switch(type){
       case 'userplaylist' : return userplaylists[name];
-      case 'likedsong' : return likedsongs
+      case 'likedsong' : return likedsongs 
       case 'album' : return albums[name].songs
       case 'artist' : return artists[name].songs
       case 'playlist' : return playlists[name].songs
+      case 'result':return resAlbums[name].songs
     }
   }
+  console.log(currentPlaylist)
 
   return (
     <div className="w-full flex flex-col h-[100vh] bg-gradient-to-tr from-[#000000] to-[#434343]">
       {!currentPlaylist ? <ErrorPage className="absolute w-[100vw] h-[100vh] z-50" /> :
       <div className='w-full flex flex-col justify-center items-start md:pl-24 '>
-        <h1 className="w-full md:text-[3rem] text-[2rem] md:text-left text-center text-white font-bold mb-2 
+        <h1 className="w-full md:text-[2rem] text-[1.5rem] md:text-left text-center text-white  mb-2 
         mt-10 border-b-[3px] border-black sticky ">
           {heading}
         </h1>
@@ -54,7 +57,7 @@ const DisplayPlaylist = ({type}) => {
                 artist={song.artist}
                 duration={song.duration}
                 singer={song.singer}
-                type={song.type}
+                type={null}
                 url={song.url}
               />
             ))
