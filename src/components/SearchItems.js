@@ -8,7 +8,7 @@ import { BiDotsVerticalRounded } from 'react-icons/bi'; // Importing the vertica
 import Popup from './Popup'; // Import the Popup component
 import { addToLikedSongs,removeFromLikedSongs,removeFromPlaylist,setSelectedSong } from '../redux/playlistSlice';
 import OptionPopup from './OptionPopup';
-import PlayListPopup from './PlaylistPopup';
+import PlayListPopup from './PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
