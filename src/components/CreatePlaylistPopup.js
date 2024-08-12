@@ -1,42 +1,81 @@
 import React, { useState } from 'react';
-import { createPlaylist } from '../redux/playlistSlice';
+import { createPlaylist, deletePlaylist, renamePlaylist } from '../redux/playlistSlice';
 import { useDispatch } from 'react-redux';
 import useGetUserPlaylist from '../hooks/useGetUserPlaylist';
+import { useNavigate } from 'react-router-dom';
+import Popup from './Popup';
 
-const CreatePlaylistPopup = ({ onClose}) => {
+const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
+  // edit means editing is enabeled and old means old playlist name
+  // del means boolean for deletePlaylist
+  // sendNotification is for sending popup
   const [playlistName, setPlaylistName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const availablePlaylists = useGetUserPlaylist();
   const availablePlaylistsNames = Object.keys(availablePlaylists)
+  const navigate = useNavigate()
+  const [popupMessage, setPopupMessage] = useState('Default');
+  const [showMsgPopup, setShowMsgPopup] = useState(false);
 
   const handleCreateClick = () => {
-    if (!playlistName.trim()) {
+    console.log("INSIDE HANDLE CREATE CLICK")
+    if (del){
+      console.log("deletinggg")
+      setPopupMessage("Deleted playlist "+old)
+      dispatch(deletePlaylist(old));
+      navigate('/playlist')
+      setShowMsgPopup(true);
+    }
+    else if (!playlistName.trim()) {
+      console.log("deletinggg1")
       setErrorMessage('Please enter a playlist name.');
     } else if (availablePlaylistsNames.includes(playlistName.toUpperCase())){
+      console.log("deletinggg2")
       setErrorMessage('Playlist name already exists.');
     }
     else {
       setErrorMessage('');
-      dispatch(createPlaylist({playlist:playlistName}));
-      onClose();
+      console.log('elsee but not edit ')
+      if (edit){
+        console.log("EDITING")
+        setPopupMessage('Playlist renamed')
+        dispatch(renamePlaylist({oldName:old,newName:playlistName.toUpperCase()}))
+        navigate('/userplaylists/'+playlistName.toUpperCase())
+        setShowMsgPopup(true);
+      }
+      else {
+        console.log('creatingggg')
+        setPopupMessage('Created playlist '+playlistName)
+        dispatch(createPlaylist({playlist:playlistName}));
+        setShowMsgPopup(true);
+      }
     }
+
+    // setShowMsgPopup(true);
+    setTimeout(() => {
+      setShowMsgPopup(false);
+  }, 2000);
+onClose();
   };
 
-  return (
+  return (<>
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-gradient-to-tr from-[#1b1a1a] to-[#222020] p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-[1.5rem] text-white font-semibold mb-4">Create Playlist</h2>
+        <h2 className="text-[1.5rem] text-white font-semibold mb-4">
+          {del ? 'Are you sure you want to delete this playlist ?' : edit ? "Edit playlist's name " :'Create Playlist'}</h2>
+        { !del ? (<>
         <input
           type="text"
           className="w-full px-3 py-2 mb-4 rounded bg-[#4e4b48] outline-none text-white" 
           placeholder="Playlist Name"
           value={playlistName}
           onChange={(e) => setPlaylistName(e.target.value)}
-        />
+        /> 
         {errorMessage && (
           <p className="text-red-500 mb-4">{errorMessage}</p>
-        )}
+        )} 
+        </>) : ''}
         <div className="flex justify-end space-x-4">
           <button
             className="px-4 py-2 bg-gray-700 rounded text-white hover:bg-gray-600"
@@ -48,11 +87,13 @@ const CreatePlaylistPopup = ({ onClose}) => {
             className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
             onClick={handleCreateClick}
           >
-            Create Playlist
+            {del ? 'Delete' : edit ? 'Edit Name' :'Create Playlist'}
           </button>
         </div>
       </div>
     </div>
+    {showMsgPopup && <Popup message={popupMessage} visible={showMsgPopup} />}
+    </>
   );
 };
 
