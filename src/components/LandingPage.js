@@ -15,13 +15,7 @@ const LandingPage = () => {
     const searchToggle = useSelector((store)=>store.toggle.searchToggle)
     console.log(searchToggle)
 
-    useGetToken()
-    useGetPlaylist()
-    useGetPlaying()
 
-    useGetTracks()
-    useGetArtists()
-    useNewRelease()
 
     return ( 
       <>

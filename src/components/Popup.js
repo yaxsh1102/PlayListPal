@@ -1,14 +1,6 @@
 import React, { useEffect } from 'react';
 
-const Popup = ({ message, onClose , visible }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose(); 
-    }, 2000);
- 
-    return () => clearTimeout(timer);
-  }, [visible, onClose]);
-
+const Popup = ({ message, visible }) => {
   return (
     <div
       className={`fixed top-4 right-4  bg-gradient-to-bl from-[#000000cf] to-[#282626a9]

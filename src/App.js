@@ -30,6 +30,12 @@ function App() {
   
 
 
+  useGetToken()
+  useGetPlaylist()
+  useGetPlaying()
+  useGetTracks()
+  useGetArtists()
+  useNewRelease()
 
   
 

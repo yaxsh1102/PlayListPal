@@ -21,15 +21,15 @@ const MusicPlayer = ({ nowPlaying }) => {
   const queue = useSelector((store) => store.player.queue);
   const likedSongs = useSelector((store)=>store.playlist.likedSongs)
   const index = likedSongs.filter((song)=>song.url===nowPlayingObj.url)
-  console.log(queue);
-  const [isLiked, setIsLiked] = useState(index === -1 ? false:true);
+  console.log("INdex");
+  console.log(index);
+  const isLiked = likedSongs.some((song) => song.url === nowPlayingObj.url);
 
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
     }
-
     audioRef.current = new Audio(url);
 
     audioRef.current.play().then(() => {
@@ -62,9 +62,6 @@ const MusicPlayer = ({ nowPlaying }) => {
     }
   };
 
-  function closePopup() {
-    setShowPopup(false);
-  }
 
   const prevHandler = () => {
     dispatch(prevButton());
@@ -79,18 +76,12 @@ const MusicPlayer = ({ nowPlaying }) => {
   }
 
   function likeHandler(){
-    if(isLiked){
-      setIsLiked(false)
-      setPopupMessage("Removed From Liked Songs")
-      setShowPopup(true)
-      dispatch(removeFromLikedSongs(nowPlayingObj))
-    } else {
-      setIsLiked(true)
-      setPopupMessage("Added Liked Songs")
-      setShowPopup(true)
-      dispatch(addToLikedSongs(nowPlayingObj))
-
-    }
+    dispatch(isLiked? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
+    setPopupMessage(!isLiked ? 'Added to Liked Songs' : 'Removed from Liked Songs');
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 2000);
   }
 
   function adddToQueueHandler() {
@@ -109,13 +100,11 @@ const MusicPlayer = ({ nowPlaying }) => {
 
       }
       setShowPopup(true)
+      setTimeout(() => {
+        setShowPopup(false);    
+      }, 2000);
       
     }
-
- 
-  
-
-  
 
   function shuffleHandler() {
     const arrayCopy = [...queue];
@@ -126,6 +115,9 @@ const MusicPlayer = ({ nowPlaying }) => {
     dispatch(initiateQueue(arrayCopy));
     setPopupMessage("Queue Shuffled");
     setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);    
+    }, 2000);
   }
 
   return (
@@ -157,7 +149,7 @@ const MusicPlayer = ({ nowPlaying }) => {
       <button onClick={likeHandler} className="focus:outline-none">
             <FontAwesomeIcon
               icon={isLiked ? faSolidHeart : faRegularHeart}
-              className={isLiked ? 'text-red-500   class="lg:w-[28px] lg:h-[28px] md:w-[28px] md:h-[28px] w-[28px] h-[28px]' : 'text-white class="lg:w-[28px] lg:h-[28px] md:w-[28px] md:h-[28px] w-[28px] h-[28px]'}
+              className={isLiked ? 'text-red-500 class="lg:w-[28px] lg:h-[28px] md:w-[28px] md:h-[28px] w-[28px] h-[28px]' : 'text-white class="lg:w-[28px] lg:h-[28px] md:w-[28px] md:h-[28px] w-[28px] h-[28px]'}
             />
           </button>
         <p onClick={shuffleHandler}>
@@ -167,7 +159,7 @@ const MusicPlayer = ({ nowPlaying }) => {
               </div>
       
     </div>
-    {showPopup && <Popup message={popupMessage} onClose={closePopup} visible={showPopup} />}
+    {showPopup && <Popup message={popupMessage}  visible={showPopup} />}
 
     </div>
   );

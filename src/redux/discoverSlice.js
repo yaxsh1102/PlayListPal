@@ -8,7 +8,8 @@ const discoverSlice = createSlice({
         albums:{} ,
         artists:{},
         tracks:[],
-        playlists:{}
+        playlists:{},
+        isLoading: false
     }
     ,
     reducers:{
@@ -89,10 +90,13 @@ const discoverSlice = createSlice({
                   image: image,
                 };
               });
+        },
+        setLoading: (state, action) => {
+          state.isLoading = action.payload;
         }
 
     }
 })
 
-export const { addNewAlbums , addNewArtists , addNewTracks , addNewPlaylist} = discoverSlice.actions 
+export const { addNewAlbums , addNewArtists , addNewTracks , addNewPlaylist,setLoading} = discoverSlice.actions 
 export default discoverSlice.reducer

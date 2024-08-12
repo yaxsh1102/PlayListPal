@@ -16,7 +16,6 @@ const MusiContainerItems = ({name , image , singer,url,artist,duration,type}) =>
             <p>{name}</p>
             <p>{singer}</p>
         </div>
-
     </div>
   )
 }

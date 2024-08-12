@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { addNewPlaylist } from '../redux/discoverSlice';
+import { addNewPlaylist, setLoading } from '../redux/discoverSlice';
 
 const useGetPlaylist = () => {
   const dispatch = useDispatch();
+  dispatch(setLoading(true));
 
   useEffect(() => {
     const getNewReleases = async () => {
@@ -42,6 +43,9 @@ const useGetPlaylist = () => {
         dispatch(addNewPlaylist({ playlistsWithTracks }));
       } catch (err) {
         console.error('Error fetching playlists:', err.response ? err.response.data : err.message);
+      }
+      finally{
+        dispatch(setLoading(false));
       }
     };
 

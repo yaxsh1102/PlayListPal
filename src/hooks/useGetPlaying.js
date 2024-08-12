@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { initiateQueue } from "../redux/playerSlice";
+import { setLoading } from "../redux/discoverSlice";
 
 const useGetPlaying = () =>{
     const dispatch = useDispatch()

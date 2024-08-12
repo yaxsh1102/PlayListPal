@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addNewAlbums } from "../redux/discoverSlice";
+import { addNewAlbums, setLoading } from "../redux/discoverSlice";
 
 const useNewRelease = () => {
   const dispatch = useDispatch();
+  dispatch(setLoading(true));
 
   useEffect(() => {
     const getNewReleases = async () => {
@@ -35,6 +36,9 @@ const useNewRelease = () => {
 
       } catch (err) {
         console.error("Error fetching new releases:", err.response ? err.response.data : err.message);
+      }
+      finally{
+        dispatch(setLoading(false));
       }
     };
 
