@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react";
 
 const playlistSlice = createSlice({
     name: "playlist",
@@ -15,6 +16,20 @@ const playlistSlice = createSlice({
             }
             if (action.payload.song) {
                 state.playlist[playlistName].push(action.payload.song);
+            }
+        },
+        deletePlaylist : (state,action)=>{
+            const playlistName = action.payload
+            if (state.playlist[playlistName]) {
+                delete state.playlist[playlistName]
+            }
+        },
+        renamePlaylist : (state,action)=>{
+            const oldName = action.payload.oldName
+            const newName = action.payload.newName
+            if (state.playlist[oldName]) {
+                state.playlist[newName] = state.playlist[oldName]
+                delete state.playlist[oldName]
             }
         },
         addToPlaylist: (state, action) => {
@@ -47,5 +62,5 @@ const playlistSlice = createSlice({
     }
 });
 
-export const { createPlaylist, addToPlaylist, removeFromPlaylist,addToLikedSongs,removeFromLikedSongs,setSelectedSong } = playlistSlice.actions;
+export const { createPlaylist,deletePlaylist,renamePlaylist, addToPlaylist, removeFromPlaylist,addToLikedSongs,removeFromLikedSongs,setSelectedSong } = playlistSlice.actions;
 export default playlistSlice.reducer;
