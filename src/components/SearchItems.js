@@ -10,6 +10,7 @@ import { addToLikedSongs,removeFromLikedSongs,removeFromPlaylist,setSelectedSong
 import OptionPopup from './OptionPopup';
 import PlayListPopup from './PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { sendToast } from '../redux/toastSlice';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
@@ -51,11 +52,8 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const toggleLike = () => {
     dispatch(liked ? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
     setLiked(!liked);
-    setPopupMessage(!liked ? 'Added to Liked Songs' : 'Removed from Liked Songs');
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 2000);
+    setPopupMessage(!liked ? dispatch(sendToast('Added to Liked Songs')) 
+    : dispatch(sendToast('Removed from Liked Songs')));
   };
 
   const toggleCenterPopup = () => {setShowCenterPopup((prev) => !prev)
@@ -113,7 +111,6 @@ return (
     (showAddToPlayList ? (<PlayListPopup oldPlayList={oldPlayList} setOldPlaylist={setOldPlaylist} 
     setShowAddToPlayList={setShowAddToPlayList} setShowCenterPopup = {setShowCenterPopup} setShowPopup={setShowPopup} setPopupMessage={setPopupMessage}/>):(<></>))}
 
-    {showPopup && <Popup message={popupMessage} visible={showPopup} />}
   </div>
 );
 };

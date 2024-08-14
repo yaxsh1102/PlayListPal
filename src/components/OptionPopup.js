@@ -5,6 +5,7 @@ import { addToQueue } from '../redux/playerSlice';
 import Popup from './Popup';
 import { useLocation } from 'react-router-dom';
 import { removeFromPlaylist } from '../redux/playlistSlice';
+import { sendToast } from '../redux/toastSlice';
 
 const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showPopup,setShowPopup,popupMessage,setPopupMessage}) => {
   const dispatch = useDispatch()
@@ -14,8 +15,6 @@ const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showP
 
 
     function playlistFunctions(option ){
-        console.log(typeof option)
-
         if (option==='Add to Playlist'){
             setShowAddToPlayList(true)
             setShowCenterPopup(false)
@@ -24,22 +23,13 @@ const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showP
           var name = currentSong['name']
           setShowCenterPopup(false)
           var playlist=currentUrl[2]
-          setPopupMessage('Removed from '+playlist);
+          dispatch(sendToast('Removed from '+playlist))
           dispatch(removeFromPlaylist({playlist,name}))
-            setShowPopup(true)
-            setTimeout(() => {
-              setShowPopup(false);    
-            }, 2000);
         }
         else{
-          console.log(currentSong)
+          dispatch(sendToast("Song Added to Queue"))
           dispatch(addToQueue(currentSong ))
           setShowCenterPopup(false)
-          setPopupMessage("Song Added to Queue")
-          setShowPopup(true);
-          setTimeout(() => {
-            setShowPopup(false);
-          }, 2000);
         }
 
     }

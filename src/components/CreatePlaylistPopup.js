@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import useGetUserPlaylist from '../hooks/useGetUserPlaylist';
 import { useNavigate } from 'react-router-dom';
 import Popup from './Popup';
+import toast from 'react-hot-toast';
+import { sendToast } from '../redux/toastSlice';
 
 const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   // edit means editing is enabeled and old means old playlist name
@@ -15,47 +17,32 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   const availablePlaylists = useGetUserPlaylist();
   const availablePlaylistsNames = Object.keys(availablePlaylists)
   const navigate = useNavigate()
-  const [popupMessage, setPopupMessage] = useState('Default');
-  const [showMsgPopup, setShowMsgPopup] = useState(false);
+
 
   const handleCreateClick = () => {
-    console.log("INSIDE HANDLE CREATE CLICK")
     if (del){
-      console.log("deletinggg")
-      setPopupMessage("Deleted playlist "+old)
       dispatch(deletePlaylist(old));
+      dispatch(sendToast("Deleted Playlist "+old))
       navigate('/playlist')
-      setShowMsgPopup(true);
     }
     else if (!playlistName.trim()) {
-      console.log("deletinggg1")
       setErrorMessage('Please enter a playlist name.');
     } else if (availablePlaylistsNames.includes(playlistName.toUpperCase())){
-      console.log("deletinggg2")
       setErrorMessage('Playlist name already exists.');
     }
     else {
       setErrorMessage('');
-      console.log('elsee but not edit ')
       if (edit){
-        console.log("EDITING")
-        setPopupMessage('Playlist renamed')
         dispatch(renamePlaylist({oldName:old,newName:playlistName.toUpperCase()}))
+        dispatch(sendToast("Playlist Renamed"))
         navigate('/userplaylists/'+playlistName.toUpperCase())
-        setShowMsgPopup(true);
       }
       else {
-        console.log('creatingggg')
-        setPopupMessage('Created playlist '+playlistName)
         dispatch(createPlaylist({playlist:playlistName}));
-        setShowMsgPopup(true);
+        dispatch(sendToast("Created Playlist "+ playlistName))
       }
     }
 
-    // setShowMsgPopup(true);
-    setTimeout(() => {
-      setShowMsgPopup(false);
-  }, 2000);
 onClose();
   };
 
@@ -92,7 +79,7 @@ onClose();
         </div>
       </div>
     </div>
-    {showMsgPopup && <Popup message={popupMessage} visible={showMsgPopup} />}
+
     </>
   );
 };
