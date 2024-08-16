@@ -3,10 +3,15 @@ import toast from "react-hot-toast";
 
 const toastSlice= createSlice({
     name:"toast",
-    initialState:{},
+    initialState:{
+      toasts:[]
+    },
     reducers:{
         sendToast:(state,action)=>{
-            toast(action.payload,{
+          if (state.toasts.length>=3){
+            toast.dismiss(state.toasts.shift())
+          }
+            const id = toast(action.payload,{
                 style: {
                   background: 'linear-gradient(45deg, #000000cf, #282626a9)', // Gradient background
                   color: 'white', // Text color
@@ -19,6 +24,8 @@ const toastSlice= createSlice({
                 }
               }
             )
+
+            state.toasts.push(id)
         }
     },
 })
