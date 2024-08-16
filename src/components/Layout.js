@@ -16,12 +16,14 @@ const Layout =()=>{
     return (
       <>
         <div className="flex">
-      <Sidebar toggleSearchBarVisibility={toggleSearchBarVisibility}/>
-      { nowPlaying && <MusicPlayer nowPlaying={nowPlaying}></MusicPlayer>}
-      <div className="xxl:ml-60 md:ml-0 w-full">
-        <Outlet/>
-      </div>
-    </div>
+          <div className="">
+            <Sidebar toggleSearchBarVisibility={toggleSearchBarVisibility}/>
+            { nowPlaying && <MusicPlayer nowPlaying={nowPlaying}></MusicPlayer>}
+          </div>
+          <div className="xxl:ml-60 md:ml-0 w-full">
+            <Outlet/>
+          </div>
+        </div>
     </>
     )
 }

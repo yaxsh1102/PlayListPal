@@ -1,8 +1,6 @@
 
-// App.js
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
-import { useEffect } from 'react';
 import useGetTracks from './hooks/useGetTracks';
 import useNewRelease from './hooks/useNewRelease';
 import useGetArtists from './hooks/useGetArtists';
@@ -14,17 +12,14 @@ import Layout from './components/Layout';
 import Profile from './components/Profile';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import { useSelector } from 'react-redux';
 import useGetPlaying from './hooks/useGetPlaying';
 import MusicContainer from './components/MusicContainer';
-import LikedSongs from './components/DisplayPlaylist';
 import Playlist from './components/Playlist';
 import DisplayPlaylist from './components/DisplayPlaylist';
-import { Toaster,toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
 
   useGetToken()
   useGetPlaylist()
@@ -32,13 +27,6 @@ function App() {
   useGetTracks()
   useGetArtists()
   useNewRelease()
-
-  
-
-  // Function to toggle search bar visibility
-  const toggleSearchBarVisibility = () => {
-    setIsSearchBarVisible(!isSearchBarVisible);
-  };
 
   return (
 <>
@@ -49,6 +37,7 @@ function App() {
           <Route path='profile' element={<Profile/>}/>
           <Route path = "play-music" element={<MusicContainer/>}></Route>
           <Route path="likedsongs" element={<DisplayPlaylist type={'likedsong'}/>}/>
+          <Route path="history" element={<DisplayPlaylist type={'history'}/>}/>
           <Route path="playlist" element={<Playlist/>}/>
           <Route path='userplaylists/:param' element={<DisplayPlaylist type={'userplaylist'} />} />
           <Route path='albums/:param' element={<DisplayPlaylist type={'album'} />} />
@@ -61,7 +50,6 @@ function App() {
       </Routes>
       <Toaster/>
     </Router>
-    {/* { nowPlaying && <div className='fixed bottom-4 w-[100%] right-0  h-[5rem] flex justify-center'><MusicPlayer nowPlaying={nowPlaying}></MusicPlayer></div>} */}
     </>
   );
 }

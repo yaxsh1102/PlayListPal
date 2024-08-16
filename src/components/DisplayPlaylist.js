@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Searchitems from './SearchItems';
 import "../App.css"
-import { useNavigate, useParams,useLocation } from 'react-router-dom';
+import { useParams,useLocation } from 'react-router-dom';
 import ErrorPage from './ErrorPage';
 import Spinner from './Spinner';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
-import { deletePlaylist } from '../redux/playlistSlice';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Popup from './Popup';
-
 
 const DisplayPlaylist = ({type}) => {
   const { param } = useParams();
@@ -20,16 +17,16 @@ const DisplayPlaylist = ({type}) => {
   const albums = useSelector((store)=>store.discover.albums)
   const artists = useSelector((store)=>store.discover.artists)
   const playlists = useSelector((store)=>store.discover.playlists)
+  const history = useSelector((store)=>store.player.history)
   const resAlbums = useSelector((store)=>store.result.albums)
   const isLoading = useSelector((store) => store.discover.isLoading);
   const currentPlaylist =  getCurrentPlaylist(type,name) || 'NOTFOUND';
-  const heading = type==='likedsong' ? "Liked songs" : name
-  const subHeading =type==='likedsong' ? "No liked songs yet." :"This playlist is empty ! " 
-  const dispatch = useDispatch()
+  const heading = type==='likedsong' ? "Liked songs" : type==='history' ? 'History' : name;
+  const subHeading =type==='likedsong' ? "No liked songs yet." : type==='history' ? 'Songs played in past will be displayed here' : "This playlist is empty ! " 
   const [isDeleting,setIsDeleting]=useState(false)
   const [isEditing,setIsEditing]=useState(false)
   const location = useLocation();
-  const isUserPlaylist = location.pathname.split('/')[1]=='userplaylists';
+  const isUserPlaylist = location.pathname.split('/')[1]==='userplaylists';
 
   function getCurrentPlaylist(type,name){
     try{
@@ -40,6 +37,7 @@ const DisplayPlaylist = ({type}) => {
       case 'artist' : return artists[name].songs
       case 'playlist' : return playlists[name].songs
       case 'result':return resAlbums[name].songs
+      case 'history' : return history
       default : return null
     }
   }catch(err){
