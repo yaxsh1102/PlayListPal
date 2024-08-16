@@ -15,8 +15,6 @@ const LandingPage = () => {
     const searchToggle = useSelector((store)=>store.toggle.searchToggle)
     console.log(searchToggle)
 
-
-
     return ( 
       <>
         <div className='flex flex-col w-full items-center bg-gradient-to-tr from-[#000000] to-[#434343] fixed h-full  '>

@@ -20,15 +20,11 @@ import MusicContainer from './components/MusicContainer';
 import LikedSongs from './components/DisplayPlaylist';
 import Playlist from './components/Playlist';
 import DisplayPlaylist from './components/DisplayPlaylist';
-
+import { Toaster,toast } from 'react-hot-toast';
 
 
 function App() {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
-
-
-  
-
 
   useGetToken()
   useGetPlaylist()
@@ -63,6 +59,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
       </Routes>
+      <Toaster/>
     </Router>
     {/* { nowPlaying && <div className='fixed bottom-4 w-[100%] right-0  h-[5rem] flex justify-center'><MusicPlayer nowPlaying={nowPlaying}></MusicPlayer></div>} */}
     </>

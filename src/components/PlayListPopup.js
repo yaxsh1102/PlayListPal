@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import { addToPlaylist, createPlaylist } from '../redux/playlistSlice';
+import { sendToast } from '../redux/toastSlice';
 
 const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setShowCenterPopup ,setShowPopup,setPopupMessage }) => {
   const playlist = useSelector((store) => store.playlist.playlist);
@@ -12,7 +13,6 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Use Effect")
     const status = {};
     Object.keys(playlist).forEach(option => {
       status[option] = playlist[option].some(song => song.name === selectedSong.name);
@@ -45,11 +45,7 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
 
   function toPlaylist(name) {
     dispatch(addToPlaylist({ playlist: name, song: selectedSong }));
-    setPopupMessage("Song Added to "+name)
-          setShowPopup(true);
-          setTimeout(() => {
-            setShowPopup(false);
-          }, 2000);
+    dispatch(sendToast("Song Added to "+name))
     setShowAddToPlayList(false);
   }
 
