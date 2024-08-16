@@ -4,9 +4,8 @@ import { addNowPlaying } from '../redux/playerSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
-import { BiDotsVerticalRounded } from 'react-icons/bi'; // Importing the vertical dots icon
-import Popup from './Popup'; // Import the Popup component
-import { addToLikedSongs,removeFromLikedSongs,removeFromPlaylist,setSelectedSong } from '../redux/playlistSlice';
+import { BiDotsVerticalRounded } from 'react-icons/bi';
+import { addToLikedSongs,removeFromLikedSongs,setSelectedSong } from '../redux/playlistSlice';
 import OptionPopup from './OptionPopup';
 import PlayListPopup from './PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,7 +13,6 @@ import { sendToast } from '../redux/toastSlice';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
-  console.log(duration )
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false); 
@@ -23,7 +21,6 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const likedSongs = useSelector((state) => state.playlist.likedSongs || []);
   const location = useLocation()
   const currentUrl = location.pathname.split('/');
-
   const [showCenterPopup, setShowCenterPopup] = useState(false);
   const [showAddToPlayList, setShowAddToPlayList] = useState(false);
   const [oldPlayList, setOldPlaylist] = useState(true);
@@ -52,8 +49,7 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const toggleLike = () => {
     dispatch(liked ? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
     setLiked(!liked);
-    setPopupMessage(!liked ? dispatch(sendToast('Added to Liked Songs')) 
-    : dispatch(sendToast('Removed from Liked Songs')));
+    dispatch(!liked ? sendToast('Added to Liked Songs') : sendToast ('Removed from Liked Songs'))
   };
 
   const toggleCenterPopup = () => {setShowCenterPopup((prev) => !prev)

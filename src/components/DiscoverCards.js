@@ -1,5 +1,3 @@
-
-// DiscoverCards.js
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,7 +18,6 @@ const DiscoverCards = ({ name, image, artist, genres , type , url}) => {
   }
 
   let genre;
-  console.log(Array.isArray(genres))
   if (genres) {
     genre = genres
       .filter(element => typeof element === 'string' && element.trim() !== '')
@@ -30,26 +27,22 @@ const DiscoverCards = ({ name, image, artist, genres , type , url}) => {
   }
 
   return (<>{ type==="tracks" ? (
-    <div
-  className="lg:w-[14rem] md:w-[12rem] flex-shrink-0 p-2 w-[8rem]"
-  onClick={type === "tracks" ? handleClick : undefined}
->      <img src={image} alt='image.png' className="lg:w-[11rem] lg:h-40 md:w-[9rem] md:h-32 w-[6rem] h-[28] object-cover rounded-md" />
-      <div className="w-full lg:py-4 py-2">
-        
-      <p className="break-words text-white text-opacity-90 text-[0.9rem]  hidden md:block">{`• ${name} ${artist ? (" • " + artist) : (genre ? (genre) :(""))}`}</p>
-        <p className="break-words text-white text-opacity-90 text-[0.7rem] font-semibold md:hidden">{artist ? (artist) :(name ? (name):(""))}</p>      </div>
-        
+    <div className="lg:w-[14rem] md:w-[12rem] flex-shrink-0 p-2 w-[8rem]"
+          onClick={type === "tracks" ? handleClick : undefined}>      
+        <img src={image} alt='image.png' className="lg:w-[11rem] lg:h-40 md:w-[9rem] md:h-32 w-[6rem] h-[28] object-cover rounded-md" />
+        <div className="w-full lg:py-4 py-2">
+          <p className="break-words text-white text-opacity-90 text-[0.9rem]  hidden md:block">{`• ${name} ${artist ? (" • " + artist) : (genre ? (genre) :(""))}`}</p>
+          <p className="break-words text-white text-opacity-90 text-[0.7rem] font-semibold md:hidden">{artist ? (artist) :(name ? (name):(""))}</p>      
+        </div>
     </div>
   ) : (
-<Link to={`/${type}/${name}`} 
-  className="lg:w-[14rem] md:w-[12rem] flex-shrink-0 p-2 w-[8rem]"
-  onClick={type === "tracks" ? handleClick : undefined}
->      <img src={image} alt='image.png' className="lg:w-[11rem] lg:h-40 md:w-[9rem] md:h-32 w-[6rem] h-[28] object-cover rounded-md" />
-      <div className="w-full lg:py-4 py-2">
-        
-      <p className="break-words text-white text-opacity-90 text-[0.9rem]  hidden md:block">{`• ${name} ${artist ? (" • " + artist) : (genre ? (genre) :(""))}`}</p>
-        <p className="break-words text-white text-opacity-90 text-[0.7rem] font-semibold md:hidden">{artist ? (artist) :(name ? (name):(""))}</p>      </div>
-
+    <Link to={`/${type}/${name}`} className="lg:w-[14rem] md:w-[12rem] flex-shrink-0 p-2 w-[8rem]"
+          onClick={type === "tracks" ? handleClick : undefined}>      
+          <img src={image} alt='image.png' className="lg:w-[11rem] lg:h-40 md:w-[9rem] md:h-32 w-[6rem] h-[28] object-cover rounded-md" />
+          <div className="w-full lg:py-4 py-2">
+            <p className="break-words text-white text-opacity-90 text-[0.9rem]  hidden md:block">{`• ${name} ${artist ? (" • " + artist) : (genre ? (genre) :(""))}`}</p>
+            <p className="break-words text-white text-opacity-90 text-[0.7rem] font-semibold md:hidden">{artist ? (artist) :(name ? (name):(""))}</p>      
+          </div>
     </Link>
   )
   }</>

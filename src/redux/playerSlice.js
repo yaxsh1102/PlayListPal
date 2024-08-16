@@ -7,10 +7,12 @@ const playerSlice = createSlice({
     current:0 , 
     nowPlaying: null,
     queue: null,
+    history:[],
   },
   reducers: {
     addNowPlaying: (state, action) => {
       state.nowPlaying = action.payload;
+      state.history.unshift(action.payload)
     },
     initiateQueue: (state, action) => {
       state.queue= action.payload;

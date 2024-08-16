@@ -42,7 +42,6 @@ const useGetArtists = () => {
             return { artist, tracks };
           })
         );
-        console.log(artistsWithTracks)
 
         dispatch(addNewArtists({ artistsWithTracks }));
       } catch (err) {
@@ -54,6 +53,7 @@ const useGetArtists = () => {
     };
 
     getNewArtists();
+     // eslint-disable-next-line
   }, []);
 };
 

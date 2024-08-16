@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { FaTimes } from 'react-icons/fa'; // Import the cross icon
+import React from 'react';
+import { FaTimes } from 'react-icons/fa'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { addToQueue } from '../redux/playerSlice';
-import Popup from './Popup';
 import { useLocation } from 'react-router-dom';
 import { removeFromPlaylist } from '../redux/playlistSlice';
 import { sendToast } from '../redux/toastSlice';

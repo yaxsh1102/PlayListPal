@@ -18,7 +18,6 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
       status[option] = playlist[option].some(song => song.name === selectedSong.name);
     });
     setSongStatus(status);
-    console.log(songStatus)
   }, [playlist, selectedSong]);
 
   function submitHandler(e) {

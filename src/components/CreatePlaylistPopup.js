@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { createPlaylist, deletePlaylist, renamePlaylist } from '../redux/playlistSlice';
-import { useDispatch } from 'react-redux';
-import useGetUserPlaylist from '../hooks/useGetUserPlaylist';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Popup from './Popup';
-import toast from 'react-hot-toast';
 import { sendToast } from '../redux/toastSlice';
 
 const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
@@ -14,7 +11,7 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   const [playlistName, setPlaylistName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
-  const availablePlaylists = useGetUserPlaylist();
+  const availablePlaylists = useSelector((store)=>store.playlist.playlist)
   const availablePlaylistsNames = Object.keys(availablePlaylists)
   const navigate = useNavigate()
 
@@ -27,10 +24,8 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
       onClose();
     }
     else if (!playlistName.trim()) {
-      console.log("Err1")
       setErrorMessage('Please enter a playlist name.');
     } else if (availablePlaylistsNames.includes(playlistName.toUpperCase())){
-      console.log("Err2")
       setErrorMessage('Playlist name already exists.');
     }
     else {
