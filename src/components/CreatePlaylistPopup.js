@@ -22,12 +22,15 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   const handleCreateClick = () => {
     if (del){
       dispatch(deletePlaylist(old));
-      dispatch(sendToast("Deleted Playlist "+old))
+      dispatch(sendToast("Deleted Playlist "+old.toUpperCase()))
       navigate('/playlist')
+      onClose();
     }
     else if (!playlistName.trim()) {
+      console.log("Err1")
       setErrorMessage('Please enter a playlist name.');
     } else if (availablePlaylistsNames.includes(playlistName.toUpperCase())){
+      console.log("Err2")
       setErrorMessage('Playlist name already exists.');
     }
     else {
@@ -36,14 +39,15 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
         dispatch(renamePlaylist({oldName:old,newName:playlistName.toUpperCase()}))
         dispatch(sendToast("Playlist Renamed"))
         navigate('/userplaylists/'+playlistName.toUpperCase())
+        onClose();
       }
       else {
         dispatch(createPlaylist({playlist:playlistName}));
-        dispatch(sendToast("Created Playlist "+ playlistName))
+        dispatch(sendToast("Created Playlist "+ playlistName.toUpperCase()))
+        onClose();
+
       }
     }
-
-onClose();
   };
 
   return (<>
