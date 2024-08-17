@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { createPlaylist, deletePlaylist, renamePlaylist } from '../redux/playlistSlice';
-import { useDispatch } from 'react-redux';
-import useGetUserPlaylist from '../hooks/useGetUserPlaylist';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Popup from './Popup';
+import { sendToast } from '../redux/toastSlice';
 
 const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   // edit means editing is enabeled and old means old playlist name
@@ -12,53 +11,111 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   const [playlistName, setPlaylistName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
-  const availablePlaylists = useGetUserPlaylist();
+  const availablePlaylists = useSelector((store)=>store.playlist.playlist)
   const availablePlaylistsNames = Object.keys(availablePlaylists)
   const navigate = useNavigate()
-  const [popupMessage, setPopupMessage] = useState('Default');
-  const [showMsgPopup, setShowMsgPopup] = useState(false);
+
 
   const handleCreateClick = () => {
-    console.log("INSIDE HANDLE CREATE CLICK")
     if (del){
-      console.log("deletinggg")
-      setPopupMessage("Deleted playlist "+old)
       dispatch(deletePlaylist(old));
+      dispatch(sendToast("Deleted Playlist "+old.toUpperCase()))
+      deleteplaylist(old)
       navigate('/playlist')
-      setShowMsgPopup(true);
+      onClose();
     }
     else if (!playlistName.trim()) {
-      console.log("deletinggg1")
       setErrorMessage('Please enter a playlist name.');
     } else if (availablePlaylistsNames.includes(playlistName.toUpperCase())){
-      console.log("deletinggg2")
       setErrorMessage('Playlist name already exists.');
     }
     else {
       setErrorMessage('');
-      console.log('elsee but not edit ')
       if (edit){
-        console.log("EDITING")
-        setPopupMessage('Playlist renamed')
         dispatch(renamePlaylist({oldName:old,newName:playlistName.toUpperCase()}))
+        dispatch(sendToast("Playlist Renamed"))
+        renameplaylist(old.toUpperCase())
         navigate('/userplaylists/'+playlistName.toUpperCase())
-        setShowMsgPopup(true);
+        onClose();
+
+
       }
       else {
-        console.log('creatingggg')
-        setPopupMessage('Created playlist '+playlistName)
         dispatch(createPlaylist({playlist:playlistName}));
-        setShowMsgPopup(true);
+        dispatch(sendToast("Created Playlist "+ playlistName.toUpperCase()))
+        createplaylist()
+        onClose();
+
       }
     }
-
-    // setShowMsgPopup(true);
-    setTimeout(() => {
-      setShowMsgPopup(false);
-  }, 2000);
-onClose();
   };
 
+  async function deleteplaylist(old){
+    const data = await fetch('http://localhost:4000/api/v1/music/deletePlaylist' , { 
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json',
+         'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+      },
+      body: JSON.stringify({  name:old}),
+    });
+
+    const resp = await data.json() ;
+    console.log(resp)
+    if(!resp.success){
+      // dispatch(sendToast("Couldn't delete  Playlist "+ playlistName.toUpperCase()))
+
+
+    }
+
+     };
+
+  
+
+  async function createplaylist(){
+    
+      
+  
+      const data = await fetch('http://localhost:4000/api/v1/music/createPlaylist' , { 
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+
+        },
+        body: JSON.stringify({ name:playlistName})
+      });
+  
+      const resp = await data.json() ;
+      console.log(resp) 
+      if(!resp.success){
+        dispatch(sendToast("Couldn't Create  Playlist "+ playlistName.toUpperCase()))
+
+
+      }
+  
+       };
+
+       async function renameplaylist(old){
+        const data = await fetch('http://localhost:4000/api/v1/music/renamePlaylist' , { 
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+  
+          },
+          body: JSON.stringify({ oldName:old.toUpperCase() , newName:playlistName.toUpperCase()})
+        });
+        console.log(data)
+
+       }
+
+
+
+  
+
+
+  
   return (<>
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-gradient-to-tr from-[#1b1a1a] to-[#222020] p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -92,9 +149,10 @@ onClose();
         </div>
       </div>
     </div>
-    {showMsgPopup && <Popup message={popupMessage} visible={showMsgPopup} />}
+
     </>
   );
-};
+;
+}
 
 export default CreatePlaylistPopup;

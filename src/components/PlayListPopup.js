@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import { addToPlaylist, createPlaylist } from '../redux/playlistSlice';
+import { sendToast } from '../redux/toastSlice';
 
 const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setShowCenterPopup ,setShowPopup,setPopupMessage }) => {
   const playlist = useSelector((store) => store.playlist.playlist);
@@ -12,13 +13,11 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Use Effect")
     const status = {};
     Object.keys(playlist).forEach(option => {
       status[option] = playlist[option].some(song => song.name === selectedSong.name);
     });
     setSongStatus(status);
-    console.log(songStatus)
   }, [playlist, selectedSong]);
 
   function submitHandler(e) {
@@ -44,14 +43,40 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
   }
 
   function toPlaylist(name) {
+
     dispatch(addToPlaylist({ playlist: name, song: selectedSong }));
-    setPopupMessage("Song Added to "+name)
-          setShowPopup(true);
-          setTimeout(() => {
-            setShowPopup(false);
-          }, 2000);
+    dispatch(sendToast("Song Added to "+name))
     setShowAddToPlayList(false);
+    const playlistName = name
+    addtoPlaylist(playlistName)
+
+
   }
+
+  async function addtoPlaylist(playlistName){
+    console.log(selectedSong)
+   const{ url , 
+  
+    image ,
+    singer ,
+    artist,
+    name } = selectedSong ;
+    
+
+    const data = await fetch('http://localhost:4000/api/v1/music/addToPlaylist' , { 
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({  preview_url:url , image ,singer ,artist,name ,  playlistName:playlistName }),
+    });
+
+    const resp = await data.json() ;
+    console.log(resp)
+
+     };
+
+  
 
   return (
     <>
@@ -73,9 +98,7 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
               {playlist ? (
                 Object.keys(playlist).map((option, index) => {
                   const isSongAlreadyAdded = songStatus[option];
-                  console.log("INSIDE")
-                  console.log(option)
-                  console.log(isSongAlreadyAdded)
+
                   return (
                     <p
                       className={`px-8 text-xl py-2 w-full flex justify-between items-center hover:bg-gray-800 border-b-[0.5px] border-b-slate-600 ${isSongAlreadyAdded ? 'pointer-events-none bg-gray-600' : ''}`}

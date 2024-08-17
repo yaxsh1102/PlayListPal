@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import  { useEffect } from 'react';
+import { useDispatch , useSelector } from 'react-redux';
 import axios from 'axios';
 import { addNewPlaylist, setLoading } from '../redux/discoverSlice';
 
 const useGetPlaylist = () => {
   const dispatch = useDispatch();
+  const playlists = useSelector((store)=>store.discover.playlists)
+
   dispatch(setLoading(true));
 
   useEffect(() => {
@@ -21,7 +23,6 @@ const useGetPlaylist = () => {
           }
         });
         const playlists = response.data.playlists.items;
-        console.log(playlists);
 
         const playlistsWithTracks = await Promise.all(
           playlists.map(async (playlist) => {
@@ -38,7 +39,6 @@ const useGetPlaylist = () => {
             return { playlist, tracks };
           })
         );
-        console.log(playlistsWithTracks);
 
         dispatch(addNewPlaylist({ playlistsWithTracks }));
       } catch (err) {
@@ -49,7 +49,8 @@ const useGetPlaylist = () => {
       }
     };
 
-    getNewReleases();
+    !Object.keys(playlists).length  && getNewReleases();
+     // eslint-disable-next-line
   }, [dispatch]);
 
   return null;

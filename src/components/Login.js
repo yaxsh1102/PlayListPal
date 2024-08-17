@@ -1,20 +1,24 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+import { useDispatch } from 'react-redux';
+import { toggleLoggedin } from '../redux/userSlice';
 
 const Login = () => {
   const inputRefs = useRef({});
   const navigate = useNavigate();
+  const dispatch = useDispatch() ;
+  const [error , setError] = useState('')
 
   function loginHandler() {
     const email = inputRefs.current['email'].value;
     const password = inputRefs.current['password'].value;
 
     if (!email || !password) {
-      alert('All fields are required');
+      setError("All Fields Are Required")
       return;
     }
-
+    setError("")
     login(email, password);
   }
 
@@ -23,6 +27,7 @@ const Login = () => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
+        
       },
       body: JSON.stringify({ email, password }),
     });
@@ -30,9 +35,13 @@ const Login = () => {
     const resp = await response.json();
 
     if (resp.success) {
+      localStorage.setItem('db_token' , resp.token)
+      localStorage.setItem('email' , resp.email)
+      dispatch(toggleLoggedin())
       navigate("/");
+      window.location.reload()
     } else {
-      alert(resp.message);
+       setError(resp.message)
     }
   }
 
@@ -53,8 +62,12 @@ const Login = () => {
       console.log(resp)
   
       if (resp.token) {
-        localStorage.setItem('token', resp.token);
+        localStorage.setItem('db_token', resp.token);
+        localStorage.setItem('email' , resp.email)
+
         navigate("/");
+        dispatch(toggleLoggedin())
+
       } else {
         console.log('Login Failed');
       }
@@ -71,6 +84,10 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-[#181818] to-[#121111]">
       <div className="w-full max-w-md p-8 space-y-6 bg-[#212529] rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center text-white">Login</h2>
+        <div className="text-center text-red-500">
+
+<p>{error}</p>
+</div>
         <div>
           <label htmlFor="email-or-phone" className="block text-sm font-medium text-white">
             Email or Phone Number
@@ -125,8 +142,8 @@ const Login = () => {
           <GoogleLogin
            render={renderProps => (
             <button onClick={renderProps.onClick}  style={{
-              width: '100%',              // Correct key-value pair for width
-              backgroundColor: '#4285F4'  // Correct key-value pair for background color
+              width: '100%',              
+              backgroundColor: '#4285F4'  
             }}>This is my custom Google button</button>
           )}
             onSuccess={handleGoogleLoginSuccess}

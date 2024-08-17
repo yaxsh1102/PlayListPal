@@ -4,16 +4,15 @@ import { addNowPlaying } from '../redux/playerSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
-import { BiDotsVerticalRounded } from 'react-icons/bi'; // Importing the vertical dots icon
-import Popup from './Popup'; // Import the Popup component
-import { addToLikedSongs,removeFromLikedSongs,removeFromPlaylist,setSelectedSong } from '../redux/playlistSlice';
+import { BiDotsVerticalRounded } from 'react-icons/bi';
+import { addToLikedSongs,removeFromLikedSongs,setSelectedSong } from '../redux/playlistSlice';
 import OptionPopup from './OptionPopup';
 import PlayListPopup from './PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { sendToast } from '../redux/toastSlice';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
-  console.log(duration )
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false); 
@@ -22,7 +21,6 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const likedSongs = useSelector((state) => state.playlist.likedSongs || []);
   const location = useLocation()
   const currentUrl = location.pathname.split('/');
-
   const [showCenterPopup, setShowCenterPopup] = useState(false);
   const [showAddToPlayList, setShowAddToPlayList] = useState(false);
   const [oldPlayList, setOldPlaylist] = useState(true);
@@ -49,17 +47,59 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   };
 
   const toggleLike = () => {
+    console.log("hiii" )
+
     dispatch(liked ? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
+    console.log(liked )
+    if(liked){
+      removeLike()
+     
+
+    } else {
+      addLike()
+
+    }
     setLiked(!liked);
-    setPopupMessage(!liked ? 'Added to Liked Songs' : 'Removed from Liked Songs');
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 2000);
+    dispatch(!liked ? sendToast('Added to Likedbcsdc Songs') : sendToast ('Removed from Liked Songs'))
   };
 
   const toggleCenterPopup = () => {setShowCenterPopup((prev) => !prev)
     dispatch(setSelectedSong(nowPlayingObj));}
+
+    async function addLike(){
+      const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+
+        },
+        body: JSON.stringify({  preview_url:url , image ,singer ,artist,name , }),
+      });
+  
+      const resp = await data.json() ;
+      console.log(resp)
+  
+       };
+
+
+       async function removeLike(){
+        const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+  
+          },
+          body: JSON.stringify({ name:name , }),
+        });
+    
+        const resp = await data.json() ;
+        console.log(resp)
+    
+         };
+
+    
 
 return (
   <div className={`relative w-full flex`}>
@@ -81,7 +121,7 @@ return (
           alt="image.logo"
           className="w-20 h-20 ml-2 p-1 group-hover:opacity-50"
         />
-        <div className="px-4 group-hover:text-gray-600">
+        <div className="px-4 group-hover:gray-red-600">
           <p className="md:text-lg lg:text-xl xl:text-2xl group-hover:text-opacity-50">{name}</p>
           <div className="md:flex hidden gap-x-4">
             {artist && <p className="max-w-[140px]">{artist}</p>}
@@ -113,7 +153,6 @@ return (
     (showAddToPlayList ? (<PlayListPopup oldPlayList={oldPlayList} setOldPlaylist={setOldPlaylist} 
     setShowAddToPlayList={setShowAddToPlayList} setShowCenterPopup = {setShowCenterPopup} setShowPopup={setShowPopup} setPopupMessage={setPopupMessage}/>):(<></>))}
 
-    {showPopup && <Popup message={popupMessage} visible={showPopup} />}
   </div>
 );
 };

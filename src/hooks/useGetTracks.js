@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { addNewArtists, addNewTracks } from "../redux/discoverSlice";
+import { useDispatch  , useSelector} from "react-redux";
+import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = ()=>{
    const dispatch = useDispatch()
+   const tracks = useSelector((store)=>store.discover.tracks)
+
    useEffect(() => {
        const getNewReleases = async () => {
         const access_token=localStorage.getItem("token")
@@ -18,15 +20,14 @@ const useGetTracks = ()=>{
             
            });
            dispatch(addNewTracks(response.data.tracks.items))
-           console.log(response.data)
-
        
          } catch (err) {
            console.error("Error fetching new releases:", err.response ? err.response.data : err.message);
          }
        };
    
-       getNewReleases();
+       tracks.length===0 && getNewReleases();
+        // eslint-disable-next-line
      }, []);
    
    };

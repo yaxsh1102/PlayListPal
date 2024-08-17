@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { addNewAlbums, setLoading } from "../redux/discoverSlice";
 
 const useNewRelease = () => {
   const dispatch = useDispatch();
+  const albums = useSelector((store)=>store.discover.albums)
+
   dispatch(setLoading(true));
 
   useEffect(() => {
@@ -42,7 +44,8 @@ const useNewRelease = () => {
       }
     };
 
-    getNewReleases();
+    !Object.keys(albums).length && getNewReleases();
+      // eslint-disable-next-line
   }, []);
 
   return null;

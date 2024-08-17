@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { FaTimes } from 'react-icons/fa'; // Import the cross icon
+import React from 'react';
+import { FaTimes } from 'react-icons/fa'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { addToQueue } from '../redux/playerSlice';
-import Popup from './Popup';
 import { useLocation } from 'react-router-dom';
 import { removeFromPlaylist } from '../redux/playlistSlice';
+import { sendToast } from '../redux/toastSlice';
 
 const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showPopup,setShowPopup,popupMessage,setPopupMessage}) => {
   const dispatch = useDispatch()
@@ -12,34 +12,43 @@ const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showP
   const location = useLocation()
   const currentUrl = location.pathname.split('/');
 
+  async function removefromPlaylist(name , playlist){
+    const data = await fetch('http://localhost:4000/api/v1/music/removeFromPlaylist' , { 
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+
+      },
+      body: JSON.stringify({ name:name ,  playlistName:playlist }),
+    });
+
+    const resp = await data.json() ;
+    console.log(resp)
+
+  }
+
 
     function playlistFunctions(option ){
-        console.log(typeof option)
-
         if (option==='Add to Playlist'){
             setShowAddToPlayList(true)
             setShowCenterPopup(false)
         } 
         else if (option ==='Remove from this playlist') {
+
+
+
           var name = currentSong['name']
           setShowCenterPopup(false)
           var playlist=currentUrl[2]
-          setPopupMessage('Removed from '+playlist);
+          removefromPlaylist(name , playlist)
+          dispatch(sendToast('Removed from '+playlist))
           dispatch(removeFromPlaylist({playlist,name}))
-            setShowPopup(true)
-            setTimeout(() => {
-              setShowPopup(false);    
-            }, 2000);
         }
         else{
-          console.log(currentSong)
+          dispatch(sendToast("Song Added to Queue"))
           dispatch(addToQueue(currentSong ))
           setShowCenterPopup(false)
-          setPopupMessage("Song Added to Queue")
-          setShowPopup(true);
-          setTimeout(() => {
-            setShowPopup(false);
-          }, 2000);
         }
 
     }

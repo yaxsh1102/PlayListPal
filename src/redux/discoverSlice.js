@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react";
-
 
 const discoverSlice = createSlice({
     name:"discover" ,
@@ -70,7 +68,6 @@ const discoverSlice = createSlice({
 
         },
         addNewPlaylist :(state , action)=>{
-            console.log(action.payload)
 
             action.payload.playlistsWithTracks.forEach(({ playlist, tracks }) => {
                 const name = playlist.name;

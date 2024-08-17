@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch  } from "react-redux";
 import { initiateQueue } from "../redux/playerSlice";
-import { setLoading } from "../redux/discoverSlice";
+
 
 const useGetPlaying = () =>{
     const dispatch = useDispatch()
+
     const searchHindiSongs = async () => {
         const token = localStorage.getItem('token')
         const searchUrl = 'https://api.spotify.com/v1/search';
@@ -24,9 +25,7 @@ const useGetPlaying = () =>{
         const arr= [] 
       
          const data = response.data.tracks.items;
-         console.log(data)
          data.forEach(element => {
-            console.log(element.artists)
             const obj ={
                 name:element.name ,
                 url:element.preview_url ,
@@ -41,8 +40,8 @@ const useGetPlaying = () =>{
          
 }
 useEffect(()=>{
-    searchHindiSongs()
-
+     searchHindiSongs()
+ // eslint-disable-next-line
 } , [])
 }
 

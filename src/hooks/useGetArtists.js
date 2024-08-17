@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewArtists, setLoading } from "../redux/discoverSlice";
 
 const useGetArtists = () => {
   const dispatch = useDispatch();
+  const artists = useSelector((store)=>store.discover.artists)
   dispatch(setLoading(true));
 
   const getRandomQuery = () => {
@@ -42,7 +43,6 @@ const useGetArtists = () => {
             return { artist, tracks };
           })
         );
-        console.log(artistsWithTracks)
 
         dispatch(addNewArtists({ artistsWithTracks }));
       } catch (err) {
@@ -53,8 +53,9 @@ const useGetArtists = () => {
       }
     };
 
-    getNewArtists();
-  }, []);
+   !Object.keys(artists).length && getNewArtists();
+        // eslint-disable-next-line
+}, []);
 };
 
 export default useGetArtists;

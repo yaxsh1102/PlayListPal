@@ -10,7 +10,6 @@ const Searchbar = () => {
 
   const changehandler = (e)=>{
     if(e.keyCode===13){
-      console.log(input.current.value)
       handleSearch()
     }  
     
@@ -18,7 +17,6 @@ const Searchbar = () => {
 
   const handleSearch = async () => {
     const access_token = localStorage.getItem("token");
-    console.log(access_token)
 
     try {
       if (access_token) {
@@ -32,7 +30,6 @@ const Searchbar = () => {
           },
         });
 
-        console.log(response);
         const albumsWithTracks = await Promise.all(
           response.data.albums.items.map(async (album) => {
             const tracks = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
@@ -44,8 +41,6 @@ const Searchbar = () => {
             return { album, tracks: tracks.data.items };
 
       }))
-
-      console.log(albumsWithTracks)
 
       dispatch(addTracks(response.data.tracks.items))
       dispatch(addAlbums ({albumsWithTracks}))
@@ -63,6 +58,7 @@ const Searchbar = () => {
   useEffect(() => {
     input.current.value='Yash Mishra'
     handleSearch();
+     // eslint-disable-next-line
   }, []);
 
   return (
