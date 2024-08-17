@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addNewArtists, addNewTracks } from "../redux/discoverSlice";
+import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = ()=>{
    const dispatch = useDispatch()
    useEffect(() => {
@@ -18,8 +18,6 @@ const useGetTracks = ()=>{
             
            });
            dispatch(addNewTracks(response.data.tracks.items))
-           console.log(response.data)
-
        
          } catch (err) {
            console.error("Error fetching new releases:", err.response ? err.response.data : err.message);
@@ -27,6 +25,7 @@ const useGetTracks = ()=>{
        };
    
        getNewReleases();
+        // eslint-disable-next-line
      }, []);
    
    };

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react";
 
 const playlistSlice = createSlice({
     name: "playlist",
@@ -39,19 +38,13 @@ const playlistSlice = createSlice({
             }
         },
         removeFromPlaylist: (state, action) => {
-            console.log("Reached Here")
-            console.log(action.payload.playlist)
-            console.log(action.payload.name)
             const playlistName = action.payload.playlist.toUpperCase();
             if (state.playlist[playlistName]) {
                 state.playlist[playlistName] = state.playlist[playlistName].filter(song => song.name !== action.payload.name);
             }
         },
         addToLikedSongs :(state,action)=>{
-            console.log("Song RECIEVED");
             state.likedSongs.push(action.payload);
-            console.log(action.payload);
-            console.log(state.likedSongs[0]);
         },
         removeFromLikedSongs :(state,action)=>{
             state.likedSongs=state.likedSongs.filter(song => song.name !== action.payload.name);
