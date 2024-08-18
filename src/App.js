@@ -31,7 +31,7 @@ function App() {
   useGetUser()
 
   return (
-<>
+<> 
     <Router>
       <Routes>
         <Route path='/' element={<Layout/>}>

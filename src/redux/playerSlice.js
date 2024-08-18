@@ -12,7 +12,6 @@ const playerSlice = createSlice({
   reducers: {
     addNowPlaying: (state, action) => {
       state.nowPlaying = action.payload;
-      state.history.unshift(action.payload)
     },
     initiateQueue: (state, action) => {
       state.queue= action.payload;
@@ -42,10 +41,24 @@ const playerSlice = createSlice({
     removeFromQueue :(state , action)=>{
       state.queue= state.queue.filter((song)=>song.url!==action.payload.url)
     } ,
-    
-  
-  },
+
+    updateHistory :(state , action)=>{
+      const nowPlayingObj = action.payload;
+      const { name } = nowPlayingObj;
+
+      const existingIndex = state.history.findIndex(song => song.name === name);
+
+      if (existingIndex !== -1) {
+          state.history.splice(existingIndex, 1);
+      }
+
+      state.history.unshift(nowPlayingObj);
+    },
+    setHistory :(state , action) =>{
+      state.history = action.payload ;
+    }
+}
 });
 
-export const { addNowPlaying, initiateQueue , prevButton , nextButton  , addToQueue ,removeFromQueue} = playerSlice.actions;
+export const { addNowPlaying, initiateQueue , prevButton , nextButton  , addToQueue ,removeFromQueue , updateHistory , setHistory} = playerSlice.actions;
 export default playerSlice.reducer;

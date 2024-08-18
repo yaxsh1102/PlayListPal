@@ -17,10 +17,17 @@ const Navbar = () => {
 
   function logoutHandler(){
     console.log("helllo")
+    dispatch(sendToast("Logged Out"))
+
     localStorage.removeItem("db_token") 
     dispatch(toggleLoggedin())
+
     navigate("/login")
-    dispatch(sendToast("Logged Out"))
+    window.location.reload();
+
+
+
+
   } 
   return (
     <div className="h-[6.5rem] w-full flex md:flex-row md:justify-between  items-center bg-transparent pl-[20%] md:px-10 ">

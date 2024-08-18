@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNowPlaying } from '../redux/playerSlice';
+import { addNowPlaying, updateHistory } from '../redux/playerSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
@@ -41,6 +41,8 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   const clickHandler = () => {
     if(!type){
     dispatch(addNowPlaying(nowPlayingObj));
+    manageHistory()
+
     }else{
       navigate(`result/${name}`)
     }
@@ -62,6 +64,33 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
     setLiked(!liked);
     dispatch(!liked ? sendToast('Added to Likedbcsdc Songs') : sendToast ('Removed from Liked Songs'))
   };
+
+  async function manageHistory(){ 
+    if(!localStorage.getItem('db_token')){
+      return 
+  }
+
+  const data = await fetch("http://localhost:4000/api/v1/music/updateHistory" , {
+      method:"post" ,
+      headers: {
+          'Content-Type': 'application/json',
+           'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+        },
+        body: JSON.stringify({
+          preview_url: nowPlayingObj.url,
+          image: nowPlayingObj.image,
+          singer: nowPlayingObj.singer, 
+          artist: nowPlayingObj.artist, 
+          name: nowPlayingObj.name
+      })      
+  })
+  dispatch(updateHistory(nowPlayingObj))
+
+  const response = await data.json() ;
+  console.log(response)
+
+
+  }
 
   const toggleCenterPopup = () => {setShowCenterPopup((prev) => !prev)
     dispatch(setSelectedSong(nowPlayingObj));}

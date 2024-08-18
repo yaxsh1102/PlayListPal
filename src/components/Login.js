@@ -1,16 +1,26 @@
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { useDispatch } from 'react-redux';
+import { useDispatch  , useSelector} from 'react-redux';
 import { toggleLoggedin } from '../redux/userSlice';
 
 const Login = () => {
+  const isLoggedIn = useSelector((store)=>store.user.isLoggedIn) ;
+
   const inputRefs = useRef({});
   const navigate = useNavigate();
   const dispatch = useDispatch() ;
   const [error , setError] = useState('')
 
+  if(isLoggedIn){
+    console.log("hiii")
+    console.log(isLoggedIn) 
+    navigate("/") ;
+  }
+
+
   function loginHandler() {
+  
     const email = inputRefs.current['email'].value;
     const password = inputRefs.current['password'].value;
 
