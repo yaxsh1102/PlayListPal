@@ -50,8 +50,8 @@ const useGetPlaylist = () => {
     };
 
     !Object.keys(playlists).length  && getNewReleases();
-     // eslint-disable-next-line
-  }, [dispatch]);
+
+  }, []);
 
   return null;
 };

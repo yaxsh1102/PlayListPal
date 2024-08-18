@@ -27,7 +27,6 @@ const DisplayPlaylist = ({type}) => {
   const [isEditing,setIsEditing]=useState(false)
   const location = useLocation();
   const isUserPlaylist = location.pathname.split('/')[1]==='userplaylists';
-  console.log(currentPlaylist)
  
   function getCurrentPlaylist(type,name){
     try{

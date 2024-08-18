@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch  , useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
 import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = ()=>{
    const dispatch = useDispatch()
-   const tracks = useSelector((store)=>store.discover.tracks)
 
    useEffect(() => {
        const getNewReleases = async () => {
@@ -26,7 +25,8 @@ const useGetTracks = ()=>{
          }
        };
    
-       tracks.length===0 && getNewReleases();
+
+       getNewReleases();
         // eslint-disable-next-line
      }, []);
    
