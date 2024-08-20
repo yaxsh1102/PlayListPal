@@ -18,6 +18,8 @@ import Playlist from './components/Playlist';
 import DisplayPlaylist from './components/DisplayPlaylist';
 import { Toaster } from 'react-hot-toast';
 import useGetUser from './hooks/useGetUser';
+import Match from './components/Match';
+
 
 
 function App() {
@@ -38,6 +40,7 @@ function App() {
           <Route path='' element={<LandingPage/>}/>
           <Route path='profile' element={<Profile/>}/>
           <Route path = "play-music" element={<MusicContainer/>}></Route>
+          <Route path = "matches" element={<Match></Match>}></Route>
           <Route path="likedsongs" element={<DisplayPlaylist type={'likedsong'}/>}/>
           <Route path="history" element={<DisplayPlaylist type={'history'}/>}/>
           <Route path="playlist" element={<Playlist/>}/>
@@ -46,6 +49,7 @@ function App() {
           <Route path='artists/:param' element={<DisplayPlaylist type={'artist'} />} />
           <Route path='playlists/:param' element={<DisplayPlaylist type={'playlist'} />} />
           <Route path='result/:param' element={<DisplayPlaylist type={'result'} />} />
+
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
