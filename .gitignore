@@ -6,6 +6,9 @@
 .pnp.js
 /utils
 constants.js
+/src/utils
+/src/utils/
+
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MatchLanding = () => {
+const MatchLanding = ({setsetSelectedOption}) => {
   return (
          <div className="flex flex-col items-center justify-center h-[90%] p-6 text-white">
         <h1 className="lg:text-4xl md:text-2xl text-center font-light tracking-wide mb-8">
@@ -43,7 +43,7 @@ const MatchLanding = () => {
               placeholder="Enter radius"
             />
           </div>
-          <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+          <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" onClick={()=>{setsetSelectedOption('find-match')}}>
             Find My Match
           </button>
         </div>

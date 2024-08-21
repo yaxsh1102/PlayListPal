@@ -40,7 +40,7 @@ const Navbar = () => {
             <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
           </svg>
         </p>
-        <button className="lg:w-[12rem]  lg:h-[2.5rem]   md:w-[10rem] md:h-[2rem] w-[8rem] h-[1.5rem]   bg-gradient-to-tr from-[#833ab4] via-[#681dfd] to-[#fcb045] text-sm md:text-base font-bold mx-2 rounded text-white">
+        <button className="lg:w-[12rem]  lg:h-[2.5rem]   md:w-[10rem] md:h-[2rem] w-[8rem] h-[1.5rem]   bg-gradient-to-tr from-[#833ab4] via-[#681dfd] to-[#fcb045] text-sm md:text-base font-bold mx-2 rounded text-white " onClick={()=>navigate("/matches")}>
           Find Match!
         </button>
         <div  onClick={logoutHandler}>

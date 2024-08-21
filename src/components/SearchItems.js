@@ -69,6 +69,8 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
     if(!localStorage.getItem('db_token')){
       return 
   }
+  console.log(nowPlayingObj)
+
 
   const data = await fetch("http://localhost:4000/api/v1/music/updateHistory" , {
       method:"post" ,

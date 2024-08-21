@@ -1,71 +1,101 @@
-import React from 'react';
-import { AiOutlineInstagram } from 'react-icons/ai';
-import { FaSnapchat } from 'react-icons/fa6';
-import { FaTelegramPlane } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { IoIosArrowUp } from 'react-icons/io';
+import { FaInstagram, FaTelegramPlane, FaSnapchatGhost } from 'react-icons/fa';
 
 const MatchCard = () => {
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const toggleOverlay = () => {
+    setShowOverlay(!showOverlay);
+  };
+
   return (
-    <div className="w-full h-[100vh] bg-gradient-to-tr from-[#000000] to-[#434343] text-white flex justify-center items-center py-8 px-4 overflow-y-scroll no-scrollbar">
-      <div className="w-full max-w-lg bg-gradient-to-tr from-[#181818] to-[#121111] rounded-lg shadow-lg overflow-hidden flex flex-col overflow-y-scroll no-scrollbar ">
-        <div className="w-full flex justify-center p-4">
-          <img
-            src="https://th.bing.com/th/id/OIP.NbWq3CY2PdNCpHsxAa4f9wAAAA?w=307&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-            alt="Profile"
-            className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-full border-4 border-gray-600"
-          />
-        </div>
-        <div className="p-6 flex flex-col flex-grow">
-          <h2 className="text-2xl font-bold text-indigo-400 text-center mb-4">Yash Mishra</h2>
-          <div className="flex flex-col">
-            <div className="flex items-center mb-2">
-              <p className="font-semibold text-lg w-40">Lives in:</p>
-              <p className="text-lg">Mumbai, Maharashtra</p>
-            </div>
-            <div className="flex items-center mb-2">
-              <p className="font-semibold text-lg w-40">Gender:</p>
-              <p className="text-lg">Male</p>
-            </div>
-            <div className="flex items-center mb-2">
-              <p className="font-semibold text-lg w-40">Orientation:</p>
-              <p className="text-lg">Straight</p>
-            </div>
-            <div className="flex items-center mb-2">
-              <p className="font-semibold text-lg w-40">Age:</p>
-              <p className="text-lg">24</p>
-            </div>
+    <div className="w-full h-screen  text-white flex flex-col mt-8 items-center">
+      <div
+        className="w-full max-w-sm h-[70vh] bg-cover bg-center rounded-2xl shadow-lg relative"
+        style={{
+          backgroundImage:
+            'url(shivansh.jpg)',
+        }}
+      >
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent flex  items-center space-y-2">
+          <div className="flex justify-between items-center w-full px-4">
+            <p className="text-lg font-semibold">Shivansh Jha, 18</p>
           </div>
-          <div className="mb-6">
-            <p className="text-xl font-semibold mb-2">About</p>
-            <p className="text-base leading-wide">
-              Hello, how are you? I am under the water. Please help me and let me know if you would like to know anything about me. 
-              Because we all know how ruthless people can be. Yes, boys, come on. 
-              Wyrat Kohli.
-            </p>
-          </div>
-          <div className="flex flex-col md:flex-row justify-center gap-6 mb-6">
-            <div className="flex items-center gap-2">
-              <AiOutlineInstagram className="text-2xl md:text-3xl" />
-              <p className="text-lg">yaxsh1102</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <FaTelegramPlane className="text-2xl md:text-3xl" />
-              <p className="text-lg">yaxsh1102</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <FaSnapchat className="text-2xl md:text-3xl" />
-              <p className="text-lg">yaxsh1102</p>
-            </div>
-          </div>
-          {/* New Buttons Section */}
-          <div className="flex justify-evenly mt-auto">
-            <button className=" text-white    bg-gray-700 font-semibold py-2 px-4 rounded  focus:outline-none focus:ring-2 focus:ring-black  md:w-36 w-28">
-              Pass
-            </button>
-            <button className="bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300 md:w-36 w-28">
-              Accept
+
+          <div className="flex justify-end items-center px-4">
+            <button
+              className="text-white text-2xl cursor-pointer"
+              onClick={toggleOverlay}
+            >
+              <IoIosArrowUp />
             </button>
           </div>
         </div>
+
+        {/* Overlay */}
+        {showOverlay && (
+          <div className="absolute inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-10 overflow-auto no-scrollbar">
+            <div className="text-left flex flex-col justify-start space-y-4 w-full max-w-md px-4 py-6 bg-opacity-100 rounded-lg">
+              <p className="text-xl mb-0 pt-16">Bio:</p>
+              <p className="text-md mb-0 text-start">
+                This is the overlay text. You can add more details or information about the user here. I am a mad person I don't like I am under the water please help me get out of here, please please Wyrat Kohli.
+              </p>
+
+              {/* Info Section with Consistent Indentation */}
+              <div className="space-y-2">
+                <div className="flex">
+                  <p className="text-md w-32">Gender:</p>
+                  <p className="text-md ml-4">Male</p>
+                </div>
+                <div className="flex">
+                  <p className="text-md w-32">Orientation:</p>
+                  <p className="text-md ml-4">Straight</p>
+                </div>
+                <div className="flex">
+                  <p className="text-md w-32">Lives in:</p>
+                  <p className="text-md ml-4">Mumbai, Maharashtra</p>
+                </div>
+              </div>
+
+              {/* Socials */}
+              <div className="text-md mb-4">
+                <p className="mb-2">Socials:</p>
+                <div className="flex flex-col space-y-2 ml-2">
+                  <div className="flex items-center space-x-2">
+                    <FaInstagram />
+                    <span>username</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <FaTelegramPlane />
+                    <span>telegramhandle</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <FaSnapchatGhost />
+                    <span>snapchatusername</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                className="bg-white text-black rounded-full px-4 py-2 hover:bg-gray-200 transition-colors duration-200 self-center"
+                onClick={toggleOverlay}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Buttons */}
+      <div className="md:w-[384px] w-full flex justify-evenly mt-4 px-4 ">
+        <button className="bg-gray-700 text-white text-xl w-[8rem] h-[2rem] rounded-sm">
+          Pass
+        </button>
+        <button className="bg-indigo-500 text-white text-xl w-[8rem] h-[2rem] rounded-sm">
+          Accept
+        </button>
       </div>
     </div>
   );
