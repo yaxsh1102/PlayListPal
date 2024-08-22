@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 const Profile = () => {
   const lat = useSelector((store)=>store.user.lat)
-  const lon = useSelector((store)=>store.user.lon)
+  const lon = useSelector((store)=>store.user.lon) 
   // Create a single ref to hold all input refs
   const formRefs = useRef({
     name: null,

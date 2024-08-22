@@ -1,6 +1,10 @@
 import React from 'react';
 
 const Request = () => {
+
+  function clickHandler(){
+    
+  }
     const requests = [
         {
           dp: 'https://via.placeholder.com/150', // Replace with actual image URL
@@ -32,7 +36,7 @@ const Request = () => {
             <p className="text-gray-400 text-sm">{request.location}</p>
           </div>
         </div>
-        <button className="text-indigo-500 hover:text-indigo-700 font-semibold text-sm">
+        <button className="text-indigo-500 hover:text-indigo-700 font-semibold text-sm" onClick={clickHandler}>
           View Request
         </button>
       </div>

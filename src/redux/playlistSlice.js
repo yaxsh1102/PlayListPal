@@ -4,7 +4,8 @@ const playlistSlice = createSlice({
     name: "playlist",
     initialState: {
         playlist: {},
-        likedSongs:[]
+        likedSongs:[] ,
+        uniqueSongs:0 ,
     },
     reducers: {
         createPlaylist: (state, action) => {
@@ -36,6 +37,7 @@ const playlistSlice = createSlice({
             if (state.playlist[playlistName]) {
                 state.playlist[playlistName].push(action.payload.song);
             }
+            
         },
         removeFromPlaylist: (state, action) => {
             const playlistName = action.payload.playlist.toUpperCase();
