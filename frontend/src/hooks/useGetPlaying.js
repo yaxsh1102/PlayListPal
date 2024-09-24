@@ -6,6 +6,8 @@ import { initiateQueue } from "../redux/playerSlice";
 
 const useGetPlaying = () =>{
     const dispatch = useDispatch()
+    const isTokenReady = ((store)=>store.discover.isTokenReady)
+
 
     const searchHindiSongs = async () => {
         const token = localStorage.getItem('token')
@@ -40,8 +42,7 @@ const useGetPlaying = () =>{
          
 }
 useEffect(()=>{
-     searchHindiSongs()
- // eslint-disable-next-line
+     isTokenReady &&     searchHindiSongs()
 } , [])
 }
 

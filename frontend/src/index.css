@@ -7,3 +7,28 @@
 body {
     font-family: 'Poppins', sans-serif;
 }
+
+/* index.css or global.css */
+/* index.css or global.css */
+@layer utilities {
+  .loader {
+    --c: no-repeat linear-gradient(#4338ca 0 0); 
+    background: 
+      var(--c) 0% 50%,
+      var(--c) 25% 50%,
+      var(--c) 50% 50%,
+      var(--c) 75% 50%,
+      var(--c) 100% 50%;
+    background-size: 10% 100%;
+    animation: l1 1s infinite linear;
+  }
+
+  @keyframes l1 {
+    0%  {background-size: 10% 100%, 10% 100%, 10% 100%, 10% 100%, 10% 100%;}
+    20% {background-size: 10% 10%,  10% 100%, 10% 100%, 10% 100%, 10% 100%;}
+    40% {background-size: 10% 100%, 10% 10%,  10% 100%, 10% 100%, 10% 100%;}
+    60% {background-size: 10% 100%, 10% 100%, 10% 10%,  10% 100%, 10% 100%;}
+    80% {background-size: 10% 100%, 10% 100%, 10% 100%, 10% 10%,  10% 100%;}
+    100%{background-size: 10% 100%, 10% 100%, 10% 100%, 10% 100%, 10% 100%;}
+  }
+}

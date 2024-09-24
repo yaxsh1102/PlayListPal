@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import DiscoverCards from "./DiscoverCards";
 import "../App.css"
+import Loader from './Loader';
 
 const Discover = () => {
   const newAlbums = useSelector((store) => store.discover.albums);
@@ -12,6 +13,14 @@ const Discover = () => {
   const newTracks = useSelector((store)=>store.discover.tracks) ;
   const newPlayList = useSelector((store)=>store.discover.playlists)
   const playlists = Object.keys(newPlayList)
+
+  if(newTracks.length===0 || albums.length===0 || artists.length===0 || playlists.length===0 ){
+    return (
+      <div className=' w-full  md:pr-[16rem]'>
+    <Loader></Loader>
+    </div>
+    )
+  }
 
   return (
     <div className="flex flex-col scrollbar-hide mb-8 w-[80%]  xl:pt-[52rem] lg:pt-[52rem] md:pt-[44rem] pt-[18rem] scroll-x-hidden  h-lg:pt-[20rem] mobile:pt-[12rem] small-mobile:pt-[24rem]">
@@ -70,6 +79,7 @@ const Discover = () => {
         ))}
       </div>
     </div>
+    
   );
 };
 

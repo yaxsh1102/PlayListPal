@@ -10,9 +10,9 @@ dbConnect.connect();
 const userRoutes = require("./routes/User")
 const musicRoutes = require("./routes/Music")
 const profileRoutes = require("./routes/Profile")
+const matchRoutes = require("./routes/Matches")
  
   
-  // Middleware setup
   app.use(express.json());
   app.use(cors({ origin: '*', credentials: true })); 
 
@@ -25,6 +25,7 @@ const profileRoutes = require("./routes/Profile")
 app.use("/api/v1/auth" , userRoutes)
 app.use("/api/v1/music" , musicRoutes)
 app.use("/api/v1/profile" , profileRoutes)
+app.use("/api/v1/match" , matchRoutes)
 
 
 app.listen(process.env.PORT, () => {

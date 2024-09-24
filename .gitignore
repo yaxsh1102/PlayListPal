@@ -2,10 +2,19 @@
 
 # dependencies
 /node_modules
+<<<<<<< HEAD
+=======
+backend/node_modules
+/backend/node_modules
+>>>>>>> 4de0afd59ebb7193e041ae8993f8cd214a8d918c
 /.pnp
 .pnp.js
 /utils
 constants.js
+<<<<<<< HEAD
+=======
+node_modules
+>>>>>>> 4de0afd59ebb7193e041ae8993f8cd214a8d918c
 
 .env
 

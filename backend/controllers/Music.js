@@ -9,7 +9,6 @@ exports.createPlaylist = async (req, res) => {
     try {
         const { name } = req.body;
 
-        // Check if the playlist already exists
         const existingPlaylist = await Playlist.findOne({ name: name });
         if (existingPlaylist) {
             return res.status(400).json({
@@ -375,10 +374,8 @@ exports.deletePlaylist = async (req, res) => {
                 message: "No Playlist Found"
             });
         }
-        // Delete the playlist
         await Playlist.deleteOne({ _id: playlistToDelete._id });
 
-        // Find the user and update their playLists
         const user = await User.findById(userId);
         if (!user) {
             return res.status(400).json({
@@ -387,14 +384,13 @@ exports.deletePlaylist = async (req, res) => {
             });
         }
 
-        // Remove the deleted playlist's ID from the user's playLists array
         user.playLists = user.playLists.filter((playlistId) => !playlistId.equals(playlistToDelete._id));
         await user.save();
 
         return res.status(200).json({
             success: true,
             message: "Playlist Deleted Successfully",
-            deletedPlaylistId: playlistToDelete._id // Return the ID of the deleted playlist
+            deletedPlaylistId: playlistToDelete._id 
         });
 
     } catch (error) {
@@ -423,7 +419,6 @@ exports.renamePlaylist= async (req, res) => {
             });
         }
 
-        // Find the playlist with the old name
         const playlist = await Playlist.findOne({ name: oldName });
 
 
@@ -434,12 +429,10 @@ exports.renamePlaylist= async (req, res) => {
             });
         }
 
-        // Update the playlist name
         playlist.name = newName.toUpperCase();
         await playlist.save();
 
 
-        // Update the playlist name in all songs associated with it
         await Song.updateMany(
             { playlist: oldName.toUpperCase() },
             { $set: { "playlist.$": newName.toUpperCase() } }

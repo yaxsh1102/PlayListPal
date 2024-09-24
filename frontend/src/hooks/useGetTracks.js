@@ -4,10 +4,13 @@ import { useDispatch } from "react-redux";
 import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = ()=>{
    const dispatch = useDispatch()
+   const isTokenReady = ((store)=>store.discover.isTokenReady)
+
 
    useEffect(() => {
        const getNewReleases = async () => {
         const access_token=localStorage.getItem("token")
+
 
         const randomOffset = Math.floor(Math.random() * 1000)
    
@@ -26,7 +29,7 @@ const useGetTracks = ()=>{
        };
    
 
-       getNewReleases();
+       isTokenReady && getNewReleases();
         // eslint-disable-next-line
      }, []);
    

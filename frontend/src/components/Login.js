@@ -56,7 +56,6 @@ const Login = () => {
     try {
       const { credential } = credentialResponse;
       
-      // Send the token to your backend for verification
       const response = await fetch('http://localhost:4000/api/v1/auth/google/token', {
         method: 'POST',
         headers: {
@@ -90,6 +89,7 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-[#181818] to-[#121111]">
       <div className="w-full max-w-md p-8 space-y-6 bg-[#212529] rounded-lg shadow-md">
+        <p>{inputRefs?.current['email']?.value}</p>
         <h2 className="text-3xl font-bold text-center text-white">Login</h2>
         <div className="text-center text-red-500">
 

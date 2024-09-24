@@ -6,6 +6,8 @@ import { addNewPlaylist, setLoading } from '../redux/discoverSlice';
 const useGetPlaylist = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((store)=>store.discover.playlists)
+  const isTokenReady = ((store)=>store.discover.isTokenReady)
+
 
   dispatch(setLoading(true));
 
@@ -49,7 +51,7 @@ const useGetPlaylist = () => {
       }
     };
 
-    !Object.keys(playlists).length  && getNewReleases();
+    !Object.keys(playlists).length && isTokenReady  && getNewReleases();
 
   }, []);
 

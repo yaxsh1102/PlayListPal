@@ -8,7 +8,6 @@ exports.updateProfile = async (req, res) => {
     try {
         const { gender, birthdate, sexualOrientation, instagram, snapchat, about, city, state, country, telegram  , lat , lon} = req.body;
 
-        // Validate input
         if (!gender || !birthdate || !sexualOrientation || (!instagram && !snapchat && !telegram) || !about || !city || !state || !country ||!lat || !lon) {
             return res.status(400).json({
                 success: false,
@@ -71,7 +70,6 @@ exports.createProfile = async (req, res) => {
     try {
         const { gender, birthdate, sexualOrientation, instagram, snapchat, telegram, about, city, state, country, lat, lon } = req.body;
 
-        // Validate input
         if (!gender || !birthdate || !sexualOrientation || (!instagram && !snapchat && !telegram) || !about || !city || !state || !country || !lat || !lon) {
             return res.status(400).json({
                 success: false,

@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import MatchLanding from './MatchLanding'; 
 import Request from './Requests'; 
-import MatchCard from './MatchCard';  // Import the MatchCard component
+import MatchCard from './MatchCard';
+import { useDispatch } from 'react-redux';  
+import { addNowPlaying } from '../redux/playerSlice';
 
 const Match = () => {
   const [selectedOption, setSelectedOption] = useState('landing');
+  const dispatch = useDispatch()
+  dispatch(addNowPlaying(null))
+
+  
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
   return (
-    <div className='w-full h-screen overflow-hidden no-scrollbar bg-gradient-to-tr from-[#181818] to-[#121111]'>
+    <div className='w-full h-screen overflow-hidden no-scrollbar bg-gradient-to-tr from-[#181818] to-[#121111] z-50'>
       <div className="h-[10%] flex md:justify-center justify-center items-center">
         <button
           onClick={() => handleOptionClick('landing')}
@@ -44,15 +50,15 @@ const Match = () => {
 
       <div className="h-[90%]">
         {selectedOption === 'landing' && (
-          <MatchLanding setsetSelectedOption={setSelectedOption} />  // Render MatchLanding initially
+          <MatchLanding setsetSelectedOption={setSelectedOption} />  
         )}
 
         {selectedOption === 'find-match' && (
-          <MatchCard />  // Render MatchCard when 'find-match' is selected
+          <MatchCard  selectedOption={selectedOption} /> 
         )}
 
         {(selectedOption === 'requests' || selectedOption === 'friends') && (
-          <Request />
+          <Request selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
         )}
       </div>
     </div>

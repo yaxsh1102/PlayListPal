@@ -17,7 +17,6 @@ const otpSchema= new mongoose.Schema({
     }
 })
 
-//send email here
 
 async function sendVerificationEmail(email , otp){
     try{

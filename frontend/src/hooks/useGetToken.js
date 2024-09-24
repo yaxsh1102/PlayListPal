@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { TOKEN_ENDPOINT , SPOTIFY_CLIENT_ID , SPOTIFY_CLIENT_SECRET } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { setTokenReady } from "../redux/discoverSlice";
 
 
 const useGetToken = ()=>{
+  const dispatch = useDispatch()
     const getToken = async () => {
         const response = await fetch(TOKEN_ENDPOINT, {
           method: 'POST',
@@ -14,6 +17,8 @@ const useGetToken = ()=>{
         });
         const data = await response.json();
         localStorage.setItem("token" ,data.access_token)
+        dispatch(setTokenReady())
+
 
   
       };

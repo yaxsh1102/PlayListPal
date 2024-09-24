@@ -37,6 +37,19 @@ const UserSchema = new mongoose.Schema({
             ref:"Song"
         }
        
+    ] ,
+
+    requests:[
+        {
+            type:mongoose.Schema.Types.ObjectId ,
+            ref:"User"
+        }
+    ] ,
+    friends:[
+        {
+            type:mongoose.Schema.Types.ObjectId ,
+            ref:"User"
+        }
     ]
     
 })

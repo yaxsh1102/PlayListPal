@@ -65,7 +65,6 @@ const MusicPlayer = ({ nowPlaying }) => {
     }).catch(error => {
       console.error('Error playing audio:', error);
       setIsPlaying(false);
-       // eslint-disable-next-line
     });
 
  
@@ -74,7 +73,6 @@ const MusicPlayer = ({ nowPlaying }) => {
         audioRef.current.pause();
       }
     };
-     // eslint-disable-next-line
   }, [nowPlaying.url]);
 
   const togglePlayPause = () => {
