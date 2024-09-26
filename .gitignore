@@ -9,6 +9,7 @@ backend/node_modules
 /utils
 constants.js
 node_modules
+tmp
 
 .env
 
