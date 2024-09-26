@@ -1,26 +1,69 @@
 import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setMatchResults } from '../redux/userSlice';
+import { useDispatch, useSelector, dispatch } from 'react-redux';
+import { checkProfileStatus, setMatchResults } from '../redux/userSlice';
 import MatchCard from './MatchCard';
 import Loader from './Loader'; 
+import { sendToast } from '../redux/toastSlice';
+import { setCoordinates } from '../redux/userSlice';
 
 const MatchLanding = ({ setsetSelectedOption }) => {
   const matchResults = useSelector((store) => store.user.matchResults);
   const dispatch = useDispatch();
+  const {lat , lon , isProfileCompleted} = useSelector((store)=>store.user) ;
+
+
+
   const ref = useRef({
     playLists: false,
     likedSongs: false,
     radius: 0,
   });
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          dispatch(setCoordinates({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }));
+         
+        },
+        (error) => {
+          dispatch(sendToast("Location Is Mandatory"))
+         
+        }
+      );
+    } else {
+      dispatch(sendToast("Location Is Mandatory"))
+
+    }
+  };
+
   
   const [loading, setLoading] = useState(false); 
 
   async function matchHandler() {
+
+    if(!lat || !lon){
+      dispatch(sendToast("Allow Location Access"))
+      getLocation()
+      return  
+    }
+
+    if(!isProfileCompleted){
+      dispatch(checkProfileStatus())
+      dispatch(sendToast("Incomplete Profile"))
+      return
+    }
+
+
+
     setLoading(true); 
 
     try {
-      const response = await fetch('http://localhost:4000/api/v1/profile/getMatches', {
-        method: 'post',
+      const response = await fetch('http://localhost:4000/api/v1/match/getMatches', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('db_token')}`
@@ -28,7 +71,7 @@ const MatchLanding = ({ setsetSelectedOption }) => {
         body: JSON.stringify({
           playLists: ref.current['playLists'].checked,
           likedSongs: ref.current['likedSongs'].checked,
-          radius: ref.current['radius'].value
+          radius: ref.current['radius'].valueOf
         }),
       });
 
@@ -39,6 +82,7 @@ const MatchLanding = ({ setsetSelectedOption }) => {
       setsetSelectedOption('find-match');
       console.log(results.data);
     } catch (error) {
+      console.log(error )
       console.error('Error fetching match results:', error);
     } finally {
       setLoading(false);

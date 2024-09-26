@@ -11,7 +11,7 @@ import PlayListPopup from './PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { sendToast } from '../redux/toastSlice';
 
-const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
+const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbum}) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
   const navigate = useNavigate()
   const dispatch = useDispatch();
@@ -161,7 +161,7 @@ return (
           </div>
         </div>
       </div>
-      <div className="flex text-white items-center gap-x-3 bg-transparent border-b-[1px] border-black mt-2">
+     {!isAlbum &&  <div className="flex text-white items-center gap-x-3 bg-transparent border-b-[1px] border-black mt-2">
         <div className="ml-auto">
           <button onClick={toggleLike} className="focus:outline-none">
             <FontAwesomeIcon
@@ -176,6 +176,7 @@ return (
           </button>
         </div>
       </div>
+}
     </div>
     {showCenterPopup ? ( <OptionPopup options={options}  setShowAddToPlayList={setShowAddToPlayList} 
     onClose={toggleCenterPopup} setShowCenterPopup = {setShowCenterPopup} 

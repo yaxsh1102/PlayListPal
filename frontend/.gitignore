@@ -2,15 +2,14 @@
 
 # dependencies
 /node_modules
-backend/node_modules
-/backend/node_modules
 /.pnp
 .pnp.js
 /utils
 constants.js
-node_modules
+/src/utils
+/src/utils/
 
-.env
+
 
 
 # testing

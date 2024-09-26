@@ -73,7 +73,7 @@ const Searchbar = () => {
 
  
   return (
-    <div className='w-full flex justify-start pl-24 mt-8'>
+    <div className='w-full flex md:justify-start justify-center lg:pl-24 md:pl-6 mt-8'>
       <input
         type="text"
         placeholder="Search for songs, albums, artists..."

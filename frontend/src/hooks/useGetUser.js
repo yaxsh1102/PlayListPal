@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useDispatch  , useSelector} from "react-redux"
 import { setPlaylist , setLikedSongs } from "../redux/playlistSlice"
 import { setHistory } from "../redux/playerSlice"
+import { setUser, toggleLoggedin } from "../redux/userSlice"
 
 const useGetUser = ()=>{
   const isLoggedIn = useSelector((store)=>store.user.isLoggedIn)
@@ -22,9 +23,11 @@ const useGetUser = ()=>{
             })
     
             const response = await data.json() ;
+            dispatch(setUser({name:response.data.name , email:response.data.email , ...response.data.datingProfile}))
+
             const playlists = response.data.playLists.reduce((acc, playlist) => {
                 acc[playlist.name.toUpperCase()] = playlist.songs.map(song => ({
-                    ...song,
+                    ...song, 
                     url: song.preview_url
                 }));
                 return acc; 
@@ -39,6 +42,7 @@ const useGetUser = ()=>{
     
             dispatch(setLikedSongs(likedSongs)) 
             dispatch(setHistory(response.data.history))
+            dispatch(toggleLoggedin(true))
     
         }
         catch(err){

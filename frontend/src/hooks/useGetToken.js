@@ -6,7 +6,11 @@ import { setTokenReady } from "../redux/discoverSlice";
 
 const useGetToken = ()=>{
   const dispatch = useDispatch()
+
     const getToken = async () => {
+
+      try{
+
         const response = await fetch(TOKEN_ENDPOINT, {
           method: 'POST',
           headers: {
@@ -16,8 +20,18 @@ const useGetToken = ()=>{
           body: 'grant_type=client_credentials',
         });
         const data = await response.json();
+        if(data.access_token){
         localStorage.setItem("token" ,data.access_token)
-        dispatch(setTokenReady())
+        dispatch(setTokenReady(true))
+        } else {
+          dispatch(setTokenReady(false))
+        }
+      }catch(err){
+        
+
+        
+      }
+        
 
 
   
