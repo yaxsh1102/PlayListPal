@@ -5,7 +5,7 @@ const app = express()
 const router= express.Router() 
 
 const {
-    login , signUp , sendOTP , verifyGoogleToken , getUser  , updateProfile
+    login , signUp , sendOTP , verifyGoogleToken , getUser  , updateProfile , addLocation
 }  = require ("../controllers/Auth")
  
 
@@ -15,6 +15,7 @@ router.post("/sendOTP" , sendOTP)
 router.post('/google/token', verifyGoogleToken);
 router.get('/getUserDetails', getUser);
 router.post('/updateProfile', updateProfile);
+router.post('/addLocation', addLocation);
 
 
 

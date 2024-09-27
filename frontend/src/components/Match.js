@@ -5,8 +5,7 @@ import MatchCard from './MatchCard';
 import { useDispatch  , useSelector} from 'react-redux';  
 import { addNowPlaying } from '../redux/playerSlice';
 import { setReqandFriends } from '../redux/userSlice';
-import { setCoordinates } from '../redux/userSlice';
-import { sendToast } from '../redux/toastSlice';
+
 
 const Match = () => {
   const dispatch = useDispatch() ;
@@ -29,7 +28,6 @@ const Match = () => {
   
         })
           const resp = await data.json()
-          console.log(resp)
           dispatch(setReqandFriends({requests:resp.requests , friends:resp.friends}))
   
   
@@ -42,7 +40,6 @@ const Match = () => {
 
     !requests && !friends && getDetails()
     return()=>{
-      console.log("unmountededed")
     }
 
 

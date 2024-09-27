@@ -52,7 +52,6 @@ const MatchLanding = ({ setsetSelectedOption }) => {
     }
 
     if(!isProfileCompleted){
-      dispatch(checkProfileStatus())
       dispatch(sendToast("Incomplete Profile"))
       return
     }
@@ -71,19 +70,23 @@ const MatchLanding = ({ setsetSelectedOption }) => {
         body: JSON.stringify({
           playLists: ref.current['playLists'].checked,
           likedSongs: ref.current['likedSongs'].checked,
-          radius: ref.current['radius'].valueOf
+          radius: ref.current['radius'].valueOf ,
+          lat:lat ,
+          lon:lon 
         }),
       });
 
       const results = await response.json();
-      const result = results.data;
+      if(results.success){
       dispatch(setMatchResults(results.data));
-
       setsetSelectedOption('find-match');
-      console.log(results.data);
+      }else{
+        dispatch(sendToast("Error Occured"))
+      }
     } catch (error) {
-      console.log(error )
-      console.error('Error fetching match results:', error);
+      dispatch(sendToast("Error Occured"))
+
+     
     } finally {
       setLoading(false);
     }

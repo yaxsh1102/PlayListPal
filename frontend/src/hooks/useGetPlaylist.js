@@ -53,7 +53,7 @@ const useGetPlaylist = () => {
 
     !Object.keys(playlists).length && isTokenReady  && getNewReleases();
 
-  }, []);
+  }, [isTokenReady]);
 
   return null;
 };

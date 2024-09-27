@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { sendToast } from '../redux/toastSlice';
@@ -6,24 +6,27 @@ import { GoogleLogin } from '@react-oauth/google';
 import { toggleLoggedin } from '../redux/userSlice';
 
 const Signup = () => {
-  const inputRefs = useRef({});
-  const navigate = useNavigate();
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getOTPHandler = async () => {
+    if (!fullName || !email || !password) {
+      setError('All Fields Are Required');
+      return;
+    }
     try {
-      const data = checkParams();
-      if (!data) {
-        return;
-      }
       setError('');
       const response = await fetch('http://localhost:4000/api/v1/auth/sendOTP', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: data.email }),
+        body: JSON.stringify({ email }),
       });
       const resp = await response.json();
       if (!resp.success) {
@@ -38,7 +41,7 @@ const Signup = () => {
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
-      const response = await fetch('http://localhost:4000/api/v1/auth/google-login', {
+      const response = await fetch('http://localhost:4000/api/v1/auth/google/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,28 +63,18 @@ const Signup = () => {
     }
   };
 
-  const handleGoogleLoginError = () => {
+  const handleGoogleLoginError = (err) => {
+    console.log(err)
     console.log('Login Failed');
   };
 
-  function checkParams() {
-    const fullName = inputRefs.current['full-name']?.value;
-    const email = inputRefs.current['email']?.value;
-    const password = inputRefs.current['password']?.value;
-
-    if (!fullName || !email || !password) {
+  const submitHandler = async () => {
+    if (!fullName || !email || !password || !otp) {
       setError('Please fill all fields.');
-      return null;
-    }
-    return { fullName, email, password };
-  }
-
-  async function submitHandler() {
-    const data = checkParams();
-    if (!data) {
       return;
     }
 
+    const requestBody = { fullName, email, password, otp };
     try {
       setError('');
       const response = await fetch('http://localhost:4000/api/v1/auth/signup', {
@@ -89,9 +82,8 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestBody),
       });
-
       const resp = await response.json();
       if (resp.success) {
         dispatch(sendToast('Signup Successful'));
@@ -102,7 +94,7 @@ const Signup = () => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-[#000000] to-[#434343]">
@@ -120,12 +112,12 @@ const Signup = () => {
             </label>
             <input
               id="full-name"
-              name="full-name"
               type="text"
               required
               placeholder="Enter your full name"
               className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              ref={(el) => (inputRefs.current['full-name'] = el)}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
           <div>
@@ -134,12 +126,12 @@ const Signup = () => {
             </label>
             <input
               id="email"
-              name="email"
               type="email"
               required
               placeholder="Enter your email"
               className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              ref={(el) => (inputRefs.current['email'] = el)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
@@ -148,12 +140,12 @@ const Signup = () => {
             </label>
             <input
               id="password"
-              name="password"
               type="password"
               required
               placeholder="Enter your password"
               className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              ref={(el) => (inputRefs.current['password'] = el)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-3 gap-2 items-center">
@@ -166,12 +158,12 @@ const Signup = () => {
             </button>
             <input
               id="otp"
-              name="otp"
               type="text"
               required
               placeholder="Enter OTP"
               className="col-span-2 px-3 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              ref={(el) => (inputRefs.current['otp'] = el)}
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
             />
           </div>
         </div>
@@ -199,7 +191,6 @@ const Signup = () => {
                 className="w-full flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
-                  {/* Google icon paths */}
                 </svg>
                 Continue with Google
               </button>

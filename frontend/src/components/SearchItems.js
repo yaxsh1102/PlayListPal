@@ -49,10 +49,8 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbu
   };
 
   const toggleLike = () => {
-    console.log("hiii" )
 
     dispatch(liked ? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
-    console.log(liked )
     if(liked){
       removeLike()
      
@@ -62,17 +60,18 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbu
 
     }
     setLiked(!liked);
-    dispatch(!liked ? sendToast('Added to Likedbcsdc Songs') : sendToast ('Removed from Liked Songs'))
+    dispatch(!liked ? sendToast('Added to Liked Songs') : sendToast ('Removed from Liked Songs'))
   };
 
   async function manageHistory(){ 
     if(!localStorage.getItem('db_token')){
       return 
   }
-  console.log(nowPlayingObj)
 
 
-  const data = await fetch("http://localhost:4000/api/v1/music/updateHistory" , {
+
+  try{
+    const data = await fetch("http://localhost:4000/api/v1/music/updateHistory" , {
       method:"post" ,
       headers: {
           'Content-Type': 'application/json',
@@ -87,9 +86,14 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbu
       })      
   })
   dispatch(updateHistory(nowPlayingObj))
+  }catch(err){
 
-  const response = await data.json() ;
-  console.log(response)
+  }
+
+
+
+
+
 
 
   }
@@ -98,36 +102,47 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbu
     dispatch(setSelectedSong(nowPlayingObj));}
 
     async function addLike(){
-      const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('db_token')}`
 
-        },
-        body: JSON.stringify({  preview_url:url , image ,singer ,artist,name , }),
-      });
-  
-      const resp = await data.json() ;
-      console.log(resp)
-  
-       };
-
-
-       async function removeLike(){
-        const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+      try{
+        const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('db_token')}`
   
           },
-          body: JSON.stringify({ name:name , }),
+          body: JSON.stringify({  preview_url:url , image ,singer ,artist,name , }),
         });
     
         const resp = await data.json() ;
-        console.log(resp)
+
+      }catch(err){
+
+      }
     
+  
+       };
+
+
+  async function removeLike(){
+         try{
+          const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+    
+            },
+            body: JSON.stringify({ name:name , }),
+          });
+      
+          const resp = await data.json() ;
+      
+         }catch(err){
+
+         }
+
+       
          };
 
     

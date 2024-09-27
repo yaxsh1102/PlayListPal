@@ -31,7 +31,7 @@ const useGetTracks = ()=>{
 
        isTokenReady && getNewReleases();
         // eslint-disable-next-line
-     }, []);
+     }, [isTokenReady]);
    
    };
 

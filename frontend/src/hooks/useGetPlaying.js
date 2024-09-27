@@ -49,7 +49,7 @@ const useGetPlaying = () =>{
 }
 useEffect(()=>{
      isTokenReady &&  searchHindiSongs()
-} , [])
+} , [isTokenReady])
 }
 
 

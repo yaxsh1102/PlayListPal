@@ -19,6 +19,7 @@ const Request = ({ selectedOption }) => {
     setIndex(index)
     setShowProfile(true);
   };
+
   
 
 
@@ -34,13 +35,14 @@ const Request = ({ selectedOption }) => {
               reqs && reqs.length > 0 ? (
                 reqs.map((request, index) => (
                   
+                  
                   <div
                     key={index}
                     className="flex items-center justify-between p-2 rounded-lg mb-2 bg-gray-700"
                   >
                     <div className="flex items-center">
                       <img
-                        src='shivansh.jpg'
+                        src={""+request?.datingProfile.imageUrl+""}
                         alt={request?.name}
                         className="w-12 h-12 rounded-full mr-3"
                       />
@@ -73,7 +75,7 @@ const Request = ({ selectedOption }) => {
                   >
                     <div className="flex items-center">
                       <img
-                        src='shivansh.jpg'
+                        src={""+friend?.datingProfile?.imageUrl+""}
                         alt={friend?.name}
                         className="w-12 h-12 rounded-full mr-3"
                       />

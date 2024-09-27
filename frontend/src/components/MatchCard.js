@@ -17,13 +17,11 @@ import { moveCurrentProfile, setReqandFriends } from '../redux/userSlice';
 const MatchCard = ({ selectedOption, index }) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [currentProfile, setCurrentProfile] = useState();
-  const [showReadMore , setShowReadMore] = useState(false) ;
   const dispatch = useDispatch();
 
   const reqs = useSelector((store) => store.user.requests);
   const friends = useSelector((store) => store.user.friends);
   const matchResults = useSelector((store) => store.user.matchResults);
-  console.log(selectedOption )
 
   useEffect(() => {
     if (selectedOption === 'requests') {
@@ -62,7 +60,6 @@ const MatchCard = ({ selectedOption, index }) => {
     } catch (err) {
       dispatch("Error Occured")
 
-      console.log(err);
     }
   }
 
@@ -91,8 +88,28 @@ const MatchCard = ({ selectedOption, index }) => {
     } catch (err) {
       dispatch(sendToast("Couldn't Accept Request"))
 
-      console.log(err);
     }
+  }
+
+
+  function calculateAge(birthDate) {
+    const parts = birthDate.split('-');
+    const birthYear = parseInt(parts[0]);
+    const birthMonth = parseInt(parts[1]) - 1; 
+    const birthDay = parseInt(parts[2]);
+  
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const currentDay = currentDate.getDate();
+  
+    let age = currentYear - birthYear;
+  
+    if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+      age--;
+    }
+  
+    return age;
   }
 
   async function rejectReqHandler() {
@@ -119,7 +136,6 @@ const MatchCard = ({ selectedOption, index }) => {
 
     } catch (err) {
       dispatch(sendToast("Couldn't Reject"))
-      console.log(err);
     }
   }
 
@@ -146,9 +162,15 @@ const MatchCard = ({ selectedOption, index }) => {
 
     } catch (err) {
       dispatch(sendToast("Couldn't Remove Friend"))
-      console.log(err);
     }
   }
+
+  const backgroundStyle = {
+    backgroundImage: selectedOption === 'find-match'
+        ? `url(${currentProfile?.imageUrl})`
+        : `url(${currentProfile?.datingProfile?.imageUrl})`,
+
+};
 
   return (
     <>
@@ -158,13 +180,11 @@ const MatchCard = ({ selectedOption, index }) => {
 
           <div
             className="w-full max-w-sm h-[70vh] bg-cover bg-center rounded-2xl shadow-lg relative"
-            style={{
-              backgroundImage: 'url(shivansh.jpg)', 
-            }}
+            style={backgroundStyle} 
           >
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent flex items-center space-y-2">
               <div className="flex justify-between items-center w-full px-4">
-                <p className="text-lg font-semibold">{`${currentProfile?.name},  ${currentProfile?.age}`}</p>
+                <p className="text-lg font-semibold">{`${currentProfile?.name},   ${calculateAge(currentProfile?.dateOfBirth || currentProfile?.datingProfile?.dateOfBirth)}`}</p>
               </div>
 
               <div className="flex justify-end items-center px-4">

@@ -67,10 +67,11 @@ exports.sendOTP=async(req, res)=>{
 exports.signUp = async(req , res)=>{
 
     try {
-        const {name , email , password ,  otp}=req.body ;
-        console.log(email)
+        const {fullName , email , password ,  otp}=req.body ;
 
-        if(!name || !email  || !password  || !otp  ){
+
+        if(!fullName || !email  || !password  || !otp  ){
+            console.log(fullName , email , password ,  otp)
             return res.status(403).json({
                 success:false ,
                 message:"All fields are required"
@@ -120,18 +121,16 @@ exports.signUp = async(req , res)=>{
             imageUrl:null , 
         })
         const user = await User.create({
-            name ,
+            name:fullName ,
             email ,
             password :hashedPassword ,
             datingProfile:profileDetails._id
            
         })
 
-        req.user = {
-            name , 
-            id:user._id , 
-            email ,
-        }
+        const data = await Profile.findByIdAndUpdate(profileDetails , {user:user._id})
+
+        
         
         return res.status(200).json({
             success:true ,
@@ -378,6 +377,7 @@ exports.updateProfile = async (req, res) => {
         const userId = decoded.userId || decoded.id;
 
         console.log("User ID:", userId);
+        console.log(userId)
 
         const datingProfile = await Profile.findOne({ user: userId }).populate('user');
         if (!datingProfile) return res.status(404).json({ message: "Dating profile not found" });
@@ -416,8 +416,72 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
+exports.addLocation = async(req , res)=>{
+    try{
+
+        const token = req.header('Authorization').split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        console.log(token)
+
+        const {lat , lon} = req.body ;
+        console.log(lat)
+        console.log(lon)
+        if(!lat || !lon){
+            return res.status(400).json({
+                success:false ,
+                message:"No Location Found"
+            })
+        }
+
+        if (!decoded    ) {
+            return res.status(404).json({
+                success: false,
+                message: "Authentication Failed. Kindly Log In."
+            });
+        }
+
+        const id = req.user.userId || req.user.id;
+        console.log(id) ;
+        
+        const user = await Profile.findOneAndUpdate(
+            { user: id },
+            {
+                $set: {
+                    lat: lat,
+                    lon: lon
+                }
+            },
+            { new: true }
+        );
+
+        if(!user){
+            return res.status(200).json({
+                success:false ,
+                message:"Could't Find User"
+            })
+        }
 
 
+        return res.status(200).json({
+            success:true ,
+            message:"Location Updated"
+        })
+
+
+
+
+    }catch(err){
+        return res.status(500).json({
+            success:false ,
+            message:"Internal Server Error"
+        })
+
+    }
+}
+
+
+ 
 
 
 

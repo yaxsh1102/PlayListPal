@@ -2,6 +2,7 @@ import React, { useRef , useState} from 'react';
 import "../App.css";
 import { useSelector , useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
+import { sendToast } from '../redux/toastSlice';
 
 const Profile = () => {
   const user = useSelector((store) => store.user);
@@ -52,8 +53,10 @@ const Profile = () => {
     formData.append('instagram', formRefs.current.instagram.value);
     formData.append('snapchat', formRefs.current.snapchat.value);
     formData.append('telegram', formRefs.current.telegram.value);
+;
 
     try {
+
       const response = await fetch('http://localhost:4000/api/v1/auth/updateProfile', {
         method: 'POST',
         headers: {
@@ -63,11 +66,15 @@ const Profile = () => {
       });
 
       const respData = await response.json();
-      console.log(respData)
       dispatch(setUser(respData.user))
-      console.log(respData);
+      if(respData.success){
+      dispatch(sendToast("Profile Updated"))
+
+      }else{
+        dispatch(sendToast(respData.message))
+
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
     }
   };
 
@@ -106,6 +113,7 @@ const Profile = () => {
             type="text"
             ref={(el) => (formRefs.current.name = el)}
             defaultValue={user.name || ""}
+            disabled
             className="w-full px-3 py-2 mt-1 text-slate-300 bg-gray-900 border border-gray-500 rounded-md focus:ring focus:ring-indigo-400 focus:border-indigo-400"
           />
         </div>
@@ -134,23 +142,31 @@ const Profile = () => {
           />
         </div>
         <div className='lg:w-1/3 md:w-full'>
-          <label className="block text-sm font-medium text-slate-300">Gender</label>
-          <input
-            type="text"
-            ref={(el) => (formRefs.current.gender = el)}
-            defaultValue={user.gender || ""}
-            className="w-full px-3 py-2 mt-1 text-slate-300 bg-gray-900 border border-gray-500 rounded-md focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-          />
-        </div>
-        <div className='lg:w-1/3 md:w-full'>
-          <label className="block text-sm font-medium text-slate-300">Sexual Orientation</label>
-          <input
-            type="text"
-            ref={(el) => (formRefs.current.sexualOrientation = el)}
-            defaultValue={user.sexualOrientation || ""}
-            className="w-full px-3 py-2 mt-1 text-slate-300 bg-gray-900 border border-gray-500 rounded-md focus:ring focus:ring-indigo-400 focus:border-indigo-400"
-          />
-        </div>
+      <label className="block text-sm font-medium text-slate-300">Gender</label>
+      <select
+        ref={(el) => (formRefs.current.gender = el)}
+        defaultValue={user.gender || ""}
+        className="w-full px-3 py-2 mt-1 text-slate-300 bg-gray-900 border border-gray-500 rounded-md focus:ring focus:ring-indigo-400 focus:border-indigo-400"
+      >
+        <option value="">Select gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+        <div className="lg:w-1/3 md:w-full ">
+      <label className="block mb-2 text-sm font-medium text-slate-300">
+        Sexual Orientation
+      </label>
+      <select
+        ref={(el) => (formRefs.current.sexualOrientation = el)}
+        defaultValue={user.sexualOrientation || ""}
+        className="w-full px-3 py-2 text-slate-300 bg-gray-900 border border-gray-500 rounded-md focus:ring focus:ring-indigo-400 focus:border-indigo-400 focus:outline-none transition duration-150 ease-in-out"
+      >
+        <option value="">Select orientation</option>
+        <option value="heterosexual">Heterosexual</option>
+        <option value="homosexual">Homosexual</option>
+      </select>
+    </div>
         <div className='lg:w-1/3 md:w-full'>
           <label className="block text-sm font-medium text-slate-300">About Me</label>
           <textarea

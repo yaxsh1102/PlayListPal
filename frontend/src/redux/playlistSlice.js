@@ -10,7 +10,6 @@ const playlistSlice = createSlice({
     reducers: {
         createPlaylist: (state, action) => {
             const playlistName = action.payload.playlist.toUpperCase();
-            console.log(playlistName)
             if (!state.playlist[playlistName]) {
                 state.playlist[playlistName] = [];
             }

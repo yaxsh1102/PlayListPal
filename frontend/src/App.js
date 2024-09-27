@@ -31,6 +31,7 @@ function App() {
   useGetArtists()
   useNewRelease()
   useGetUser()
+ 
 
   return (
 <> 

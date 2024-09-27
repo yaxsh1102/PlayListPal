@@ -4,8 +4,11 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoggedin } from '../redux/userSlice';
 import { setUser } from '../redux/userSlice';
+import { sendToast } from '../redux/toastSlice';
+import { setCoordinates } from '../redux/userSlice';
 
 const Login = () => {
+  
   const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
   const inputRefs = useRef({});
   const navigate = useNavigate();
@@ -13,7 +16,6 @@ const Login = () => {
   const [error, setError] = useState('');
 
   if (isLoggedIn) {
-    console.log(isLoggedIn);
     navigate("/");
   }
 
@@ -28,6 +30,27 @@ const Login = () => {
     setError("");
     login(email, password);
   }
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          dispatch(setCoordinates({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }));
+         
+        },
+        (error) => {
+          dispatch(sendToast("Location Is Mandatory"))
+         
+        }
+      );
+    } else {
+      dispatch(sendToast("Location Is Mandatory"))
+
+    }
+  };
 
   async function login(email, password) {
     try {
@@ -51,10 +74,11 @@ const Login = () => {
         setError(resp.message);
       }
     } catch (err) {
-      console.log(err);
       setError("An error occurred. Please try again.");
     }
   }
+
+ 
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
@@ -70,7 +94,6 @@ const Login = () => {
   
       const resp = await response.json();
 
-      console.log(resp);
   
       if (resp.token) {
         localStorage.setItem('db_token', resp.token);
@@ -79,17 +102,14 @@ const Login = () => {
         dispatch(setUser(resp.user))
 
       } else {
-        console.log('Login Failed');
         setError('Google login failed. Please try again.');
       }
     } catch (error) {
-      console.log('Login Failed', error);
       setError('An error occurred during Google login. Please try again.');
     }
   };
 
   const handleGoogleLoginError = () => {
-    console.log('Login Failed');
     setError('Google login failed. Please try again.');
   };
 
@@ -98,7 +118,7 @@ const Login = () => {
       <div className="w-full md:max-w-md max-w-sm p-8 space-y-6 rounded-lg shadow-xl bg-[#1d1d1e]">
         <h2 className="text-4xl font-bold text-center text-white">Login</h2>
         {error && (
-          <div className="text-center text-red-400 bg-red-900 bg-opacity-50 py-2 px-4 rounded">
+          <div className="text-center text-red-400  bg-opacity-50 py-2 px-4 rounded">
             <p>{error}</p>
           </div>
         )}

@@ -23,7 +23,7 @@ exports.getMatches = async(req , res)=>{
 
         req.user = decoded;
         const id = req.user.id || req.user.userId ;
-        const {likedSongs , playLists , radius} = req.body ;
+        const {likedSongs , playLists , radius } = req.body ;
  
 
         const user = await User.findById(id)
@@ -124,12 +124,13 @@ exports.getMatches = async(req , res)=>{
             const data = {
             _id: person._id,
             name:person.name ,
-            age:person.datingProfile.age ,
+            dateOfBirth:person.datingProfile.dateOfBirth ,
             gender:person.datingProfile.gender ,
             sexualOrientation :person.datingProfile.sexualOrientation , 
             city:person.datingProfile.city ,
             state:person.datingProfile.state ,
-            about:person.datingProfile.about
+            about:person.datingProfile.about ,
+            imageUrl:person.datingProfile.imageUrl
         }
 
 
