@@ -11,7 +11,7 @@ import PlayListPopup from './PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { sendToast } from '../redux/toastSlice';
 
-const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
+const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbum}) => {
   const dur = (duration / (60 * 1000)).toFixed(2);
   const navigate = useNavigate()
   const dispatch = useDispatch();
@@ -49,10 +49,8 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
   };
 
   const toggleLike = () => {
-    console.log("hiii" )
 
     dispatch(liked ? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
-    console.log(liked )
     if(liked){
       removeLike()
      
@@ -62,17 +60,18 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
 
     }
     setLiked(!liked);
-    dispatch(!liked ? sendToast('Added to Likedbcsdc Songs') : sendToast ('Removed from Liked Songs'))
+    dispatch(!liked ? sendToast('Added to Liked Songs') : sendToast ('Removed from Liked Songs'))
   };
 
   async function manageHistory(){ 
     if(!localStorage.getItem('db_token')){
       return 
   }
-  console.log(nowPlayingObj)
 
 
-  const data = await fetch("http://localhost:4000/api/v1/music/updateHistory" , {
+
+  try{
+    const data = await fetch("http://localhost:4000/api/v1/music/updateHistory" , {
       method:"post" ,
       headers: {
           'Content-Type': 'application/json',
@@ -87,9 +86,14 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
       })      
   })
   dispatch(updateHistory(nowPlayingObj))
+  }catch(err){
 
-  const response = await data.json() ;
-  console.log(response)
+  }
+
+
+
+
+
 
 
   }
@@ -98,36 +102,47 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url }) => {
     dispatch(setSelectedSong(nowPlayingObj));}
 
     async function addLike(){
-      const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('db_token')}`
 
-        },
-        body: JSON.stringify({  preview_url:url , image ,singer ,artist,name , }),
-      });
-  
-      const resp = await data.json() ;
-      console.log(resp)
-  
-       };
-
-
-       async function removeLike(){
-        const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+      try{
+        const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('db_token')}`
   
           },
-          body: JSON.stringify({ name:name , }),
+          body: JSON.stringify({  preview_url:url , image ,singer ,artist,name , }),
         });
     
         const resp = await data.json() ;
-        console.log(resp)
+
+      }catch(err){
+
+      }
     
+  
+       };
+
+
+  async function removeLike(){
+         try{
+          const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+    
+            },
+            body: JSON.stringify({ name:name , }),
+          });
+      
+          const resp = await data.json() ;
+      
+         }catch(err){
+
+         }
+
+       
          };
 
     
@@ -161,7 +176,7 @@ return (
           </div>
         </div>
       </div>
-      <div className="flex text-white items-center gap-x-3 bg-transparent border-b-[1px] border-black mt-2">
+     {!isAlbum &&  <div className="flex text-white items-center gap-x-3 bg-transparent border-b-[1px] border-black mt-2">
         <div className="ml-auto">
           <button onClick={toggleLike} className="focus:outline-none">
             <FontAwesomeIcon
@@ -176,6 +191,7 @@ return (
           </button>
         </div>
       </div>
+}
     </div>
     {showCenterPopup ? ( <OptionPopup options={options}  setShowAddToPlayList={setShowAddToPlayList} 
     onClose={toggleCenterPopup} setShowCenterPopup = {setShowCenterPopup} 

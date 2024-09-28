@@ -13,18 +13,26 @@ const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showP
   const currentUrl = location.pathname.split('/');
 
   async function removefromPlaylist(name , playlist){
-    const data = await fetch('http://localhost:4000/api/v1/music/removeFromPlaylist' , { 
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+    try{
+      const data = await fetch('http://localhost:4000/api/v1/music/removeFromPlaylist' , { 
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('db_token')}`
+  
+        },
+        body: JSON.stringify({ name:name ,  playlistName:playlist }),
+      });
 
-      },
-      body: JSON.stringify({ name:name ,  playlistName:playlist }),
-    });
+      const resp = await data.json()
+      
 
-    const resp = await data.json() ;
-    console.log(resp)
+    }catch(err){
+
+    }
+   
+
+   
 
   }
 

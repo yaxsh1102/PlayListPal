@@ -57,6 +57,7 @@ const SearchResults = () => {
             type={albums[album].type}
             singer={null}
             duration={null}
+            isAlbum={true}
           />
         ))}
         {albumsCount < albumArtists.length && (

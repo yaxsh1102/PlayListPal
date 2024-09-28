@@ -4,13 +4,11 @@ import { useDispatch , useSelector } from "react-redux";
 import { addAlbums , addTracks } from "../redux/resultsSlice";
 import { useEffect, useRef } from "react";
 import { setLoading } from "../redux/discoverSlice";
-import Loader from "./Loader";
 
 const Searchbar = () => {
   const dispatch = useDispatch();
   const loading = useSelector((store)=>store.toggle.loading) 
 
-  console.log(loading)
   const input = useRef(null) 
 
   const changehandler = (e)=>{
@@ -27,7 +25,6 @@ const Searchbar = () => {
     const access_token = localStorage.getItem("token");
 
     try {
-      console.log("hiiiiii")
       if (access_token) {
         const response = await axios.get(SEARCH_ENDPOINT, {
           headers: {
@@ -41,13 +38,18 @@ const Searchbar = () => {
 
         const albumsWithTracks = await Promise.all(
           response.data.albums.items.map(async (album) => {
-            const tracks = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
-              headers: {
-                Authorization: `Bearer ${access_token}`,
-              },
-             
-            })
-            return { album, tracks: tracks.data.items };
+            try{
+              const tracks = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
+                headers: {
+                  Authorization: `Bearer ${access_token}`,
+                },
+               
+              })
+              return { album, tracks: tracks.data.items };
+            }catch(err){
+
+            }
+           
 
       }))
 
@@ -60,7 +62,6 @@ const Searchbar = () => {
 
       }
     } catch (error) {
-      console.error("Error fetching search results:", error);
     }
   };
 
@@ -73,7 +74,7 @@ const Searchbar = () => {
 
  
   return (
-    <div className='w-full flex justify-start pl-24 mt-8'>
+    <div className='w-full flex md:justify-start justify-center lg:pl-24 md:pl-6 mt-8'>
       <input
         type="text"
         placeholder="Search for songs, albums, artists..."

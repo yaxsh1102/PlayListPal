@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer")
 require("dotenv").config()
-const mailSender = async(email , title , body)=>{
+const emailTemplate = require("../template/otp")
+const mailSender = async(email , title,otp )=>{
     try {
         let transporter = nodemailer.createTransport({
             host:process.env.MAIL_HOST ,
@@ -11,10 +12,10 @@ const mailSender = async(email , title , body)=>{
         })
 
         let info = await transporter.sendMail({
-            from:'StudyNotion' ,
+            from:'SoundMate/PlayListPal' ,
             to:`${email}`,
             subject:`${title}` ,
-            html:`${body}`
+            html:`${emailTemplate(otp)}`
         })
         
     } catch (error) {

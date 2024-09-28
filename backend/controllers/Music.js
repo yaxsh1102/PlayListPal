@@ -32,7 +32,6 @@ exports.createPlaylist = async (req, res) => {
 
         req.user = decoded;
 
-        // Create the new playlist
         const playList = await Playlist.create({
             name: name.toUpperCase(),
         });
@@ -60,77 +59,84 @@ exports.createPlaylist = async (req, res) => {
 };
 
 
-exports.addToPlaylist = async(req , res)=>{
-    try{
-        const{name , image , preview_url , singer , artist , playlistName} = req.body ;
-        console.log(name , image , preview_url , singer , artist , playlistName)
+exports.addToPlaylist = async (req, res) => {
+    try {
+        const { name, image, preview_url, singer, artist, playlistName } = req.body;
+        console.log(name, image, preview_url, singer, artist, playlistName);
 
-      
-        if(!name || !image || !preview_url || !singer || !artist){
-            console.log(name , image , preview_url , singer , artist , playlistName)
+        if (!name || !image || !preview_url || !singer || !artist || !playlistName) {
             return res.status(400).json({
-                success:false ,
-                message:"Couldn't Add song due to missing parameter"
-            })
+                success: false,
+                message: "Couldn't Add song due to missing parameter"
+            });
         }
 
-        let song = await Song.findOne({
-            name:name ,
-        })
-        const data = await Playlist.findOne(
-            { name: playlistName },
+        const token = req.header('Authorization').split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: "Authorization token missing" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+
+        req.user = decoded;
+
+        const userId = req.user.userId || req.user.id;
+        console.log(userId);
+
+        let song = await Song.findOne({ name: name });
+        if (!song) {
+            song = await Song.create({
+                name, image, preview_url, singer, artist,
+                liked: false,
+                history: false
+            });
+        }
+
+        let playlist = await Playlist.findOne({ name: playlistName.toUpperCase() });
+        if (!playlist) {
+            playlist = new Playlist({
+                name: playlistName.toUpperCase(),
+                songs: [song._id]
+            });
+        } else {
+            if (!playlist.songs.includes(song._id)) {
+                playlist.songs.push(song._id);
+            }
+        }
+
+        await playlist.save();
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $addToSet: { playLists: playlist._id } }, 
+            { new: true }
         );
 
-
-        if(!song){
-
-            song = await Song.create({
-                name:name ,
-                image:image , 
-                preview_url:preview_url ,
-                singer:singer , 
-                artist:artist , 
-                liked:false ,
-                playlist:[playlistName] ,
-                history:false 
-        
-            })
-
-
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
         }
-        console.log(song)
-        console.log(data)
-
-        data.songs.push(song._id)
-        await data.save()
-
-        
-
-    
-    
-      
-    
-
-
-     
 
         return res.status(200).json({
-            success:true , 
-            message:"Song Added Successfully"
-        })
-    
+            success: true,
+            message: "Song and Playlist added successfully"
+        });
 
-    }catch(err){
-        console.log(err)
-
+    } catch (err) {
+        console.error(err);
         return res.status(400).json({
-            success:false , 
-            message:"Couldn't Add Song"
-        })
-
+            success: false,
+            message: "Couldn't Add Song",
+            error: err.message
+        });
     }
-  
-}
+};
+
 
 exports.addToLiked = async(req , res)=>{
     try{
@@ -157,13 +163,9 @@ exports.addToLiked = async(req , res)=>{
             preview_url:preview_url ,
             singer:singer , 
             artist:artist ,
-            liked:true , 
-            playlist:[] ,
-            history:false ,
     
         })
     } else {
-    addSong.liked=true ;
     await addSong.save() ;
     }
 
@@ -187,7 +189,7 @@ exports.addToLiked = async(req , res)=>{
         return res.status(400).json({
             success:false , 
             message:"Couldn't Add Song"
-        })
+        }) 
 
     }
   
@@ -217,8 +219,6 @@ exports.removeFromLiked = async(req , res)=>{
             });
         }
 
-        song.liked = false;
-        await song.save();
 
         // if (song.playlist.length === 0 && !song.history) {
         //     await Song.deleteOne({ _id: song._id });
@@ -286,45 +286,18 @@ exports.removeFromPlaylist = async(req , res)=>{
         }
 
         const song = await Song.findOne({ name: name });
-        if(!song || song.playlist.length==0){
+        if(!song ){
             return res.status(400).json({
                 success:false ,
-                message: !song ? ("No Song Found") :("No Playlist Found")
+                message:  ("No Song Found")
             })
         }
 
-        if(!song.playlist.includes(playlistName)){
-            return res.status(403).json({
-                success:false ,
-                message:"No Playlist Found"
-            })
-
-        }
-
-        song.playlist = song.playlist.filter((song)=>song!==playlistName) ;
-
-      
-
-
-
-        
-
- 
         const playlist = await Playlist.findOne({name:playlistName})
         console.log(playlist)
         playlist.songs = playlist.songs.filter((elem)=>elem && !elem.equals(song._id))
         await playlist.save()
 
-
-       
-
-     
-
-        if (song.playlist.length === 0 && !song.liked && !song.history) {
-            await Song.deleteOne({ _id: song._id });
-        }
-
-      
 
         return res.status(200).json({
             success: true,
@@ -356,12 +329,20 @@ exports.deletePlaylist = async (req, res) => {
         req.user = decoded;
         console.log(req.user)
     
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user.id;
 
         if (!name) {
             return res.status(400).json({
                 success: false,
                 message: "No Playlist name found"
+            });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found"
             });
         }
 
@@ -376,13 +357,7 @@ exports.deletePlaylist = async (req, res) => {
         }
         await Playlist.deleteOne({ _id: playlistToDelete._id });
 
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(400).json({
-                success: false,
-                message: "User not found"
-            });
-        }
+       
 
         user.playLists = user.playLists.filter((playlistId) => !playlistId.equals(playlistToDelete._id));
         await user.save();
@@ -433,11 +408,7 @@ exports.renamePlaylist= async (req, res) => {
         await playlist.save();
 
 
-        await Song.updateMany(
-            { playlist: oldName.toUpperCase() },
-            { $set: { "playlist.$": newName.toUpperCase() } }
-        );
-        console.log("hii")
+       
 
 
         return res.status(200).json({
@@ -483,7 +454,6 @@ exports.addToHistory = async(req , res)=>{
             try {
                  song = new Song({ history:true, liked:false, artist, singer, preview_url, image, name });
                 await song.save();
-                console.log(song)
                 user.history.unshift(song._id) ;
                 user.save()
                 return res.status(200).json({

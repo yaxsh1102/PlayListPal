@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken") ;
 const mailSender = require("../utils/mailSender");
 require("dotenv").config()
 const { OAuth2Client } = require('google-auth-library');
+const {uploadImageToCloudinary} = require("../utils/imageUploader")
+
 
  
 exports.sendOTP=async(req, res)=>{
@@ -65,23 +67,19 @@ exports.sendOTP=async(req, res)=>{
 exports.signUp = async(req , res)=>{
 
     try {
-        const {name , email , password , confirmPassword  ,contactNumber , otp}=req.body ;
-        console.log(email)
+        const {fullName , email , password ,  otp}=req.body ;
 
-        if(!name || !email  || !password || !confirmPassword || !otp || !contactNumber ){
+
+        if(!fullName || !email  || !password  || !otp  ){
+            console.log(fullName , email , password ,  otp)
             return res.status(403).json({
                 success:false ,
                 message:"All fields are required"
             })
         }
     
-        if(password!==confirmPassword){
-            return res.status(400).json({
-                success:false ,
-                message:"Password and confirm-password value doens't match"
-            })
-    
-        }
+       
+        
     
         const existingUser = await  User.findOne({email})
         if(existingUser){
@@ -113,7 +111,6 @@ exports.signUp = async(req , res)=>{
             gender:null ,
             dateOfBirth:null ,
             about:null ,
-            contactNumber:null ,
             sexualOrientation:null , 
             city:null ,
             state:null ,
@@ -124,19 +121,16 @@ exports.signUp = async(req , res)=>{
             imageUrl:null , 
         })
         const user = await User.create({
-            name ,
+            name:fullName ,
             email ,
             password :hashedPassword ,
-            contactNumber , 
             datingProfile:profileDetails._id
            
         })
 
-        req.user = {
-            name , 
-            id:user._id , 
-            email ,
-        }
+        const data = await Profile.findByIdAndUpdate(profileDetails , {user:user._id})
+
+        
         
         return res.status(200).json({
             success:true ,
@@ -219,149 +213,6 @@ exports.login = async(req  , res)=>{
     }
 }
 
-// exports.changePassword= async(req , res)=>{
-//     try{
-//         const{oldPassword , newPassword , confirmNewPassword , email}= req.body ;
-//         if(!oldPassword || !newPassword || !confirmNewPassword){
-//             return res.status(400).json({
-//                  success:false ,
-//                 message:"Credentials Needed"
-//             })
-//         }
-//         const user = await User .find({email}) ;
-    
-//         if(await bcrypt.compare(oldPassword , user.password)){
-//             if(newPassword!==confirmNewPassword){
-//                 return res.status(400).json({
-//                     success:false ,
-//                     message:"Old and New Password Do not match"
-//                 })
-//             }else{
-//                 await User.findOneAndUpdate({})
-//             }
-    
-//         } else{
-//             return res.status(400).json({
-//                 success:false ,
-//                 message:"Old Password is invalid"
-//             })
-//         }
-
-//         mailSender(email , "Password Changed" , "Password Changed Successfully")
-
-
-//         return res.status(200).json({
-//             success:true ,
-//             message:"Password Changed Successfully"
-//         })
-    
-
-//     }catch(err){
-//         return res.status(400).json({
-//             success:true ,
-//             message:"Couldnt Update Password"
-//         })
-//     }
-   
-// }
-
-
-// passport.use(new GoogleStrategy({
-//   clientID: process.env.GOOGLE_CLIENT_ID,
-//   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//   callbackURL: process.env.GOOGLE_CALLBACK_URL
-// },
-// async (accessToken, refreshToken, profile, done) => {
-//   try {
-//     // Check if user already exists in our database
-//     let user = await User.findOne({ googleId: profile.id });
-
-//     if (user) {
-//       // If user exists, return the user
-//       return done(null, user);
-//     } else {
-//       // If not, create a new user
-//       user = await User.create({
-//         googleId: profile.id,
-//         name: profile.displayName,
-//         email: profile.emails[0].value,
-//         avatar: profile.photos[0].value,
-//       });
-//       return done(null, user);
-//     }
-//   } catch (error) {
-//     return done(error, false);
-//   }
-// }));
-
-// passport.serializeUser((user, done) => {
-//   done(null, user.id);
-// });
-
-// passport.deserializeUser(async (id, done) => {
-//   try {
-//     const user = await User.findById(id);
-//     done(null, user);
-//   } catch (error) {
-//     done(error, false);
-//   }
-// });
-
-// console.log(process.env.GOOGLE_CLIENT_ID)
-// console.log(process.env.GOOGLE_CLIENT_SECRET)
-
-// passport.use(new GoogleStrategy({
-//     clientID: process.env.GOOGLE_CLIENT_ID,
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     callbackURL: process.env.GOOGLE_CALLBACK_URL
-//   },
-//   async (accessToken, refreshToken, profile, done) => {
-//     try {
-//       // Check if user already exists in our database
-//       let user = await User.findOne({ googleId: profile.id });
-  
-//       if (user) {
-//         // If user exists, return the user
-//         return done(null, user);
-//       } else {
-//         // If not, create a new user
-//         user = await User.create({
-//           googleId: profile.id,
-//           name: profile.displayName,
-//           email: profile.emails[0].value,
-//           avatar: profile.photos[0].value,
-//         });
-//         return done(null, user);
-//       }
-//     } catch (error) {
-//       return done(error, false);
-//     }
-//   }));
-  
-//   // Serialize and deserialize for Passport
-//   passport.serializeUser((user, done) => {
-//     done(null, user.id);
-//   });
-  
-//   passport.deserializeUser(async (id, done) => {
-//     try {
-//       const user = await User.findById(id);
-//       done(null, user);
-//     } catch (error) {
-//       done(error, false);
-//     }
-//   });
-  
-//   // Google OAuth Callback Handler
-//   exports.googleCallback = (req, res) => {
-//     // Generate JWT for the authenticated user
-//     const token = jwt.sign({ id: req.user.id, email: req.user.email }, process.env.JWT_SECRET, {
-//       expiresIn: "2h",
-//     });
-  
-//     // Redirect or send response with the token
-//     res.redirect(`${process.env.CLIENT_URL}/auth/success?token=${token}`);
-//   };
 
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID; 
@@ -400,6 +251,8 @@ exports.verifyGoogleToken = async (req, res) => {
             imageUrl:null , 
         })
 
+
+
         existingUser = new User({
           email: userEmail,
           name: userName, 
@@ -408,6 +261,10 @@ exports.verifyGoogleToken = async (req, res) => {
   
         await existingUser.save();
       }
+      const data = await Profile.findByIdAndUpdate(existingUser.datingProfile , {user:existingUser._id})
+
+      existingUser = await User.findOne({ email: userEmail }).populate('datingProfile');
+      existingUser.password=undefined
   
       const authToken = jwt.sign(
         { userId: existingUser._id, email: existingUser.email },
@@ -418,6 +275,7 @@ exports.verifyGoogleToken = async (req, res) => {
       return res.status(200).json({
         success: true,
         token: authToken,
+        user:{name:existingUser.name , ...existingUser.datingProfile} ,
         message: 'User authenticated successfully',
       });
   
@@ -470,7 +328,6 @@ exports.verifyGoogleToken = async (req, res) => {
             .exec();
 
             console.log("hii")
-            console.log(user)
             
 
 
@@ -499,74 +356,132 @@ exports.verifyGoogleToken = async (req, res) => {
 
 
 
-exports.createProfile = async (req, res) => {
+exports.updateProfile = async (req, res) => {
     try {
-        const { gender, birthdate, sexualOrientation, instagram, snapchat, telegram, about, city, state, country, lat, lon } = req.body;
+        const { gender, birthdate, sexualOrientation, instagram, snapchat, telegram, aboutMe, city, state, country } = req.body;
 
-        // Validate input
-        if (!gender || !birthdate || !sexualOrientation || (!instagram && !snapchat && !telegram) || !about || !city || !state || !country || !lat || !lon) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid or missing parameters"
-            });
+        console.log("Incoming Values:", {
+            gender, birthdate, sexualOrientation, instagram, snapchat, telegram, aboutMe, city, state, country
+        });
+
+        if (!gender || !birthdate || !sexualOrientation || !instagram || !snapchat || !telegram || !aboutMe || !city || !state || !country) {
+            return res.status(400).json({ success: false, message: "Found Empty Fields" });
         }
 
         const token = req.header('Authorization')?.split(' ')[1];
-        if (!token) {
-            return res.status(401).json({ message: "Authorization token missing" });
-        }
+        if (!token) return res.status(401).json({ message: "Authorization token missing" });
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        if (!decoded) {
-            return res.status(401).json({ message: "Invalid token" });
+        if (!decoded) return res.status(401).json({ message: "Invalid token" });
+
+        const userId = decoded.userId || decoded.id;
+
+        console.log("User ID:", userId);
+        console.log(userId)
+
+        const datingProfile = await Profile.findOne({ user: userId }).populate('user');
+        if (!datingProfile) return res.status(404).json({ message: "Dating profile not found" });
+
+        console.log("Existing Dating Profile:", datingProfile);
+
+        datingProfile.gender = gender || datingProfile.gender;
+        datingProfile.dateOfBirth = birthdate || datingProfile.dateOfBirth;
+        datingProfile.sexualOrientation = sexualOrientation || datingProfile.sexualOrientation;
+        datingProfile.instagram = instagram || datingProfile.instagram;
+        datingProfile.snapchat = snapchat || datingProfile.snapchat;
+        datingProfile.telegram = telegram || datingProfile.telegram;
+        datingProfile.about = aboutMe || datingProfile.about;
+        datingProfile.city = city || datingProfile.city;
+        datingProfile.state = state || datingProfile.state;
+        datingProfile.country = country || datingProfile.country;
+
+        if (req.files && req.files.imageUrl) {
+            const image = req.files.imageUrl; 
+            const result = await uploadImageToCloudinary(image, process.env.FOLDER_NAME);
+            datingProfile.imageUrl = result.secure_url;
         }
 
-        req.user = decoded;
-        const id = req.user.userId || req.user.id;
-        console.log(id);
+        await datingProfile.save();
 
-        const user = await User.findById(id).populate('datingProfile');
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        if (user.datingProfile) {
-            return res.status(400).json({ message: "Profile already exists" });
-        }
-
-        const profileDetails = new Profile({
-            age: 12,  // Assuming age needs to be calculated or set elsewhere
-            gender,
-            birthdate,
-            sexualOrientation,
-            instagram,
-            snapchat,
-            telegram,
-            about,
-            city,
-            state,
-            country,
-            lat,
-            lon
-        });
-
-        await profileDetails.save();
-
-        user.datingProfile = profileDetails._id;
-        await user.save();
-
-        return res.status(201).json({
+        const updatedProfile = await Profile.findById(datingProfile._id).populate('user');
+        return res.status(200).json({
             success: true,
-            message: "Profile created successfully",
-            profileDetails
+            message: "Profile updated successfully",
+            user: {name:updatedProfile.user.name ,email:updatedProfile.user.email , ...datingProfile.toObject()  }, 
         });
 
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            success: false,
-            message: "Profile could not be created"
-        });
+        console.log("Error:", err);
+        return res.status(500).json({ success: false, message: "Profile could not be updated" });
     }
 };
+
+exports.addLocation = async(req , res)=>{
+    try{
+
+        const token = req.header('Authorization').split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        console.log(token)
+
+        const {lat , lon} = req.body ;
+        console.log(lat)
+        console.log(lon)
+        if(!lat || !lon){
+            return res.status(400).json({
+                success:false ,
+                message:"No Location Found"
+            })
+        }
+
+        if (!decoded    ) {
+            return res.status(404).json({
+                success: false,
+                message: "Authentication Failed. Kindly Log In."
+            });
+        }
+
+        const id = req.user.userId || req.user.id;
+        console.log(id) ;
+        
+        const user = await Profile.findOneAndUpdate(
+            { user: id },
+            {
+                $set: {
+                    lat: lat,
+                    lon: lon
+                }
+            },
+            { new: true }
+        );
+
+        if(!user){
+            return res.status(200).json({
+                success:false ,
+                message:"Could't Find User"
+            })
+        }
+
+
+        return res.status(200).json({
+            success:true ,
+            message:"Location Updated"
+        })
+
+
+
+
+    }catch(err){
+        return res.status(500).json({
+            success:false ,
+            message:"Internal Server Error"
+        })
+
+    }
+}
+
+
+ 
+
+
 

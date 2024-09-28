@@ -54,26 +54,29 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
   }
 
   async function addtoPlaylist(playlistName){
-    console.log(selectedSong)
-   const{ url , 
-  
-    image ,
-    singer ,
-    artist,
-    name } = selectedSong ;
-    
 
-    const data = await fetch('http://localhost:4000/api/v1/music/addToPlaylist' , { 
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({  preview_url:url , image ,singer ,artist,name ,  playlistName:playlistName }),
-    });
+    try{
+      const{ 
+            url , 
+            image ,
+            singer ,
+            artist,
+             name
+       } = selectedSong ;
 
-    const resp = await data.json() ;
-    console.log(resp)
 
+            const data = await fetch('http://localhost:4000/api/v1/music/addToPlaylist' , { 
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization':`Bearer ${localStorage.getItem('db_token')}`
+              },
+              body: JSON.stringify({  preview_url:url , image ,singer ,artist,name ,  playlistName:playlistName }),
+          });
+    }catch(err){
+      
+   
+    }
      };
 
   

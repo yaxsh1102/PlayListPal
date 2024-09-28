@@ -10,6 +10,8 @@ const useGetPlaying = () =>{
 
 
     const searchHindiSongs = async () => {
+
+      try{
         const token = localStorage.getItem('token')
         const searchUrl = 'https://api.spotify.com/v1/search';
         const query = 'hindi good songs'; 
@@ -39,11 +41,15 @@ const useGetPlaying = () =>{
             
          });
          dispatch(initiateQueue(arr))
+      }catch(err){
+
+      }
+       
          
 }
 useEffect(()=>{
-     isTokenReady &&     searchHindiSongs()
-} , [])
+     isTokenReady &&  searchHindiSongs()
+} , [isTokenReady])
 }
 
 

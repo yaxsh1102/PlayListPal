@@ -1,18 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import MatchLanding from './MatchLanding'; 
 import Request from './Requests'; 
 import MatchCard from './MatchCard';
-import { useDispatch } from 'react-redux';  
+import { useDispatch  , useSelector} from 'react-redux';  
 import { addNowPlaying } from '../redux/playerSlice';
+import { setReqandFriends } from '../redux/userSlice';
+
 
 const Match = () => {
+  const dispatch = useDispatch() ;
+  const {requests , friends} = useSelector((store)=>store.user)
+
+
+    
+
+  useEffect(()=>{
+
+    async function getDetails(){
+
+      try{
+        const data = await fetch('http://localhost:4000/api/v1/match/getInfo' , {
+          method:"POST" ,
+          headers:{
+            'content-type':'application/json' ,
+            'Authorization':`Bearer ${localStorage.getItem('db_token')}`
+          } ,
+  
+        })
+          const resp = await data.json()
+          dispatch(setReqandFriends({requests:resp.requests , friends:resp.friends}))
+  
+  
+  
+      }catch(err){
+
+      }
+     
+    }
+
+    !requests && !friends && getDetails()
+    return()=>{
+    }
+
+
+  } ,[])
+
+
   const [selectedOption, setSelectedOption] = useState('landing');
-  const dispatch = useDispatch()
   dispatch(addNowPlaying(null))
 
   
 
   const handleOptionClick = (option) => {
+
     setSelectedOption(option);
   };
 

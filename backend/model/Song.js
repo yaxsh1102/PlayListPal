@@ -22,22 +22,7 @@ const songSchema = new mongoose.Schema({
         type:String , 
         required:true  
     } ,
-    liked:{
-        type:Boolean ,
-        required:true
-
-    } ,
-    playlist:[
-        {
-            type:String , 
-
-        }
-    ] ,
-    history:{
-        type:Boolean ,
-        required:true
-        
-    }
+    
 })
 
 module.exports= mongoose.model("Song" ,songSchema )

@@ -21,6 +21,7 @@ const MusicPlayer = ({ nowPlaying }) => {
   const isLiked = likedSongs.some((song) => song.url === nowPlayingObj.url);
 
    async function addLike(){
+    try{
       const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
         method: 'post',
         headers: {
@@ -31,26 +32,36 @@ const MusicPlayer = ({ nowPlaying }) => {
         body: JSON.stringify({  preview_url:nowPlayingObj.url , image:nowPlayingObj.image ,singer:nowPlayingObj.singer ,artist:nowPlayingObj.artist,name:nowPlayingObj.name , }),
       });
   
-      const resp = await data.json() ;
-      console.log(resp)
+
+    }catch(err){
+
+    }
+     
   
        };
 
 
        async function removeLike(){
-        const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('db_token')}`
-  
-          },
-          body: JSON.stringify({ name:nowPlayingObj.name , }),
-        });
+
+        try{
+          const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('db_token')}`
     
-        const resp = await data.json() ;
-        console.log(resp)
+            },
+            body: JSON.stringify({ name:nowPlayingObj.name , }),
+          });
+
+        }catch(err){
+
+        }
+      
     
+        
+
+        
          };
 
 
@@ -63,7 +74,6 @@ const MusicPlayer = ({ nowPlaying }) => {
     audioRef.current.play().then(() => {
       setIsPlaying(true);
     }).catch(error => {
-      console.error('Error playing audio:', error);
       setIsPlaying(false);
     });
 
@@ -85,7 +95,6 @@ const MusicPlayer = ({ nowPlaying }) => {
       audioRef.current.play().then(() => {
         setIsPlaying(true);
       }).catch(error => {
-        console.error('Error playing audio:', error);
         setIsPlaying(false);
       });
     }
@@ -107,7 +116,6 @@ const MusicPlayer = ({ nowPlaying }) => {
   function likeHandler(){
     dispatch(isLiked? removeFromLikedSongs(nowPlayingObj) : addToLikedSongs(nowPlayingObj));
     if(isLiked){
-      console.log("hiii")
       removeLike()
      
 

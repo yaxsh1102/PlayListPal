@@ -47,9 +47,8 @@ const useNewRelease = () => {
     };
 
     !Object.keys(albums).length && isTokenReady && getNewReleases();
-  }, []);
+  }, [isTokenReady]);
 
-  return null;
 };
 
 export default useNewRelease;
