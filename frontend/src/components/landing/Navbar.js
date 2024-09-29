@@ -1,10 +1,10 @@
 
 import React from 'react'
 import { useDispatch  , useSelector} from 'react-redux';
-import { toggleSearch } from '../redux/toggleSlice';
-import { toggleLoggedin } from '../redux/userSlice';
+import { toggleSearch } from '../../redux/toggleSlice';
+import { toggleLoggedin } from '../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { sendToast } from '../redux/toastSlice';
+import { sendToast } from '../../redux/toastSlice';
 import { IoMdLogOut } from "react-icons/io";
 
 

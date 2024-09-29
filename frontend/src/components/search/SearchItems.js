@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNowPlaying, updateHistory } from '../redux/playerSlice';
+import { addNowPlaying, updateHistory } from '../../redux/playerSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import { addToLikedSongs,removeFromLikedSongs,setSelectedSong } from '../redux/playlistSlice';
-import OptionPopup from './OptionPopup';
-import PlayListPopup from './PlayListPopup';
+import { addToLikedSongs,removeFromLikedSongs,setSelectedSong } from '../../redux/playlistSlice';
+import OptionPopup from '../playlist/OptionPopup';
+import PlayListPopup from '../playlist/PlayListPopup';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { sendToast } from '../redux/toastSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbum}) => {
   const dur = (duration / (60 * 1000)).toFixed(2);

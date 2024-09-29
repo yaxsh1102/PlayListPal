@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Sidebar from "./Sidebar"
 import { useState } from "react";
-import MusicPlayer from "./MusicPlayer";
+import MusicPlayer from "../player/MusicPlayer";
 import { useSelector } from "react-redux";
 
 

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Discover from './Discover';
-import { useSelector  , dispatch, useDispatch} from 'react-redux';
-import SearchResults from './SearchResults';
-import Searchbar from './Searchbar';
-import { setCoordinates } from '../redux/userSlice';
-import { sendToast } from '../redux/toastSlice';
+import { useSelector  , useDispatch} from 'react-redux';
+import SearchResults from '../search/SearchResults';
+import Searchbar from '../search/Searchbar';
+import { setCoordinates } from '../../redux/userSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const LandingPage = () => {
   const {lat , lon } = useSelector((store)=>store.user) ;

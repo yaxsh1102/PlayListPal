@@ -3,8 +3,8 @@ import MatchLanding from './MatchLanding';
 import Request from './Requests'; 
 import MatchCard from './MatchCard';
 import { useDispatch  , useSelector} from 'react-redux';  
-import { addNowPlaying } from '../redux/playerSlice';
-import { setReqandFriends } from '../redux/userSlice';
+import { addNowPlaying } from '../../redux/playerSlice';
+import { setReqandFriends } from '../../redux/userSlice';
 
 
 const Match = () => {

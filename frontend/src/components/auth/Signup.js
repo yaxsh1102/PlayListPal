@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { sendToast } from '../redux/toastSlice';
+import { sendToast } from '../../redux/toastSlice';
 import { GoogleLogin } from '@react-oauth/google';
-import { toggleLoggedin } from '../redux/userSlice';
+import { toggleLoggedin } from '../../redux/userSlice';
 
 const Signup = () => {
   const [fullName, setFullName] = useState('');

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addNowPlaying } from '../redux/playerSlice'
+import { addNowPlaying } from '../../redux/playerSlice'
 
 const MusiContainerItems = ({name , image , singer,url,artist,duration,type}) => {
     const song = { image, name, artist, duration, singer,type, url }

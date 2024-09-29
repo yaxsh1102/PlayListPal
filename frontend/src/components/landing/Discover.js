@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import DiscoverCards from "./DiscoverCards";
-import "../App.css"
-import Loader from './Loader';
+import "../../App.css"
+import Loader from '../layout/Loader';
 
 const Discover = () => {
   const newAlbums = useSelector((store) => store.discover.albums);

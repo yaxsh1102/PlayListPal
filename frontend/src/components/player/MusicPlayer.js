@@ -2,11 +2,11 @@ import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToQueue, initiateQueue, nextButton, prevButton} from '../redux/playerSlice';
+import { addToQueue, initiateQueue, nextButton, prevButton} from '../../redux/playerSlice';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { addToLikedSongs, removeFromLikedSongs } from '../redux/playlistSlice';
-import { sendToast } from '../redux/toastSlice';
+import { addToLikedSongs, removeFromLikedSongs } from '../../redux/playlistSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const MusicPlayer = ({ nowPlaying }) => {
   const { url } = nowPlaying;

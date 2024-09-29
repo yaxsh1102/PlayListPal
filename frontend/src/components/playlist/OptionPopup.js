@@ -1,10 +1,10 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa'; 
 import { useDispatch, useSelector } from 'react-redux';
-import { addToQueue } from '../redux/playerSlice';
+import { addToQueue } from '../../redux/playerSlice';
 import { useLocation } from 'react-router-dom';
-import { removeFromPlaylist } from '../redux/playlistSlice';
-import { sendToast } from '../redux/toastSlice';
+import { removeFromPlaylist } from '../../redux/playlistSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showPopup,setShowPopup,popupMessage,setPopupMessage}) => {
   const dispatch = useDispatch()

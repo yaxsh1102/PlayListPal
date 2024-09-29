@@ -5,14 +5,9 @@ import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { RxCross2 } from "react-icons/rx";
 import { FiUserCheck } from "react-icons/fi";
 import { CiClock2 } from "react-icons/ci";
-import { sendToast } from '../redux/toastSlice';
-
-
-
-
-
+import { sendToast } from '../../redux/toastSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { moveCurrentProfile, setReqandFriends } from '../redux/userSlice';
+import { moveCurrentProfile, setReqandFriends } from '../../redux/userSlice';
 
 const MatchCard = ({ selectedOption, index }) => {
   const [showOverlay, setShowOverlay] = useState(false);
