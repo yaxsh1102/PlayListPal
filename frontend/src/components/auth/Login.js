@@ -54,7 +54,7 @@ const Login = () => {
 
   async function login(email, password) {
     try {
-      const response = await fetch('http://localhost:4000/api/v1/auth/login', {
+      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/login', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',

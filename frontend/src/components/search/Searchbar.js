@@ -1,9 +1,11 @@
 import axios from "axios";
-import { SEARCH_ENDPOINT } from "../../utils/constants";
+// import { SEARCH_ENDPOINT } from "../../utils/constants";
 import { useDispatch , useSelector } from "react-redux";
 import { addAlbums , addTracks } from "../../redux/resultsSlice";
 import { useEffect, useRef } from "react";
 import { setLoading } from "../../redux/discoverSlice";
+
+const SEARCH_ENDPOINT = process.env.REACT_APP_SEARCH_ENDPOINT 
 
 const Searchbar = () => {
   const dispatch = useDispatch();
