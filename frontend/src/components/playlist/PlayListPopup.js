@@ -65,7 +65,7 @@ const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setS
        } = selectedSong ;
 
 
-            const data = await fetch('http://localhost:4000/api/v1/music/addToPlaylist' , { 
+            const data = await fetch('https://playlistpal.onrender.com/api/v1/music/addToPlaylist' , { 
               method: 'post',
               headers: {
                 'Content-Type': 'application/json',

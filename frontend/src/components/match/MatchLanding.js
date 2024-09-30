@@ -61,7 +61,7 @@ const MatchLanding = ({ setsetSelectedOption }) => {
     setLoading(true); 
 
     try {
-      const response = await fetch('http://localhost:4000/api/v1/match/getMatches', {
+      const response = await fetch('https://playlistpal.onrender.com/api/v1/match/getMatches', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

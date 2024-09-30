@@ -21,7 +21,7 @@ const Signup = () => {
     }
     try {
       setError('');
-      const response = await fetch('http://localhost:4000/api/v1/auth/sendOTP', {
+      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/sendOTP', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const Signup = () => {
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
-      const response = await fetch('http://localhost:4000/api/v1/auth/google/token', {
+      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/google/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ const MatchCard = ({ selectedOption, index }) => {
 
   async function sendRequest() {
     try {
-      const data = await fetch('http://localhost:4000/api/v1/match/sendRequest', {
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/match/sendRequest', {
         method: "POST",
         headers: {
           'content-type': 'application/json',
@@ -60,7 +60,7 @@ const MatchCard = ({ selectedOption, index }) => {
 
   async function acceptRequest() {
     try {
-      const data = await fetch('http://localhost:4000/api/v1/match/acceptRequest', {
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/match/acceptRequest', {
         method: "POST",
         headers: {
           'content-type': 'application/json',
@@ -109,7 +109,7 @@ const MatchCard = ({ selectedOption, index }) => {
 
   async function rejectReqHandler() {
     try {
-      const data = await fetch('http://localhost:4000/api/v1/match/rejectRequest', {
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/match/rejectRequest', {
         method: "POST",
         headers: {
           'content-type': 'application/json',
@@ -136,7 +136,7 @@ const MatchCard = ({ selectedOption, index }) => {
 
   async function removeFriend() {
     try {
-      const data = await fetch('http://localhost:4000/api/v1/match/removeFriend', {
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/match/removeFriend', {
         method: "POST",
         headers: {
           'content-type': 'application/json',

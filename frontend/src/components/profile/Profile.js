@@ -56,7 +56,7 @@ const Profile = () => {
 
     try {
 
-      const response = await fetch('http://localhost:4000/api/v1/auth/updateProfile', {
+      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/updateProfile', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('db_token')}`,

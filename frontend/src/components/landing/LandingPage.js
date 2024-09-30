@@ -24,7 +24,7 @@ const LandingPage = () => {
    
 
     try{
-    const data = await fetch('http://localhost:4000/api/v1/auth/addLocation' ,{
+    const data = await fetch('https://playlistpal.onrender.com/api/v1/auth/addLocation' ,{
       method:"POST" ,
       headers:
       {

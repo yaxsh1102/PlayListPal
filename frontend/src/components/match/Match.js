@@ -19,7 +19,7 @@ const Match = () => {
     async function getDetails(){
 
       try{
-        const data = await fetch('http://localhost:4000/api/v1/match/getInfo' , {
+        const data = await fetch('https://playlistpal.onrender.com/api/v1/match/getInfo' , {
           method:"POST" ,
           headers:{
             'content-type':'application/json' ,

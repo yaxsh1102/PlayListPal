@@ -14,7 +14,7 @@ const OptionPopup = ({options  , setShowAddToPlayList , setShowCenterPopup,showP
 
   async function removefromPlaylist(name , playlist){
     try{
-      const data = await fetch('http://localhost:4000/api/v1/music/removeFromPlaylist' , { 
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/music/removeFromPlaylist' , { 
         method: 'post',
         headers: {
           'Content-Type': 'application/json',

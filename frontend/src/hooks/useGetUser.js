@@ -13,7 +13,7 @@ const useGetUser = ()=>{
             if(!localStorage.getItem('db_token')){
                 return 
             }
-            const data = await fetch("http://localhost:4000/api/v1/auth/getUserDetails" , {
+            const data = await fetch("https://playlistpal.onrender.com/api/v1/auth/getUserDetails" , {
                 method:"get" ,
                 headers: {
                     'Content-Type': 'application/json',

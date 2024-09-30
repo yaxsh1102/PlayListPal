@@ -22,7 +22,7 @@ const MusicPlayer = ({ nowPlaying }) => {
 
    async function addLike(){
     try{
-      const data = await fetch('http://localhost:4000/api/v1/music/addToLiked' , { 
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/music/addToLiked' , { 
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const MusicPlayer = ({ nowPlaying }) => {
        async function removeLike(){
 
         try{
-          const data = await fetch('http://localhost:4000/api/v1/music/removeFromLiked' , { 
+          const data = await fetch('https://playlistpal.onrender.com/api/v1/music/removeFromLiked' , { 
             method: 'post',
             headers: {
               'Content-Type': 'application/json',

@@ -51,7 +51,7 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   };
 
   async function deleteplaylist(old){
-    const data = await fetch('http://localhost:4000/api/v1/music/deletePlaylist' , { 
+    const data = await fetch('https://playlistpal.onrender.com/api/v1/music/deletePlaylist' , { 
       method: 'delete',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
     
       
   
-      const data = await fetch('http://localhost:4000/api/v1/music/createPlaylist' , { 
+      const data = await fetch('https://playlistpal.onrender.com/api/v1/music/createPlaylist' , { 
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
        };
 
        async function renameplaylist(old){
-        const data = await fetch('http://localhost:4000/api/v1/music/renamePlaylist' , { 
+        const data = await fetch('https://playlistpal.onrender.com/api/v1/music/renamePlaylist' , { 
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
