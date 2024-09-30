@@ -6,8 +6,12 @@ import { initiateQueue } from "../redux/playerSlice";
 
 const useGetPlaying = () =>{
     const dispatch = useDispatch()
+    const isTokenReady = ((store)=>store.discover.isTokenReady)
+
 
     const searchHindiSongs = async () => {
+
+      try{
         const token = localStorage.getItem('token')
         const searchUrl = 'https://api.spotify.com/v1/search';
         const query = 'hindi good songs'; 
@@ -37,12 +41,15 @@ const useGetPlaying = () =>{
             
          });
          dispatch(initiateQueue(arr))
+      }catch(err){
+
+      }
+       
          
 }
 useEffect(()=>{
-     searchHindiSongs()
- // eslint-disable-next-line
-} , [])
+     isTokenReady &&  searchHindiSongs()
+} , [isTokenReady])
 }
 
 

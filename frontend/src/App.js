@@ -6,19 +6,19 @@ import useNewRelease from './hooks/useNewRelease';
 import useGetArtists from './hooks/useGetArtists';
 import useGetToken from './hooks/useGetToken';
 import useGetPlaylist from './hooks/useGetPlaylist';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/landing/LandingPage';
 import { Route, BrowserRouter as Router,Routes } from 'react-router-dom';
-import Layout from './components/Layout';
-import Profile from './components/Profile';
-import Signup from './components/Signup';
-import Login from './components/Login';
+import Layout from './components/layout/Layout';
+import Profile from './components/profile/Profile';
+import Signup from './components/auth/Signup';
+import Login from './components/auth/Login';
 import useGetPlaying from './hooks/useGetPlaying';
-import MusicContainer from './components/MusicContainer';
-import Playlist from './components/Playlist';
-import DisplayPlaylist from './components/DisplayPlaylist';
+import MusicContainer from './components/player/MusicContainer';
+import Playlist from './components/playlist/Playlist';
+import DisplayPlaylist from './components/playlist/DisplayPlaylist';
 import { Toaster } from 'react-hot-toast';
 import useGetUser from './hooks/useGetUser';
-import Match from './components/Match';
+import Match from './components/match/Match';
 
 
 
@@ -31,6 +31,7 @@ function App() {
   useGetArtists()
   useNewRelease()
   useGetUser()
+ 
 
   return (
 <> 

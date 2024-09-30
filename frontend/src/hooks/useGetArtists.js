@@ -7,6 +7,7 @@ const useGetArtists = () => {
   const dispatch = useDispatch();
   const artists = useSelector((store)=>store.discover.artists)
   dispatch(setLoading(true));
+  const isTokenReady = ((store)=>store.discover.isTokenReady)
 
   const getRandomQuery = () => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -15,6 +16,7 @@ const useGetArtists = () => {
 
   useEffect(() => {
     const getNewArtists = async () => {
+      
       const access_token = localStorage.getItem("token");
       const randomQuery = getRandomQuery();
 
@@ -53,8 +55,7 @@ const useGetArtists = () => {
       }
     };
 
-   !Object.keys(artists).length && getNewArtists();
-        // eslint-disable-next-line
+   !Object.keys(artists).length && isTokenReady &&  getNewArtists();
 }, []);
 };
 

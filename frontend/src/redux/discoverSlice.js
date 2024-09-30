@@ -7,7 +7,8 @@ const discoverSlice = createSlice({
         artists:{},
         tracks:[],
         playlists:{},
-        isLoading: false
+        isLoading: false ,
+        tokenReady:false ,
     }
     ,
     reducers:{
@@ -39,10 +40,8 @@ const discoverSlice = createSlice({
                 const image = artist.images[0]?.url;
                 const genres = [artist.genres[0], (artist.genres.length > 1 ? artist.genres[1] : " ")];
               
-                // Filter tracks to include only those with a non-null preview_url
                 const validTracks = tracks.filter(track => track.preview_url !== null);
               
-                // Add artist only if there is at least one track with a valid preview_url
                 if (validTracks.length > 0) {
                   const songs = validTracks.map((track) => ({
                     name: track.name,
@@ -90,10 +89,13 @@ const discoverSlice = createSlice({
         },
         setLoading: (state, action) => {
           state.isLoading = action.payload;
+        } ,
+        setTokenReady:(state , action)=>{
+          state.tokenReady=true
         }
 
     }
 })
 
-export const { addNewAlbums , addNewArtists , addNewTracks , addNewPlaylist,setLoading} = discoverSlice.actions 
+export const { addNewAlbums , addNewArtists , addNewTracks , addNewPlaylist,setLoading , setTokenReady} = discoverSlice.actions 
 export default discoverSlice.reducer

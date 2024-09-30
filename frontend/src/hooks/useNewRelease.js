@@ -6,6 +6,8 @@ import { addNewAlbums, setLoading } from "../redux/discoverSlice";
 const useNewRelease = () => {
   const dispatch = useDispatch();
   const albums = useSelector((store)=>store.discover.albums)
+  const isTokenReady = ((store)=>store.discover.isTokenReady)
+
 
   dispatch(setLoading(true));
 
@@ -44,11 +46,9 @@ const useNewRelease = () => {
       }
     };
 
-    !Object.keys(albums).length && getNewReleases();
-      // eslint-disable-next-line
-  }, []);
+    !Object.keys(albums).length && isTokenReady && getNewReleases();
+  }, [isTokenReady]);
 
-  return null;
 };
 
 export default useNewRelease;

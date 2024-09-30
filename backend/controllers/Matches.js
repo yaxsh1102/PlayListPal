@@ -1,13 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken"); // Ensure this is imported if you're using jwt
-const User = require("../model/User"); // Ensure the paimport SexualOrientation from './../../../musify/mann/src/components/SexualOrientation';
-
+const jwt = require("jsonwebtoken");
+const User = require("../model/User"); 
+const haversineDistance = require("../utils/haversineDistance")
 
 
 
 exports.getMatches = async(req , res)=>{
     try {
+
+        console.log("hii")
+        
         const token = req.header('Authorization').split(' ')[1];
         if (!token) {
             return res.status(401).json({ message: "Authorization token missing" });
@@ -20,7 +23,7 @@ exports.getMatches = async(req , res)=>{
 
         req.user = decoded;
         const id = req.user.id || req.user.userId ;
-        const {likedSongs , playLists , radius} = req.body ;
+        const {likedSongs , playLists , radius } = req.body ;
  
 
         const user = await User.findById(id)
@@ -29,7 +32,7 @@ exports.getMatches = async(req , res)=>{
             path: 'datingProfile', 
             select: 'lat lon gender'  
         })
-        .select('playLists likedSongs datingProfile name')  
+        .select('playLists likedSongs datingProfile name friends ')  
         .exec(); 
      
         console.log(user)
@@ -38,9 +41,9 @@ exports.getMatches = async(req , res)=>{
         .populate('playLists')
         .populate({
           path: 'datingProfile',
-          select: '-instagram -telegram -snapchat -_id',
+          select: '-instagram -telegram -snapchat -_id -lat -lon',
         })
-        .select('playLists likedSongs datingProfile name')
+        .select('playLists likedSongs datingProfile name friends requests')
         .exec();
       
     
@@ -59,6 +62,14 @@ exports.getMatches = async(req , res)=>{
             if (distance > radius) {
                 return false;
             }
+
+            if(user.friends.includes(person._id)){
+                return false ;
+            }
+
+            
+
+
             let intersectionLikedSongs ;
             console.log(person.likedSongs)
             console.log(user.likedSongs)
@@ -77,11 +88,10 @@ exports.getMatches = async(req , res)=>{
                     const userPlaylist = [];
                     let playListSongs = 0;
                 
-                    // Populate personPlaylist with unique song IDs
                     if (person.playLists) {
                         person.playLists.forEach(playlist => {
                             playlist.songs.forEach(song => {
-                                const songIdStr = song._id.toString(); // Convert ObjectId to string
+                                const songIdStr = song._id.toString(); 
                                 if (!intersectionLikedSongs.includes(songIdStr)) {
                                     personPlaylist.push(songIdStr);
                                 }
@@ -89,11 +99,10 @@ exports.getMatches = async(req , res)=>{
                         });
                     }
                 
-                    // Populate userPlaylist with unique song IDs and count playListSongs
                     if (user.playLists) {
                         user.playLists.forEach(playlist => {
                             playlist.songs.forEach(song => {
-                                const songIdStr = song._id.toString(); // Convert ObjectId to string
+                                const songIdStr = song._id.toString();
                                 if (!intersectionLikedSongs.includes(songIdStr)) {
                                     playListSongs += 1;
                                     userPlaylist.push(songIdStr);
@@ -102,10 +111,8 @@ exports.getMatches = async(req , res)=>{
                         });
                     }
                 
-                    // Find intersection of song IDs between user and person playlists
                     const intersectionPlaylist = userPlaylist.filter(songId => personPlaylist.includes(songId));
                 
-                    // Calculate percentage
                     person.percentage = ((intersectionPlaylist.length + intersectionLikedSongs.length) / (user.likedSongs.length + playListSongs)) * 100;
                 
                     console.log(person.name, person.percentage);
@@ -117,12 +124,13 @@ exports.getMatches = async(req , res)=>{
             const data = {
             _id: person._id,
             name:person.name ,
-            age:person.datingProfile.age ,
+            dateOfBirth:person.datingProfile.dateOfBirth ,
             gender:person.datingProfile.gender ,
             sexualOrientation :person.datingProfile.sexualOrientation , 
             city:person.datingProfile.city ,
             state:person.datingProfile.state ,
-            about:person.datingProfile.about
+            about:person.datingProfile.about ,
+            imageUrl:person.datingProfile.imageUrl
         }
 
 
@@ -155,21 +163,333 @@ exports.getMatches = async(req , res)=>{
 }
 
 
-function haversineDistance(lat1, lon1, lat2, lon2) {
-    const toRadians = (degrees) => degrees * Math.PI / 180;
+
+
+
+
+
+exports.sendRequest=async(req , res)=>{
+    try{
+        const token = req.header('Authorization').split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: "Authorization token missing" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+
+        req.user = decoded;
+        const id = req.user.id || req.user.userId ;
+        const {reqReceiverId} = req.body ;
+
+        const reqReceiver = await User.findById(reqReceiverId) 
+
+
+        if(!reqReceiver){
+            return res.status(400).json({
+                success:false ,
+                message:"No Such User Exists"
+            })
+        }
+
+        if(reqReceiver.requests.includes(id)){
+            return res.status(400).json({
+                success:false ,
+                message:"Request Already Exist"
+            })
+
+        }
+
+        const resp =  reqReceiver.requests.push(id) ;
+        const data = await reqReceiver.save()  ;
+
+        return res.status(200).json({
+            success:true ,
+            message:"Request Sent Successfully"
+
+        })
+
+
+
+
+
+
+    }catch(err){
+        return res.status(500).json({
+            success:false ,
+            message:"Internal Server Error"
+        })
+
+    }
+
+
+}
+
+exports.rejectRequest = async(req , res)=>{
+    try{
+        const token = req.header('Authorization').split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: "Authorization token missing" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+        req.user = decoded;
+        const id = req.user.id || req.user.userId ;
+
+        const {reqSenderId} = req.body;
+        if(!reqSenderId){
+            return res.status(400).json({
+                success:false ,
+                message:"Missing Parameters"
+            })
+        }
+
+        const updatedRequests = await User.findByIdAndUpdate(id , {
+            $pull:{
+                requests:reqSenderId
+            }
+        } ,{new:true})
+
+        if(!updatedRequests){
+            return res.status(400).json({
+                success:false ,
+                message:"No Request Found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true ,
+            message:"Request Rejected Successfully" ,
+            newRequests:updatedRequests.requests
+        })
+
+
+
+       }catch(err){
+
+        return res.status(400).json({
+        success:false ,
+        message:"Internal Server Error"
+        })
+
+    }
     
-    const R = 6371;
+}
 
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
 
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+exports.acceptRequest = async(req , res)=>{
+    try{
 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const token = req.header('Authorization').split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: "Authorization token missing" });
+        }
 
-    const distance = R * c;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+        req.user = decoded;
+        const id = req.user.id || req.user.userId ;
 
-    return distance;
+        const {reqSenderId} = req.body;
+        if(!reqSenderId){
+            return res.status(400).json({
+                success:false ,
+                message:"Missing Parameters"
+            })
+        }
+        const updatedSender= await User.findByIdAndUpdate(
+            reqSenderId,
+            {
+              $pull: { requests: id },  
+              $push: { friends: id }     
+            },
+
+          )
+
+
+          if(!updatedSender){
+            return res.status(400).json({
+                success:false ,
+                message:"Couldn't Find User"
+
+            })
+            
+          }
+
+          
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            {
+              $pull: { requests: reqSenderId },  
+              $push: { friends: reqSenderId }     
+            },
+            { new: true }  
+          )
+          .populate({
+            path: 'friends',
+            select: '-password -email -contactNumber',
+            populate: {
+            path: 'datingProfile',
+            model: 'Profile' ,
+            select :'-lat -lon'
+            }
+        })
+
+         
+
+          return res.status(200).json({
+            friends:updatedUser.friends,
+            success:true ,
+            message:"Request Accepted"
+          })
+           
+
+
+
+
+    }catch(err){
+        return res.status(400).json({
+            success:false ,
+            message:"Internal Server Error"
+        })
+
+    }
+}
+exports.removeFriend= async(req , res)=>{
+    try{
+
+        const token = req.header('Authorization').split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: "Authorization token missing" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+        req.user = decoded;
+        const id = req.user.id || req.user.userId ;
+        const {friendId} = req.body ;
+
+        const updateFriend = await User.findByIdAndUpdate(friendId , {
+            $pull:{
+                friends:id
+            }
+
+        } , {new:true})
+
+        if(!updateFriend){
+            return res.status(400).json({
+                success:false ,
+                message:"couldn't Find User" 
+            })
+        }
+        console.log(updateFriend)
+
+        const updatedUser = await User.findByIdAndUpdate(id ,{
+            $pull:{
+                friends:friendId
+            }
+        } , {new:true})
+        .populate({
+            path: 'friends',
+            select: '-password -email -contactNumber',
+            populate: {
+            path: 'datingProfile',
+            model: 'Profile' ,
+            select :'-instagram -telegram -snapchat -lat -lon'
+            }
+        })
+        console.log(updatedUser)
+
+
+
+
+
+        return res.status(200).json({
+            success:true ,
+            messsage:"Friend Removed Successfully" ,
+            friends:updatedUser.friends
+        })
+
+      }catch(err){
+        console.log(err)
+        return res.status(500).json({
+            success:false ,
+            message:"Internal Server Error"
+        })
+    }
+
+
+}
+
+
+exports.getDetails=async(req , res)=>{
+    try{
+
+            const token = req.header('Authorization').split(' ')[1];
+            if (!token) {
+                return res.status(401).json({ message: "Authorization token missing" });
+            }
+
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            if (!decoded) {
+                return res.status(401).json({ message: "Invalid token" });
+            }
+            req.user = decoded;
+            const id = req.user.id || req.user.userId ;
+
+            const data = await User.findById(id)
+            .populate({
+                path: 'friends',
+                select: '-password -email -contactNumber',
+                populate: {
+                path: 'datingProfile',
+                model: 'Profile' ,
+                select :'-instagram -telegram -snapchat'
+                }
+            })
+            .populate({
+                path: 'requests',
+                select: '-password -email -contactNumber',
+                populate: {
+                path: 'datingProfile',
+                model: 'Profile' ,
+                select :'-instagram -telegram -snapchat -lat -lon'
+
+                }
+            })
+            .select('-password -playlists -history -friends -requests -likedSongs')
+            .lean()
+            .exec();
+            if(!data){
+                return res.status(400).json({
+                    success:false ,
+                    message:"User Doesn't Exist"
+                })
+            }
+
+
+            return res.status(200).json({
+                success:true ,
+                message:"Details Fetched Successfully",
+                requests:data.requests ,
+                friends:data.friends
+            })
+
+   }catch(err){
+    console.log(err)
+        return res.status(500).json({
+            success:false ,
+            message:"Internal Server Error"
+        })
+
+    }
 }

@@ -21,6 +21,8 @@ const toastSlice= createSlice({
                   fontSize: '1rem', // Font size (adjust as needed)
                   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Optional: shadow for better visibility
                   zIndex: '50', // Ensure the toast is above other elements
+
+                
                 }
               }
             )
