@@ -5,8 +5,8 @@ import App from './App';
 import { Provider } from 'react-redux';
 import appStore from './redux/appStore';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { clientID } from './utils/constants';
-
+// import { clientID } from './utils/constants';
+const clientID = process.env.REACT_APP_clientID
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
