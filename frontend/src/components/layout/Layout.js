@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import Sidebar from "./Sidebar"
 import { useState } from "react";
 import MusicPlayer from "../player/MusicPlayer";
@@ -9,6 +9,7 @@ const Layout =()=>{
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
   const nowPlaying = useSelector((store)=>store.player.nowPlaying)
   const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
+  const navigate = useNavigate()
   
   if(!isLoggedIn){
     navigate("/login")
