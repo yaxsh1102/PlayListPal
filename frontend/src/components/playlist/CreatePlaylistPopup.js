@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { createPlaylist, deletePlaylist, renamePlaylist } from '../redux/playlistSlice';
+import { createPlaylist, deletePlaylist, renamePlaylist } from '../../redux/playlistSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { sendToast } from '../redux/toastSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const CreatePlaylistPopup = ({ onClose,edit,old,del}) => {
   // edit means editing is enabeled and old means old playlist name

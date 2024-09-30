@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector, dispatch } from 'react-redux';
-import { checkProfileStatus, setMatchResults } from '../redux/userSlice';
+import { checkProfileStatus, setMatchResults } from '../../redux/userSlice';
 import MatchCard from './MatchCard';
-import Loader from './Loader'; 
-import { sendToast } from '../redux/toastSlice';
-import { setCoordinates } from '../redux/userSlice';
+import Loader from '../layout/Loader'; 
+import { sendToast } from '../../redux/toastSlice';
+import { setCoordinates } from '../../redux/userSlice';
 
 const MatchLanding = ({ setsetSelectedOption }) => {
   const matchResults = useSelector((store) => store.user.matchResults);

@@ -1,8 +1,7 @@
 import React, { useRef , useState} from 'react';
-import "../App.css";
 import { useSelector , useDispatch } from 'react-redux';
-import { setUser } from '../redux/userSlice';
-import { sendToast } from '../redux/toastSlice';
+import { setUser } from '../../redux/userSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const Profile = () => {
   const user = useSelector((store) => store.user);

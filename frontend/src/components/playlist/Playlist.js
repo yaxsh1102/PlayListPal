@@ -3,7 +3,6 @@ import CreatePlaylistPopup from './CreatePlaylistPopup';
 import PlaylistCardItems from './PlaylistCardItems';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import "../App.css"
 import { useSelector } from 'react-redux';
 
 const Playlist = () => {

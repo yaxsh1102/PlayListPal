@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import Searchitems from './SearchItems';
-import "../App.css"
+import Searchitems from '../search/SearchItems';
+import "../../App.css"
 import { useParams,useLocation } from 'react-router-dom';
-import ErrorPage from './ErrorPage';
-import Spinner from './Spinner';
+import ErrorPage from '../layout/ErrorPage';
+import Spinner from '../layout/Spinner';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleLoggedin } from '../redux/userSlice';
-import { setUser } from '../redux/userSlice';
-import { sendToast } from '../redux/toastSlice';
-import { setCoordinates } from '../redux/userSlice';
+import { toggleLoggedin } from '../../redux/userSlice';
+import { setUser } from '../../redux/userSlice';
+import { sendToast } from '../../redux/toastSlice';
+import { setCoordinates } from '../../redux/userSlice';
 
 const Login = () => {
   

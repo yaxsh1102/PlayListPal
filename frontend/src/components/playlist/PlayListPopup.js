@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
-import { addToPlaylist, createPlaylist } from '../redux/playlistSlice';
-import { sendToast } from '../redux/toastSlice';
+import { addToPlaylist, createPlaylist } from '../../redux/playlistSlice';
+import { sendToast } from '../../redux/toastSlice';
 
 const PlayListPopup = ({ oldPlayList, setOldPlaylist, setShowAddToPlayList, setShowCenterPopup ,setShowPopup,setPopupMessage }) => {
   const playlist = useSelector((store) => store.playlist.playlist);
