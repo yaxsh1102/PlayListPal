@@ -10,6 +10,7 @@ const Sidebar = ({toggleSearchBarVisibility}) => {
   const [showMenu , setShowMenu] = useState(false)
   const navigate = useNavigate()
 
+
     function menuHandler() {
       setShowMenu(!showMenu);
       toggleSearchBarVisibility(); 

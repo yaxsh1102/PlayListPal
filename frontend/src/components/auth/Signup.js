@@ -77,7 +77,7 @@ const Signup = () => {
     const requestBody = { fullName, email, password, otp };
     try {
       setError('');
-      const response = await fetch('http://localhost:4000/api/v1/auth/signup', {
+      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

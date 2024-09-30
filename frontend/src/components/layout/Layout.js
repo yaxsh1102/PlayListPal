@@ -8,6 +8,11 @@ import { useSelector } from "react-redux";
 const Layout =()=>{
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
   const nowPlaying = useSelector((store)=>store.player.nowPlaying)
+  const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
+  
+  if(!isLoggedIn){
+    navigate("/login")
+  }
   
   const toggleSearchBarVisibility = () => {
     setIsSearchBarVisible(!isSearchBarVisible);

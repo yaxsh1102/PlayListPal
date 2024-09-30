@@ -6,14 +6,12 @@ import SearchResults from '../search/SearchResults';
 import Searchbar from '../search/Searchbar';
 import { setCoordinates } from '../../redux/userSlice';
 import { sendToast } from '../../redux/toastSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const {lat , lon } = useSelector((store)=>store.user) ;
-
-
-
-
-
+  // const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
+  const navigate = useNavigate()
 
   async function sendLocation(){
 
