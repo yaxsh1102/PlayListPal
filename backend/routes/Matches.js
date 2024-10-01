@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 
-const {getMatches , acceptRequest , rejectRequest , sendRequest , removeFriend , getDetails} = require("../controllers/Matches")
+const {getMatches , acceptRequest , rejectRequest , sendRequest , removeFriend , getDetails } = require("../controllers/Matches")
 
 router.post("/getMatches" , getMatches)
 router.post("/getInfo" , getDetails)

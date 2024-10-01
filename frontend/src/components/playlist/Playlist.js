@@ -20,8 +20,8 @@ const Playlist = () => {
   return (
     <div className="pb-[8rem] w-full flex flex-col overflow-y-scroll h-[100vh] bg-gradient-to-tr from-[#000000] to-[#434343] no-scrollbar">
       <div className='w-full flex flex-col justify-center items-start md:pl-24'>
-        <h1 className="w-full xl:text-[2.5rem] text-[1.5rem] md:text-left text-center text-white  mb-8 mt-16 border-b-[3px] border-black">Playlists</h1>
-        <div className="w-full flex flex-wrap mt-8 md:gap-28 gap-5 md:pr-4 md:mx-0 mx-auto">
+        <h1 className="w-full xl:text-[2.5rem] text-[1.5rem] md:text-left text-center text-white  mb-8  mt-16 border-b-[3px] border-black">Playlists</h1>
+        <div className="w-full flex flex-wrap mt-8 md:gap-28 gap-5 md:pr-4 md:mx-0 mx-auto md:px-0 sm:px-8 px-4 items-center justify-start">
           {Object.keys(availablePlaylists).length === 0 ? (<div className='w-full text-center'>
             <p className="mt-[8rem] md:text-[1.4rem] text-[1rem] text-gray-300 ">No playlists have been created yet. </p>
               <button className="text-blue-600 text-lg underline hover:text-blue-800 " onClick={handleCreatePlaylistClick}>Click here to create your first playlist</button>
@@ -37,10 +37,10 @@ const Playlist = () => {
                   totalSongs={value.length}
                 />
               ))}
-              <div className="w-[12rem] h-[18rem] flex flex-col justify-center text-white items-center rounded overflow-hidden shadow-lg bg-[#191818cf] hover:scale-105"
+              <div className="lg:w-[12rem] lg:h-[18rem] w-[8rem] h-[14rem]  flex flex-col justify-center text-white items-center rounded overflow-hidden shadow-lg bg-[#191818cf] hover:scale-105"
                    onClick={handleCreatePlaylistClick}>
                 <FontAwesomeIcon className="h-[7rem]" icon={faPlus} />
-                <p className="text-[1.5rem] text-center pt-5">Create a new playlist!</p>
+                <p className="lg:text-[1.5rem] text-[1rem] text-center pt-5">Create a new playlist!</p>
               </div>
             </>
           )}

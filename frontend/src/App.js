@@ -25,12 +25,7 @@ import Match from './components/match/Match';
 function App() {
 
   useGetToken()
-  useGetPlaylist()
-  useGetPlaying()
-  useGetTracks()
-  useGetArtists()
-  useNewRelease()
-  useGetUser()
+ 
  
 
   return (

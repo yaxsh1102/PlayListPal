@@ -20,6 +20,9 @@ const useNewRelease = () => {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
+          params: {
+            limit: 6,  
+          }
         
         });
 

@@ -10,10 +10,13 @@ const Layout =()=>{
   const nowPlaying = useSelector((store)=>store.player.nowPlaying)
   const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
   const navigate = useNavigate()
+
   
-  if(!isLoggedIn){
+  if(!localStorage.getItem('db_token')){
     navigate("/login")
-  }
+}
+  
+ 
   
   const toggleSearchBarVisibility = () => {
     setIsSearchBarVisible(!isSearchBarVisible);

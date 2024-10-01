@@ -164,13 +164,19 @@ const MusicPlayer = ({ nowPlaying }) => {
           <svg xmlns="http://www.w3.org/2000/svg"  class=" lg:w-[32px] lg:h-[32px] md:w-[28px] md:h-[28px] w-[32px] h-[32px]" fill="#f5f0f0" viewBox="0 0 256 256"><path d="M200,32a8,8,0,0,0-8,8v69.23L72.43,34.45A15.95,15.95,0,0,0,48,47.88V208.12a16,16,0,0,0,24.43,13.43L192,146.77V216a8,8,0,0,0,16,0V40A8,8,0,0,0,200,32ZM64,207.93V48.05l127.84,80Z"></path></svg>
         </button>
       </div>
-      <div className='flex justify-start items-center px-2 md:w-3/12 w-6/12 gap-x-5' onClick={clickHandler}>
-        <img src ={nowPlaying.image} alt='11.png' className='lg:w-[5.5rem] lg:h-[5rem] md:w-[4rem] h-[3.5rem] '></img>
-          <div>
-            <p className='text-white lg:text-[1.1rem] md:text-[1rem] text-[0.9rem] '> {nowPlaying.name}</p>
-            <p className="text-slate-300 sm:flex hidde opacity-90 text-[0.9rem]">{nowPlaying.singer}</p>
-          </div>
-      </div>
+      <div className='flex items-center px-2 md:w-3/12 w-6/12 gap-x-3' onClick={clickHandler}>
+  <img src={nowPlaying.image} alt='11.png' className='lg:w-[5.5rem] lg:h-[5rem] md:w-[4rem] h-[3.5rem]' />
+  <div className='flex-1 overflow-hidden relative'>
+    <p className='text-white lg:text-[1.1rem] md:text-[1rem] text-[0.9rem] moving-text whitespace-nowrap'>
+      {nowPlaying.name}
+    </p>
+    <p className="text-slate-300 sm:flex hidden opacity-90 text-[0.9rem] mt-1">{nowPlaying.singer}</p>
+  </div>
+</div>
+
+
+
+
       
       <div className='w-3/12 md:flex hidden justify-evenly'>
         <button onClick={likeHandler} className="focus:outline-none">

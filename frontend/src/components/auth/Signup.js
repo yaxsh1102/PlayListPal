@@ -101,7 +101,7 @@ const Signup = () => {
       <div className="w-full md:max-w-md max-w-[24rem] p-8 space-y-6 rounded-lg shadow-xl bg-[#1d1d1e]">
         <h2 className="text-4xl font-bold text-center text-white">Sign Up</h2>
         {error && (
-          <div className="text-center text-red-400 bg-red-900 bg-opacity-50 py-2 px-4 rounded">
+          <div className="text-center text-red-400  px-4 rounded">
             <p>{error}</p>
           </div>
         )}

@@ -13,7 +13,9 @@ const {uploadImageToCloudinary} = require("../utils/imageUploader")
  
 exports.sendOTP=async(req, res)=>{
     try {
-        const {email }= req.body ;
+        let {email}= req.body ;
+        email = (email+"").toLowerCase()
+        console.log(email)
 
         const checkUserPresent = await User.findOne({email:email}) ;
 
@@ -29,7 +31,6 @@ exports.sendOTP=async(req, res)=>{
         specialChars:false
     }
     )
-    console.log("OTP generated : " , otp)
 
 
     let existing_otp = await OTP.findOne({otp:otp});
@@ -45,7 +46,6 @@ exports.sendOTP=async(req, res)=>{
  
      const otpPayload={email , otp} ;
      const otpBody = await OTP.create(otpPayload)
-     console.log(otpBody)
 
      return res.status(200).json({
         success:true ,
@@ -54,7 +54,6 @@ exports.sendOTP=async(req, res)=>{
      })
         
     } catch (error) {
-        console.log(error) 
         return res.status(500).json({
             success:false ,
             message:"Error While Sending Otp"
@@ -67,11 +66,13 @@ exports.sendOTP=async(req, res)=>{
 exports.signUp = async(req , res)=>{
 
     try {
-        const {fullName , email , password ,  otp}=req.body ;
+        const {fullName  , password ,  otp}=req.body ;
+        let {email}= req.body ;
+        email = (email+"").toLowerCase()
+        console.log(email)
 
 
         if(!fullName || !email  || !password  || !otp  ){
-            console.log(fullName , email , password ,  otp)
             return res.status(403).json({
                 success:false ,
                 message:"All fields are required"
@@ -81,25 +82,24 @@ exports.signUp = async(req , res)=>{
        
         
     
-        const existingUser = await  User.findOne({email})
+        const existingUser = await  User.findOne({email:email})
         if(existingUser){
             return res.status(400).json({
                 success:false ,
                 message:"User is already registered"
             })
         }
-        console.log("reached here" , email)
+
+        console.log("this is emiail" , email)
     
-        const recentOtp = await OTP.findOne({email}).sort({createdAt:-1}).limit(1) ;
-        console.log(recentOtp)
+        const recentOtp = await OTP.findOne({email:email}).sort({createdAt:-1}).limit(1) ;
         if(!recentOtp){
             return res.status(400).json({
                 success:false ,
                 message:"OTP Not Found"
             })
         } else if(otp!==recentOtp.otp){
-            console.log(recentOtp.otp)
-            console.log(otp)
+          
             return res.status(400).json({
                 success:false ,
                 message:"OTP doesn't match"
@@ -122,7 +122,7 @@ exports.signUp = async(req , res)=>{
         })
         const user = await User.create({
             name:fullName ,
-            email ,
+            email:email.toLowerCase() ,
             password :hashedPassword ,
             datingProfile:profileDetails._id
            
@@ -140,7 +140,6 @@ exports.signUp = async(req , res)=>{
 
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json({
             success:true ,
             message:"Error while signing Up"
@@ -155,7 +154,9 @@ exports.signUp = async(req , res)=>{
 
 exports.login = async(req  , res)=>{
     try{
-     const {email , password} = req.body ;
+     const { password} = req.body ;
+     let {email}= req.body ;
+     email = (email+"").toLowerCase()
      if(!email || !password){
         return res.status(403).json({
             success:false ,
@@ -164,7 +165,6 @@ exports.login = async(req  , res)=>{
 
      }
      const existingUser = await User.findOne({email}) ;
-     console.log(existingUser)
      if(!existingUser){
         return res.status(403).json({
             success:false ,
@@ -182,7 +182,6 @@ exports.login = async(req  , res)=>{
             expiresIn:"2h"
 
         })
-        console.log("token" + token)
 
         existingUser.token = token ;
         existingUser.password = undefined ;
@@ -205,7 +204,6 @@ exports.login = async(req  , res)=>{
      }
 
     }catch(err){
-        console.log(err)
         return res.status(400).json({
             success:false ,
             message:"Couldn't Login"
@@ -280,7 +278,6 @@ exports.verifyGoogleToken = async (req, res) => {
       });
   
     } catch (error) {
-      console.error('Token verification failed:', error);
       res.status(401).json({ message: 'Invalid or expired token' });
     }
   };
@@ -289,13 +286,11 @@ exports.verifyGoogleToken = async (req, res) => {
 
   exports.getUser = async (req, res) => {
     try {
-        console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
         const token = req.header('Authorization').split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        console.log(token)
 
-        if (!decoded    ) {
+        if (!decoded ) {
             return res.status(404).json({
                 success: false,
                 message: "Authentication Failed. Kindly Log In."
@@ -327,7 +322,6 @@ exports.verifyGoogleToken = async (req, res) => {
             .select('-_id -password') 
             .exec();
 
-            console.log("hii")
             
 
 
@@ -345,7 +339,6 @@ exports.verifyGoogleToken = async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
 
         return res.status(400).json({
             success: false,
@@ -360,9 +353,7 @@ exports.updateProfile = async (req, res) => {
     try {
         const { gender, birthdate, sexualOrientation, instagram, snapchat, telegram, aboutMe, city, state, country } = req.body;
 
-        console.log("Incoming Values:", {
-            gender, birthdate, sexualOrientation, instagram, snapchat, telegram, aboutMe, city, state, country
-        });
+      
 
         if (!gender || !birthdate || !sexualOrientation || !instagram || !snapchat || !telegram || !aboutMe || !city || !state || !country) {
             return res.status(400).json({ success: false, message: "Found Empty Fields" });
@@ -376,13 +367,11 @@ exports.updateProfile = async (req, res) => {
 
         const userId = decoded.userId || decoded.id;
 
-        console.log("User ID:", userId);
-        console.log(userId)
+      
 
         const datingProfile = await Profile.findOne({ user: userId }).populate('user');
         if (!datingProfile) return res.status(404).json({ message: "Dating profile not found" });
 
-        console.log("Existing Dating Profile:", datingProfile);
 
         datingProfile.gender = gender || datingProfile.gender;
         datingProfile.dateOfBirth = birthdate || datingProfile.dateOfBirth;
@@ -411,7 +400,6 @@ exports.updateProfile = async (req, res) => {
         });
 
     } catch (err) {
-        console.log("Error:", err);
         return res.status(500).json({ success: false, message: "Profile could not be updated" });
     }
 };
@@ -422,11 +410,9 @@ exports.addLocation = async(req , res)=>{
         const token = req.header('Authorization').split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        console.log(token)
 
         const {lat , lon} = req.body ;
-        console.log(lat)
-        console.log(lon)
+      
         if(!lat || !lon){
             return res.status(400).json({
                 success:false ,
@@ -442,7 +428,6 @@ exports.addLocation = async(req , res)=>{
         }
 
         const id = req.user.userId || req.user.id;
-        console.log(id) ;
         
         const user = await Profile.findOneAndUpdate(
             { user: id },

@@ -40,7 +40,9 @@ const discoverSlice = createSlice({
                 const image = artist.images[0]?.url;
                 const genres = [artist.genres[0], (artist.genres.length > 1 ? artist.genres[1] : " ")];
               
-                const validTracks = tracks.filter(track => track.preview_url !== null);
+                const validTracks = tracks.filter(track => {
+                  return 'preview_url' in track && track.preview_url != null;
+                });
               
                 if (validTracks.length > 0) {
                   const songs = validTracks.map((track) => ({

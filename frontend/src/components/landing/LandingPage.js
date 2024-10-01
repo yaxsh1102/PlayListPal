@@ -7,11 +7,30 @@ import Searchbar from '../search/Searchbar';
 import { setCoordinates } from '../../redux/userSlice';
 import { sendToast } from '../../redux/toastSlice';
 import { useNavigate } from 'react-router-dom';
+import useGetTracks from '../../hooks/useGetTracks';
+import useNewRelease from '../../hooks/useNewRelease';
+import useGetArtists from '../../hooks/useGetArtists';
+import useGetPlaylist from '../../hooks/useGetPlaylist';
+import useGetPlaying from '../../hooks/useGetPlaying';
+import useGetUser from '../../hooks/useGetUser';
+
+
 
 const LandingPage = () => {
   const {lat , lon } = useSelector((store)=>store.user) ;
-  // const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
   const navigate = useNavigate()
+  if(!localStorage.getItem('db_token')){
+    console.log("heyaa")
+    navigate("/login")
+}
+
+
+useGetPlaylist()
+useGetPlaying()
+useGetTracks()
+useGetArtists()
+useNewRelease()
+useGetUser()
 
   async function sendLocation(){
 
@@ -19,6 +38,7 @@ const LandingPage = () => {
     if(!lat || !lon){
       return 
     }
+
    
 
     try{

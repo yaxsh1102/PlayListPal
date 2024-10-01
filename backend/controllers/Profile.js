@@ -27,7 +27,6 @@ exports.updateProfile = async (req, res) => {
 
         req.user = decoded;
         const id = req.user.userId || req.user.id;
-        console.log(id)
 
         const user = await User.findById(id).populate('datingProfile');
         if (!user || !user.datingProfile) {
@@ -58,7 +57,6 @@ exports.updateProfile = async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
             success: false,
             message: "Profile could not be updated"
