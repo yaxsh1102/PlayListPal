@@ -3,6 +3,7 @@ import { useDispatch  , useSelector} from "react-redux"
 import { setPlaylist , setLikedSongs } from "../redux/playlistSlice"
 import { setHistory } from "../redux/playerSlice"
 import { setUser, toggleLoggedin } from "../redux/userSlice"
+import { useNavigate } from "react-router-dom"
 
 const useGetUser = ()=>{
   const isLoggedIn = useSelector((store)=>store.user.isLoggedIn)
@@ -23,6 +24,8 @@ const useGetUser = ()=>{
             })
     
             const response = await data.json() ;
+            console.log(response)
+            if(response.success){
             dispatch(setUser({name:response.data.name , email:response.data.email , ...response.data.datingProfile}))
 
             const playlists = response.data.playLists.reduce((acc, playlist) => {
@@ -44,8 +47,15 @@ const useGetUser = ()=>{
             dispatch(setHistory(response.data.history))
             dispatch(toggleLoggedin(true))
     
+        }else{
+            console.log("what happened")
+            window.location.assign("/login");
         }
+    }
         catch(err){
+            console.log("what happened")
+
+            window.location.assign("/login");
 
 
         }

@@ -72,10 +72,16 @@ const DisplayPlaylist = ({type}) => {
         mt-10  ">
           {heading}
           </h1>
-          {isUserPlaylist && (<div className='w-full flex space-around justify-end items-center pr-16 text-white gap-8 pt-10'>
-            <button className='h-5' onClick={handleEdit}> <FontAwesomeIcon icon={faEdit} /> Edit</button>
-            <button className='h-5' onClick={handleDelete}> <FontAwesomeIcon icon={faTrash} /> Delete</button>
-          </div>)}
+          {isUserPlaylist && (
+          <div className='w-full flex justify-end items-center pr-4 md:pr-16 text-white gap-4 md:gap-8 pt-10'>
+            <button className='flex items-center gap-1 text-sm md:text-base' onClick={handleEdit}>
+              <FontAwesomeIcon icon={faEdit} className="h-4 w-4" /> <span>Edit</span>
+            </button>
+            <button className='flex items-center gap-1 text-sm md:text-base' onClick={handleDelete}>
+              <FontAwesomeIcon icon={faTrash} className="h-4 w-4" /> <span>Delete</span>
+            </button>
+          </div>
+        )}
         </div>
         <div className="w-full pb-[5rem] md:w-[80%] overflow-y-auto no-scrollbar " style={{ maxHeight: 'calc(100vh - 14rem)' }}>
           {currentPlaylist.length === 0 ? (

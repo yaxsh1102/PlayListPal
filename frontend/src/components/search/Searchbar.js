@@ -35,6 +35,7 @@ const Searchbar = () => {
           params: {
             q: `${input.current.value}`,
             type: 'album,track', 
+            limit:6
           },
         });
 

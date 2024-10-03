@@ -54,3 +54,22 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   }
+
+
+  /* Add this to your CSS file */
+
+.moving-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 8s linear infinite; /* Adjust duration as needed */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%); /* Start off-screen right */
+  }
+  100% {
+    transform: translateX(-100%); /* Move off-screen left */
+  }
+}
+

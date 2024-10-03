@@ -23,10 +23,8 @@ exports.createPlaylist = async (req, res) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decoded.userId)
-        console.log(decoded)
+      
         if (!decoded) {
-            console.log("hello")
             return res.status(401).json({ message: "Invalid token" });
         }
 
@@ -37,20 +35,17 @@ exports.createPlaylist = async (req, res) => {
         });
 
         const userId = req.user.userId || req.user.id;
-        console.log(userId)
 
         const data = await User.findByIdAndUpdate(userId, {
             $push: { playLists: playList._id }
         } , {new:true});
        
-        console.log(data)
         return res.status(200).json({
             success: true,
             message: "Playlist Created Successfully"
         });
 
     } catch (error) {
-        console.log(error);
         return res.status(400).json({
             success: false,
             message: "Couldn't Create Playlist"
@@ -62,7 +57,6 @@ exports.createPlaylist = async (req, res) => {
 exports.addToPlaylist = async (req, res) => {
     try {
         const { name, image, preview_url, singer, artist, playlistName } = req.body;
-        console.log(name, image, preview_url, singer, artist, playlistName);
 
         if (!name || !image || !preview_url || !singer || !artist || !playlistName) {
             return res.status(400).json({
@@ -84,7 +78,6 @@ exports.addToPlaylist = async (req, res) => {
         req.user = decoded;
 
         const userId = req.user.userId || req.user.id;
-        console.log(userId);
 
         let song = await Song.findOne({ name: name });
         if (!song) {
@@ -128,7 +121,6 @@ exports.addToPlaylist = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
         return res.status(400).json({
             success: false,
             message: "Couldn't Add Song",
@@ -141,7 +133,6 @@ exports.addToPlaylist = async (req, res) => {
 exports.addToLiked = async(req , res)=>{
     try{
         const{name , image , preview_url , singer , artist} = req.body ;
-        console.log(name , image , preview_url , singer , artist)
         const token = req.header('Authorization').split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
@@ -169,12 +160,10 @@ exports.addToLiked = async(req , res)=>{
     await addSong.save() ;
     }
 
-        console.log(addSong) 
     
         const dt = await User.findOneAndUpdate({_id:id} , {$push:{
             likedSongs:addSong._id , 
         }} ,{new:true}) 
-        console.log(dt)
 
 
         return res.status(200).json({
@@ -184,7 +173,6 @@ exports.addToLiked = async(req , res)=>{
     
 
     }catch(err){
-        console.log(err)
 
         return res.status(400).json({
             success:false , 
@@ -220,10 +208,7 @@ exports.removeFromLiked = async(req , res)=>{
         }
 
 
-        // if (song.playlist.length === 0 && !song.history) {
-        //     await Song.deleteOne({ _id: song._id });
-        // }
-        console.log(song._id + '122122')
+      
        ;
 
          
@@ -258,7 +243,6 @@ exports.removeFromLiked = async(req , res)=>{
       
 
     }catch(err){
-        console.log(err)
 
         return res.status(400).json({
             success:false , 
@@ -294,7 +278,6 @@ exports.removeFromPlaylist = async(req , res)=>{
         }
 
         const playlist = await Playlist.findOne({name:playlistName})
-        console.log(playlist)
         playlist.songs = playlist.songs.filter((elem)=>elem && !elem.equals(song._id))
         await playlist.save()
 
@@ -307,7 +290,6 @@ exports.removeFromPlaylist = async(req , res)=>{
       
 
     }catch(err){
-        console.log(err)
 
         return res.status(400).json({
             success:false , 
@@ -323,11 +305,9 @@ exports.removeFromPlaylist = async(req , res)=>{
 exports.deletePlaylist = async (req, res) => { 
     try {
         const { name } = req.body;
-        console.log(name)
         const token = req.header('Authorization').split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        console.log(req.user)
     
         const userId = req.user.userId || req.user.id;
 
@@ -347,7 +327,6 @@ exports.deletePlaylist = async (req, res) => {
         }
 
         const playlistToDelete = await Playlist.findOne({ name: name });
-       console.log(playlistToDelete)
 
         if (!playlistToDelete) {
             return res.status(400).json({
@@ -369,7 +348,6 @@ exports.deletePlaylist = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Error deleting the playlist"
@@ -418,7 +396,6 @@ exports.renamePlaylist= async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Error renaming the playlist"
@@ -430,8 +407,7 @@ exports.renamePlaylist= async (req, res) => {
 exports.addToHistory = async(req , res)=>{
     try{
         const{name , image , preview_url , singer , artist} = req.body ;
-        console.log(name , image , preview_url , singer , artist)
-        console.log(singer)
+      
         if (!name || !image || !preview_url || !singer || !artist) {
             return res.status(400).json({
                 success: false,
@@ -447,7 +423,7 @@ exports.addToHistory = async(req , res)=>{
 
         let song = await Song.findOne({name:name}) ;
         const user = await User.findById(id) ;
-        console.log(song)
+        
 
 
         if(!song){
@@ -486,10 +462,7 @@ exports.addToHistory = async(req , res)=>{
      }
         if (user.history.length > 11) {
            const song =  user.history.pop(); 
-           if(song.playlists.length==0 && !song.liked){
-            await Song.findByIdAndDelete(song._id) ;
-            
-           }
+           
         }
 
 
@@ -503,7 +476,6 @@ exports.addToHistory = async(req , res)=>{
 
 
     }catch(err){
-        console.log(err)
         return res.status(400).json({
             success:false ,
             message:"Couldn't Update History"

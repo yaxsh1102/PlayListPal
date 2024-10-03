@@ -57,13 +57,13 @@ const Match = () => {
   };
 
   return (
-    <div className='w-full h-screen overflow-hidden no-scrollbar bg-gradient-to-tr from-[#181818] to-[#121111] z-50'>
+    <div className='w-full h-screen overflow-hidden no-scrollbar bg-gradient-to-tr from-[#181818] to-[#121111] z-50 pt-1'>
       <div className="h-[10%] flex md:justify-center justify-center items-center">
         <button
           onClick={() => handleOptionClick('landing')}
           className={`relative py-2 px-4 md:text-lg text-base font-normal ${selectedOption === 'landing' || selectedOption==='find-match' ? 'text-indigo-500' : 'text-gray-300'}`}
         >
-          Find Match
+          Match
           {(selectedOption === 'landing' || selectedOption==='find-match') && (
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-1 bg-indigo-500"></div>
           )}

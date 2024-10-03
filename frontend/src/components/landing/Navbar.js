@@ -23,6 +23,8 @@ const Navbar = () => {
     dispatch(sendToast("Logged Out"))
 
     localStorage.removeItem("db_token") 
+    localStorage.removeItem("token") 
+
     dispatch(toggleLoggedin())
 
     navigate("/login")

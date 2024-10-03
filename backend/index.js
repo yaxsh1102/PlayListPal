@@ -23,19 +23,12 @@ const matchRoutes = require("./routes/Matches")
   
   
   cloudinaryConnect();
-
-
-
-
- 
-// app.use(cookieParser());
-
 app.use("/api/v1/auth" , userRoutes)
 app.use("/api/v1/music" , musicRoutes)
 app.use("/api/v1/match" , matchRoutes)
 
 
 app.listen(process.env.PORT, () => {
-	console.log(`App is listening at ${process.env.PORT}`);
+	console.log('App is running');
 });
  

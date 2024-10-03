@@ -9,7 +9,6 @@ const haversineDistance = require("../utils/haversineDistance")
 exports.getMatches = async(req , res)=>{
     try {
 
-        console.log("hii")
         
         const token = req.header('Authorization').split(' ')[1];
         if (!token) {
@@ -30,12 +29,11 @@ exports.getMatches = async(req , res)=>{
         .populate('playLists')  
         .populate({
             path: 'datingProfile', 
-            select: 'lat lon gender'  
+            select: 'lat lon gender sexualOrientation'  
         })
-        .select('playLists likedSongs datingProfile name friends ')  
+        .select('playLists likedSongs datingProfile name friends interactedUser requests')  
         .exec(); 
      
-        console.log(user)
 
         const allUsers = await User.find({ _id: { $ne: id } })
         .populate('playLists')
@@ -48,104 +46,86 @@ exports.getMatches = async(req , res)=>{
       
     
          let resultUser=[] ; 
-         allUsers.forEach(person => {
-            // if (person.datingProfile.gender === user.datingProfile.gender) {
-            //     return false;
-            // }
 
-          
+        for (const person of allUsers) {
+            if (person.datingProfile.sexualOrientation !== user.datingProfile.sexualOrientation) continue;
+        
+            if (person.datingProfile.sexualOrientation === 'Homosexual' && person.datingProfile.gender !== user.datingProfile.gender) continue;
+        
+            if (person.datingProfile.sexualOrientation !== 'Homosexual' && person.datingProfile.gender === user.datingProfile.gender) continue;
+        
             const distance = haversineDistance(
                 user.datingProfile.lat, user.datingProfile.lon,
                 person.datingProfile.lat, person.datingProfile.lon
             );
-            console.log(distance , person.name)
-            if (distance > radius) {
-                return false;
-            }
-
-            if(user.friends.includes(person._id)){
-                return false ;
-            }
-
-            
-
-
-            let intersectionLikedSongs ;
-            console.log(person.likedSongs)
-            console.log(user.likedSongs)
+            if (distance > radius) continue;
         
+            if (user.friends.includes(person._id) || user.interactedUser.includes(person._id) || user.requests.includes(person._id)) continue;
+        
+            let intersectionLikedSongs = [];
             if (likedSongs) {
-                 intersectionLikedSongs = person.likedSongs.filter(song => user.likedSongs.includes(song));
+                intersectionLikedSongs = person.likedSongs.filter(song => user.likedSongs.includes(song));
             }
-
-            console.log(intersectionLikedSongs.length + '1111111111111111')
         
-                const userPlaylist = [];
-                const personPlaylist = [];
-                
-                if (playLists) {
-                    const personPlaylist = [];
-                    const userPlaylist = [];
-                    let playListSongs = 0;
-                
-                    if (person.playLists) {
-                        person.playLists.forEach(playlist => {
-                            playlist.songs.forEach(song => {
-                                const songIdStr = song._id.toString(); 
-                                if (!intersectionLikedSongs.includes(songIdStr)) {
-                                    personPlaylist.push(songIdStr);
-                                }
-                            });
+            let playListSongs = 0;
+            const userPlaylist = [];
+            const personPlaylist = [];
+        
+            if (playLists) {
+                if (person.playLists) {
+                    person.playLists.forEach(playlist => {
+                        playlist.songs.forEach(song => {
+                            const songIdStr = song._id.toString();
+                            if (!intersectionLikedSongs.includes(songIdStr)) {
+                                personPlaylist.push(songIdStr);
+                            }
                         });
-                    }
-                
-                    if (user.playLists) {
-                        user.playLists.forEach(playlist => {
-                            playlist.songs.forEach(song => {
-                                const songIdStr = song._id.toString();
-                                if (!intersectionLikedSongs.includes(songIdStr)) {
-                                    playListSongs += 1;
-                                    userPlaylist.push(songIdStr);
-                                }
-                            });
-                        });
-                    }
-                
-                    const intersectionPlaylist = userPlaylist.filter(songId => personPlaylist.includes(songId));
-                
-                    person.percentage = ((intersectionPlaylist.length + intersectionLikedSongs.length) / (user.likedSongs.length + playListSongs)) * 100;
-                
-                    console.log(person.name, person.percentage);
+                    });
                 }
-                
-          
-
-         if( person.percentage && person.percentage>=1) {
-            const data = {
-            _id: person._id,
-            name:person.name ,
-            dateOfBirth:person.datingProfile.dateOfBirth ,
-            gender:person.datingProfile.gender ,
-            sexualOrientation :person.datingProfile.sexualOrientation , 
-            city:person.datingProfile.city ,
-            state:person.datingProfile.state ,
-            about:person.datingProfile.about ,
-            imageUrl:person.datingProfile.imageUrl
-        }
-
-
-            resultUser.push(data)
-            return true
-         } else {
-            return false 
-         }
         
-        });
+                if (user.playLists) {
+                    user.playLists.forEach(playlist => {
+                        playlist.songs.forEach(song => {
+                            const songIdStr = song._id.toString();
+                            if (!intersectionLikedSongs.includes(songIdStr)) {
+                                playListSongs += 1;
+                                userPlaylist.push(songIdStr);
+                            }
+                        });
+                    });
+                }
+        
+                const intersectionPlaylist = userPlaylist.filter(songId => personPlaylist.includes(songId));
+                person.percentage = ((intersectionPlaylist.length + intersectionLikedSongs.length) / (user.likedSongs.length + playListSongs)) * 100;
+            }
+        
+            if (person.percentage && person.percentage >= 1) {
+                const data = {
+                    _id: person._id,
+                    name: person.name,
+                    dateOfBirth: person.datingProfile.dateOfBirth,
+                    gender: person.datingProfile.gender,
+                    sexualOrientation: person.datingProfile.sexualOrientation,
+                    city: person.datingProfile.city,
+                    state: person.datingProfile.state,
+                    about: person.datingProfile.about,
+                    imageUrl: person.datingProfile.imageUrl
+                };
+        
+                resultUser.push(data);
+        
+                if (!user.interactedUser.includes(person._id)) {
+                    user.interactedUser.push(person._id);
+                }
+            }
+        }
+        await user.save(); 
+        
         
 
         return res.status(200).json({
             success:true ,
-            message:"hello" ,
+            message:"Matches Fetched" ,
             data:resultUser
         })
         
@@ -153,7 +133,6 @@ exports.getMatches = async(req , res)=>{
 
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json({
             success:false ,
             message:"Couldnt Find match"
@@ -252,7 +231,11 @@ exports.rejectRequest = async(req , res)=>{
         const updatedRequests = await User.findByIdAndUpdate(id , {
             $pull:{
                 requests:reqSenderId
+            } ,
+            $push:{
+                interactedUser:reqSenderId
             }
+
         } ,{new:true})
 
         if(!updatedRequests){
@@ -328,7 +311,7 @@ exports.acceptRequest = async(req , res)=>{
             id,
             {
               $pull: { requests: reqSenderId },  
-              $push: { friends: reqSenderId }     
+              $push: { friends: reqSenderId , interactedUser:reqSenderId }     
             },
             { new: true }  
           )
@@ -391,7 +374,6 @@ exports.removeFriend= async(req , res)=>{
                 message:"couldn't Find User" 
             })
         }
-        console.log(updateFriend)
 
         const updatedUser = await User.findByIdAndUpdate(id ,{
             $pull:{
@@ -407,7 +389,6 @@ exports.removeFriend= async(req , res)=>{
             select :'-instagram -telegram -snapchat -lat -lon'
             }
         })
-        console.log(updatedUser)
 
 
 
@@ -420,7 +401,6 @@ exports.removeFriend= async(req , res)=>{
         })
 
       }catch(err){
-        console.log(err)
         return res.status(500).json({
             success:false ,
             message:"Internal Server Error"
@@ -449,24 +429,24 @@ exports.getDetails=async(req , res)=>{
             const data = await User.findById(id)
             .populate({
                 path: 'friends',
-                select: '-password -email -contactNumber',
+                select: '-password -email -password -playLists -history -friends -requests -likedSongs',
                 populate: {
                 path: 'datingProfile',
                 model: 'Profile' ,
-                select :'-instagram -telegram -snapchat'
+                select :'-lat -lon'
                 }
             })
             .populate({
                 path: 'requests',
-                select: '-password -email -contactNumber',
+                select: '-password -email -password -playLists -history -friends -requests -likedSongs',
                 populate: {
                 path: 'datingProfile',
                 model: 'Profile' ,
-                select :'-instagram -telegram -snapchat -lat -lon'
+                select :'-lat -lon'
 
                 }
             })
-            .select('-password -playlists -history -friends -requests -likedSongs')
+            .select('-password -playLists -history -friends -requests -likedSongs')
             .lean()
             .exec();
             if(!data){
@@ -485,7 +465,6 @@ exports.getDetails=async(req , res)=>{
             })
 
    }catch(err){
-    console.log(err)
         return res.status(500).json({
             success:false ,
             message:"Internal Server Error"
@@ -493,3 +472,4 @@ exports.getDetails=async(req , res)=>{
 
     }
 }
+

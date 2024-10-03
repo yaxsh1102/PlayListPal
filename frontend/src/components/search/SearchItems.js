@@ -85,8 +85,10 @@ const Searchitems = ({ image, name, artist, duration, singer, type, url , isAlbu
           name: nowPlayingObj.name
       })      
   })
+  const resp = await data.json() 
   dispatch(updateHistory(nowPlayingObj))
   }catch(err){
+    console.log(err)
 
   }
 

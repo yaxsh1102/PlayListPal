@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = ()=>{
    const dispatch = useDispatch()
    const isTokenReady = ((store)=>store.discover.isTokenReady)
+   const tracks = useSelector((store)=>store.discover.tracks)
 
 
    useEffect(() => {
@@ -21,6 +22,7 @@ const useGetTracks = ()=>{
              },
             
            });
+           console.log("hii")
            dispatch(addNewTracks(response.data.tracks.items))
        
          } catch (err) {
@@ -29,9 +31,9 @@ const useGetTracks = ()=>{
        };
    
 
-       isTokenReady && getNewReleases();
+       tracks.length===0 && isTokenReady && getNewReleases();
         // eslint-disable-next-line
-     }, [isTokenReady]);
+     }, []);
    
    };
 
