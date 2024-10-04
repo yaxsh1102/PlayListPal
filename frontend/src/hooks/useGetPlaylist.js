@@ -1,15 +1,13 @@
 import  { useEffect } from 'react';
 import { useDispatch , useSelector } from 'react-redux';
 import axios from 'axios';
-import { addNewPlaylist, setLoading } from '../redux/discoverSlice';
+import { addNewPlaylist } from '../redux/discoverSlice';
 
 const useGetPlaylist = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((store)=>store.discover.playlists)
-  const isTokenReady = ((store)=>store.discover.isTokenReady)
 
 
-  dispatch(setLoading(true));
 
   useEffect(() => {
     const getNewReleases = async () => {
@@ -44,16 +42,13 @@ const useGetPlaylist = () => {
 
         dispatch(addNewPlaylist({ playlistsWithTracks }));
       } catch (err) {
-        console.error('Error fetching playlists:', err.response ? err.response.data : err.message);
       }
-      finally{
-        dispatch(setLoading(false));
-      }
+     
     };
 
-    !Object.keys(playlists).length && isTokenReady  && getNewReleases();
+    !Object.keys(playlists).length  && getNewReleases();
 
-  }, [isTokenReady]);
+  }, []);
 
   return null;
 };

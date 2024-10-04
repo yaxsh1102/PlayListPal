@@ -466,6 +466,167 @@ exports.addLocation = async(req , res)=>{
 }
 
 
+
+exports.fetchProfile = async(req , res)=>{
+    try{
+
+        const token = req.header('Authorization').split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+
+      
+       
+
+        if (!decoded  ) {
+            return res.status(404).json({
+                success: false,
+                message: "Authentication Failed. Kindly Log In."
+            });
+        }
+
+        const id = req.user.userId || req.user.id;
+
+        const data = await Profile.findOne({user:id})
+                                                .populate({
+                                                 path: "user",
+                                                 model: "User",
+                                                select: "name email",
+                                                 })
+                                                 .select("-lat -lon -_id"); 
+
+
+        if(!data){
+            return res.status(400).json({
+                success:false ,
+                message:"No Profile Found"
+            })
+        }
+
+
+        return res.status(200).json({
+            data:data ,
+            success:true ,
+            message:"Profile Fetched Successfully"
+        })
+        
+       
+
+    }catch(err){
+
+        return res.status(500).json({
+            success:true ,
+            message:"Server Error"
+
+        })
+    }
+
+}
+
+
+
+exports.getLikedOrHistory = async (req, res) => {
+    try {
+        const token = req.header('Authorization').split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+
+        if (!decoded) {
+            return res.status(404).json({
+                success: false,
+                message: "Authentication Failed. Kindly Log In."
+            });
+        }
+
+        const userId = req.user.userId || req.user.id;
+
+        const userData = await User.findById(userId)
+            .populate({
+                path: 'history',
+                model: 'Song',
+            })
+            .populate({
+                path: 'likedSongs',
+                model: 'Song',
+            })
+            .exec();
+
+        if (!userData) {
+            return res.status(400).json({
+                success: false,
+                message: "No user data found."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Liked Songs and History Fetched',
+            data: {
+                likedSongs: userData.likedSongs,
+                history: userData.history,
+            },
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Error fetching data",
+            error: err.message,
+        });
+    }
+};
+
+
+
+exports.getPlaylists = async(req , res)=>{
+    try{
+        const token = req.header('Authorization').split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+
+        if (!decoded ) {
+            return res.status(404).json({
+                success: false,
+                message: "Authentication Failed. Kindly Log In."
+            });
+        }
+
+        const id = req.user.userId || req.user.id;
+        const user = await User.findById(id)
+            .populate({
+                path: 'playLists',
+                populate: {
+                    path: 'songs',
+                    select: '-_id' 
+                },
+                select: '-_id' 
+            })
+
+            if(!user){
+                return res.status(400).json({
+                    success:false ,
+                    message:"No PlayList Found"
+                })
+            }
+
+            return res.status(200).json({
+                success:true ,
+                message:"Playlist Returned Successfully",
+                data:user
+            })
+
+    }catch(err){
+        return res.status(500).json({
+            success:false ,
+            message:"Couldn't Get Playlist"
+        })
+
+    }
+}
+
+
+
+
+
  
 
 

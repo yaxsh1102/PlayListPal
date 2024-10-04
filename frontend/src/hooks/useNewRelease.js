@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch , useSelector} from "react-redux";
-import { addNewAlbums, setLoading } from "../redux/discoverSlice";
+import { addNewAlbums } from "../redux/discoverSlice";
 
 const useNewRelease = () => {
   const dispatch = useDispatch();
   const albums = useSelector((store)=>store.discover.albums)
-  const isTokenReady = ((store)=>store.discover.isTokenReady)
 
 
-  dispatch(setLoading(true));
 
   useEffect(() => {
     const getNewReleases = async () => {
@@ -42,15 +40,12 @@ const useNewRelease = () => {
         dispatch(addNewAlbums({albumsWithTracks}))
 
       } catch (err) {
-        console.error("Error fetching new releases:", err.response ? err.response.data : err.message);
       }
-      finally{
-        dispatch(setLoading(false));
-      }
+      
     };
 
-    !Object.keys(albums).length && isTokenReady && getNewReleases();
-  }, [isTokenReady]);
+    !Object.keys(albums).length  && getNewReleases();
+  }, []);
 
 };
 

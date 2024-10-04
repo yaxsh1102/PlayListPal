@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { initiateQueue } from "../redux/playerSlice";
 
 
 const useGetPlaying = () =>{
     const dispatch = useDispatch()
-    const isTokenReady = ((store)=>store.discover.isTokenReady)
 
 
     const searchHindiSongs = async () => {
@@ -14,7 +13,7 @@ const useGetPlaying = () =>{
       try{
         const token = localStorage.getItem('token')
         const searchUrl = 'https://api.spotify.com/v1/search';
-        const query = 'hindi good songs'; 
+        const query = ' hindi songs'; 
       
         const response = await axios.get(searchUrl, {
           headers: {
@@ -23,7 +22,7 @@ const useGetPlaying = () =>{
           params: {
             q: query,
             type: 'track',
-            limit: 10, // Number of search results to return
+            limit: 10, 
           },
         });
         const arr= [] 
@@ -48,8 +47,8 @@ const useGetPlaying = () =>{
          
 }
 useEffect(()=>{
-     isTokenReady &&  searchHindiSongs()
-} , [isTokenReady])
+      searchHindiSongs()
+} , [])
 }
 
 

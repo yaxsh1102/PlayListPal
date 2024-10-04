@@ -12,7 +12,7 @@ const Signup = () => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
 
   const getOTPHandler = async () => {
     if (!fullName || !email || !password) {

@@ -13,7 +13,6 @@ const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const name = useSelector((store)=>store?.user?.name)
-  const imageUrl = useSelector((store)=>store?.user?.imageUrl)
 
   function clickHandler (){ 
      dispatch(toggleSearch())
@@ -49,7 +48,6 @@ const Navbar = () => {
           Find Match!
         </button>
         <div  onClick={logoutHandler} className='md:mr-[4rem] hover:cursor-pointer'> 
-        {/* <img src={""+imageUrl+""} alt='logo' className='lg:w-[2.5rem] lg:h-[2.5rem] md:w-[2.5rem] md:h-[2.5rem]  w-8 h-8 rounded-full' /> */}
         <IoMdLogOut className="text-white lg:w-[2.15rem] lg:h-[2.15rem] md:w-[2.15rem] md:h-[2.15rem]  w-8 h-8 " ></IoMdLogOut>
         </div>
       </div>

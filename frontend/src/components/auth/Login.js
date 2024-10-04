@@ -4,8 +4,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoggedin } from '../../redux/userSlice';
 import { setUser } from '../../redux/userSlice';
-import { sendToast } from '../../redux/toastSlice';
-import { setCoordinates } from '../../redux/userSlice';
+;
 
 const Login = () => {
   
@@ -31,26 +30,6 @@ const Login = () => {
     login(email, password);
   }
 
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          dispatch(setCoordinates({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          }));
-         
-        },
-        (error) => {
-          dispatch(sendToast("Location Is Mandatory"))
-         
-        }
-      );
-    } else {
-      dispatch(sendToast("Location Is Mandatory"))
-
-    }
-  };
 
   async function login(email, password) {
     try {
@@ -66,7 +45,7 @@ const Login = () => {
 
       if (resp.success) {
         localStorage.setItem('db_token', resp.token);
-        navigate("/");
+        navigate("/home");
         dispatch(toggleLoggedin());
         dispatch(setUser(resp.user))
 
@@ -97,7 +76,7 @@ const Login = () => {
   
       if (resp.token) {
         localStorage.setItem('db_token', resp.token);
-        navigate("/");
+        navigate("/home");
         dispatch(toggleLoggedin());
         dispatch(setUser(resp.user))
 

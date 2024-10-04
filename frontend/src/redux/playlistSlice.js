@@ -5,7 +5,6 @@ const playlistSlice = createSlice({
     initialState: {
         playlist: {},
         likedSongs:[] ,
-        uniqueSongs:0 ,
     },
     reducers: {
         createPlaylist: (state, action) => {
