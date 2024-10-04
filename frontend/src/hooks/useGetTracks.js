@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = ()=>{
    const dispatch = useDispatch()
-   const isTokenReady = ((store)=>store.discover.isTokenReady)
    const tracks = useSelector((store)=>store.discover.tracks)
 
 
@@ -22,7 +21,6 @@ const useGetTracks = ()=>{
              },
             
            });
-           console.log("hii")
            dispatch(addNewTracks(response.data.tracks.items))
        
          } catch (err) {
@@ -31,7 +29,7 @@ const useGetTracks = ()=>{
        };
    
 
-       tracks.length===0 && isTokenReady && getNewReleases();
+       tracks.length===0  && getNewReleases();
         // eslint-disable-next-line
      }, []);
    

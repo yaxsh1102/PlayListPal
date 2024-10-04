@@ -5,7 +5,6 @@ import { useSelector  , useDispatch} from 'react-redux';
 import SearchResults from '../search/SearchResults';
 import Searchbar from '../search/Searchbar';
 import { setCoordinates } from '../../redux/userSlice';
-import { sendToast } from '../../redux/toastSlice';
 import { useNavigate } from 'react-router-dom';
 import useGetTracks from '../../hooks/useGetTracks';
 import useNewRelease from '../../hooks/useNewRelease';
@@ -16,11 +15,10 @@ import useGetUser from '../../hooks/useGetUser';
 
 
 
-const LandingPage = () => {
+const Home = () => {
   const {lat , lon } = useSelector((store)=>store.user) ;
   const navigate = useNavigate()
   if(!localStorage.getItem('db_token')){
-    console.log("heyaa")
     navigate("/login")
 }
 
@@ -34,12 +32,9 @@ useGetUser()
 
   async function sendLocation(){
 
-
     if(!lat || !lon){
       return 
     }
-
-   
 
     try{
     const data = await fetch('https://playlistpal.onrender.com/api/v1/auth/addLocation' ,{
@@ -67,13 +62,9 @@ useGetUser()
            
           },
           (error) => {
-            dispatch(sendToast("Location Access Needed"))
-           
-           
-          }
+             }
         );
       } else {
-        dispatch(sendToast("Location Access Needed"))
 
        
       }
@@ -82,12 +73,8 @@ useGetUser()
 
     !lat && !lon && sendLocation()
 
-
     },[])
     getLocation()
-
-
-
 
     return ( 
       <>
@@ -105,4 +92,4 @@ useGetUser()
     );
 }
 
-export default LandingPage
+export default Home

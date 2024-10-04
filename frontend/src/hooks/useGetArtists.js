@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewArtists, setLoading } from "../redux/discoverSlice";
+import { addNewArtists } from "../redux/discoverSlice";
 
 const useGetArtists = () => {
   const dispatch = useDispatch();
   const artists = useSelector((store)=>store.discover.artists)
-  const isTokenReady = ((store)=>store.discover.isTokenReady)
 
   const getRandomQuery = () => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -50,13 +49,11 @@ const useGetArtists = () => {
         dispatch(addNewArtists({ artistsWithTracks }));
       } catch (err) {
         console.error("Error fetching artists:", err.response ? err.response.data : err.message);
-      } finally {
-        dispatch(setLoading(false));
       }
     };
   
-    !Object.keys(artists).length && isTokenReady && getNewArtists();
-  }, [isTokenReady]);
+    !Object.keys(artists).length  && getNewArtists();
+  }, []);
 }
   
 

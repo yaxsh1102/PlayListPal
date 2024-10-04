@@ -5,6 +5,7 @@ const toggleSlice = createSlice({
   initialState: {
     searchToggle: false,
     loading:false , 
+    
   },
   reducers: {
     toggleSearch: (state) => {

@@ -1,17 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector, dispatch } from 'react-redux';
-import { checkProfileStatus, setMatchResults } from '../../redux/userSlice';
-import MatchCard from './MatchCard';
-import Loader from '../layout/Loader'; 
-import { sendToast } from '../../redux/toastSlice';
-import { setCoordinates } from '../../redux/userSlice';
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setMatchResults } from "../../redux/userSlice";
+import MatchCard from "./MatchCard";
+import Loader from "../layout/Loader";
+import { sendToast } from "../../redux/toastSlice";
+import { setCoordinates } from "../../redux/userSlice";
 
 const MatchLanding = ({ setsetSelectedOption }) => {
+  const [loading, setLoading] = useState(false);
   const matchResults = useSelector((store) => store.user.matchResults);
   const dispatch = useDispatch();
-  const {lat , lon , isProfileCompleted} = useSelector((store)=>store.user) ;
-
-
+  const { lat, lon, isProfileCompleted } = useSelector((store) => store.user);
 
   const ref = useRef({
     playLists: false,
@@ -23,88 +22,80 @@ const MatchLanding = ({ setsetSelectedOption }) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          dispatch(setCoordinates({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          }));
-         
+          dispatch(
+            setCoordinates({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            })
+          );
         },
         (error) => {
-          dispatch(sendToast("Location Is Mandatory"))
-         
+          dispatch(sendToast("Location Is Mandatory"));
         }
       );
     } else {
-      dispatch(sendToast("Location Is Mandatory"))
-
+      dispatch(sendToast("Location Is Mandatory"));
     }
   };
 
-  
-  const [loading, setLoading] = useState(false); 
 
   async function matchHandler() {
-
-    if(!lat || !lon){
-      dispatch(sendToast("Allow Location Access"))
-      getLocation()
-      return  
+    if (!lat || !lon) {
+      getLocation();
+      return;
     }
 
-    if(!isProfileCompleted){
-      dispatch(sendToast("Incomplete Profile"))
-      return
+    if (!isProfileCompleted) {
+      dispatch(sendToast("Incomplete Profile"));
+      return;
     }
 
-
-
-    setLoading(true); 
+    setLoading(true);
 
     try {
-      const response = await fetch('https://playlistpal.onrender.com/api/v1/match/getMatches', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('db_token')}`
-        },
-        body: JSON.stringify({
-          playLists: ref.current['playLists'].checked,
-          likedSongs: ref.current['likedSongs'].checked,
-          radius: ref.current['radius'].valueOf ,
-          lat:lat ,
-          lon:lon 
-        }),
-      });
+      const response = await fetch(
+        "https://playlistpal.onrender.com/api/v1/match/getMatches",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("db_token")}`,
+          },
+          body: JSON.stringify({
+            playLists: ref.current["playLists"].checked,
+            likedSongs: ref.current["likedSongs"].checked,
+            radius: ref.current["radius"].valueOf,
+            lat: lat,
+            lon: lon,
+          }),
+        }
+      );
 
       const results = await response.json();
-      if(results.success){
-      dispatch(setMatchResults(results.data));
-      setsetSelectedOption('find-match');
-      }else{
-        dispatch(sendToast("Error Occured"))
+      if (results.success) {
+        dispatch(setMatchResults(results.data));
+        setsetSelectedOption("find-match");
+      } else {
+        dispatch(sendToast("Error Occured"));
       }
     } catch (error) {
-      dispatch(sendToast("Error Occured"))
-
-     
+      dispatch(sendToast("Error Occured"));
     } finally {
       setLoading(false);
     }
   }
 
-
-
-
   return (
     <>
-      {loading ? ( 
+      {loading ? (
         <Loader />
-      ) : (matchResults && matchResults.length > 0 ? (
-        <MatchCard selectedOption={'find-match'} />
+      ) : matchResults && matchResults.length > 0 ? (
+        <MatchCard selectedOption={"find-match"} />
       ) : (
         <div className="flex flex-col items-center justify-center h-[90%] p-6 text-white">
           <h1 className="lg:text-4xl md:text-2xl text-center font-light tracking-wide mb-8">
-            Uniting Hearts, Discover Connections Through Shared <span className='text-indigo-500'>Musical Harmonies</span>
+            Uniting Hearts, Discover Connections Through Shared{" "}
+            <span className="text-indigo-500">Musical Harmonies</span>
           </h1>
           <p className="lg:text-2xl md:text-xl text-center mb-6">
             Pick Your Favorites to Find Your Perfect Match
@@ -114,7 +105,9 @@ const MatchLanding = ({ setsetSelectedOption }) => {
               <label className="inline-flex items-center">
                 <input
                   type="checkbox"
-                  ref={(el) => { ref.current['playLists'] = el; }}
+                  ref={(el) => {
+                    ref.current["playLists"] = el;
+                  }}
                   className="w-8 h-8 appearance-none bg-gray-800 border-2 border-gray-400 checked:bg-gray-800 checked:border-gray-700 checked:after:content-['✔'] checked:after:text-white checked:after:absolute checked:after:left-2 checked:after:top-1/2 checked:after:-translate-y-1/2 focus:ring-0 relative"
                 />
                 <span className="ml-4 text-lg">Playlist</span>
@@ -124,19 +117,26 @@ const MatchLanding = ({ setsetSelectedOption }) => {
               <label className="inline-flex items-center">
                 <input
                   type="checkbox"
-                  ref={(el) => { ref.current['likedSongs'] = el; }}
+                  ref={(el) => {
+                    ref.current["likedSongs"] = el;
+                  }}
                   className="w-8 h-8 appearance-none bg-gray-800 border-2 border-gray-400 rounded-sm checked:bg-gray-800 checked:border-gray-700 checked:after:content-['✔'] checked:after:text-white checked:after:absolute checked:after:left-2 checked:after:top-1/2 checked:after:-translate-y-1/2 focus:ring-0 relative"
                 />
                 <span className="ml-4 text-lg">Liked Songs</span>
               </label>
             </div>
             <div className="mb-4">
-              <label className="block text-lg font-medium mb-2" htmlFor="distance-radius">
+              <label
+                className="block text-lg font-medium mb-2"
+                htmlFor="distance-radius"
+              >
                 Add Distance Radius (in kms)
               </label>
               <input
                 type="text"
-                ref={(el) => { ref.current['radius'] = el; }}
+                ref={(el) => {
+                  ref.current["radius"] = el;
+                }}
                 id="distance-radius"
                 className="w-full px-3 py-2 rounded bg-gray-800 outline-none text-slate-400"
                 placeholder="Enter radius"
@@ -150,7 +150,7 @@ const MatchLanding = ({ setsetSelectedOption }) => {
             </button>
           </div>
         </div>
-      ))}
+      )}
     </>
   );
 };

@@ -74,9 +74,10 @@ const userSlice = createSlice({
         } ,
        
         setUser: (state, action) => {
-            const { name, email, age, dateOfBirth, sexualOrientation, city, country ,  gender  , imageUrl , about , instagram , telegram , snapchat} = action.payload;
-            state.name = name;
-            state.email = email;
+            const { name, email, age, dateOfBirth, sexualOrientation, city, country ,  gender  , imageUrl , about , instagram , telegram , snapchat , user} = action.payload;
+            console.log(imageUrl)
+            state.name = name || user.name;
+            state.email = email || user.email;
             state.age = age;
             state.dateOfBirth = dateOfBirth;
             state.sexualOrientation = sexualOrientation;

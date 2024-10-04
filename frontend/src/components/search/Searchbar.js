@@ -1,28 +1,22 @@
 import axios from "axios";
-// import { SEARCH_ENDPOINT } from "../../utils/constants";
-import { useDispatch , useSelector } from "react-redux";
-import { addAlbums , addTracks } from "../../redux/resultsSlice";
+import { useDispatch } from "react-redux";
+import { addAlbums, addTracks } from "../../redux/resultsSlice";
 import { useEffect, useRef } from "react";
-import { setLoading } from "../../redux/discoverSlice";
 
-const SEARCH_ENDPOINT = process.env.REACT_APP_SEARCH_ENDPOINT 
+const SEARCH_ENDPOINT = process.env.REACT_APP_SEARCH_ENDPOINT;
 
 const Searchbar = () => {
   const dispatch = useDispatch();
-  const loading = useSelector((store)=>store.toggle.loading) 
 
-  const input = useRef(null) 
+  const input = useRef(null);
 
-  const changehandler = (e)=>{
-    if(e.keyCode===13){
-      handleSearch()
-    }  
-    
-      }
+  const changehandler = (e) => {
+    if (e.keyCode === 13) {
+      handleSearch();
+    }
+  };
 
   const handleSearch = async () => {
-       dispatch(setLoading(true))
-
 
     const access_token = localStorage.getItem("token");
 
@@ -34,50 +28,40 @@ const Searchbar = () => {
           },
           params: {
             q: `${input.current.value}`,
-            type: 'album,track', 
-            limit:6
+            type: "album,track",
+            limit: 6,
           },
         });
 
         const albumsWithTracks = await Promise.all(
           response.data.albums.items.map(async (album) => {
-            try{
-              const tracks = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
-                headers: {
-                  Authorization: `Bearer ${access_token}`,
-                },
-               
-              })
+            try {
+              const tracks = await axios.get(
+                `https://api.spotify.com/v1/albums/${album.id}/tracks`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${access_token}`,
+                  },
+                }
+              );
               return { album, tracks: tracks.data.items };
-            }catch(err){
+            } catch (err) {}
+          })
+        );
 
-            }
-           
-
-      }))
-
-      dispatch(addTracks(response.data.tracks.items))
-      dispatch(addAlbums ({albumsWithTracks}))
-      dispatch(setLoading(false))
-
-        
-     
-
+        dispatch(addTracks(response.data.tracks.items));
+        dispatch(addAlbums({ albumsWithTracks }));
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
-
   useEffect(() => {
-
-    input.current.value='Yash Mishra'
+    input.current.value = "Best of Bollywood";
     handleSearch();
   }, []);
 
- 
   return (
-    <div className='w-full flex md:justify-start justify-center lg:pl-24 md:pl-6 mt-8'>
+    <div className="w-full flex md:justify-start justify-center lg:pl-24 md:pl-6 mt-8">
       <input
         type="text"
         placeholder="Search for songs, albums, artists..."

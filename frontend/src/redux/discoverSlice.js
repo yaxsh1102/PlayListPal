@@ -7,8 +7,7 @@ const discoverSlice = createSlice({
         artists:{},
         tracks:[],
         playlists:{},
-        isLoading: false ,
-        tokenReady:false ,
+ 
     }
     ,
     reducers:{
@@ -89,15 +88,9 @@ const discoverSlice = createSlice({
                 };
               });
         },
-        setLoading: (state, action) => {
-          state.isLoading = action.payload;
-        } ,
-        setTokenReady:(state , action)=>{
-          state.tokenReady=true
-        }
-
+        
     }
 })
 
-export const { addNewAlbums , addNewArtists , addNewTracks , addNewPlaylist,setLoading , setTokenReady} = discoverSlice.actions 
+export const { addNewAlbums , addNewArtists , addNewTracks , addNewPlaylist} = discoverSlice.actions 
 export default discoverSlice.reducer

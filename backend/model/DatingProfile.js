@@ -26,7 +26,7 @@ const ProfileSchema = new mongoose.Schema({
     about:{
         type:String , 
     } ,
-    city:{
+    city:{ 
         type:String , 
     } ,
     state:{
