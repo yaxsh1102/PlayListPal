@@ -67,9 +67,15 @@ const DisplayPlaylist = ({ type }) => {
             url: song.preview_url,
             preview_url: undefined,
           }));
+          const history = resp.data.history.map((song) => ({
+            ...song,
+            url: song.preview_url,
+            preview_url: undefined,
+          }));
+
 
           dispatch(setLikedSongs(likedSongs));
-          dispatch(setHistory(resp.data.history));
+          dispatch(setHistory(history));
           setLoading(false);
         } else {
           dispatch(sendToast("Error While Fetching"));
@@ -124,7 +130,6 @@ const DisplayPlaylist = ({ type }) => {
     setShowPopup(true);
   };
 
-  console.log(type);
 
   if (loading) {
     return (

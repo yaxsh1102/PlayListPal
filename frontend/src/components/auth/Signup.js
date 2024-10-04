@@ -57,6 +57,7 @@ const Signup = () => {
 
         dispatch(setUser(resp.user))
         dispatch(toggleLoggedin(true));
+        localStorage.setItem('db_token' , resp.token)
         navigate('/home');
       } else {
         setError(resp.message);

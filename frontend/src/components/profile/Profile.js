@@ -25,7 +25,6 @@ const Profile = () => {
         const response = await data.json();
         if (response.success) {
           dispatch(setUser(response.data));
-          console.log(response.data);
           setLoading(false);
         } else {
           dispatch(sendToast(response.message));
@@ -36,7 +35,7 @@ const Profile = () => {
     }
 
     fetchProfile();
-  }, []);
+  }, []); 
 
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -129,7 +128,7 @@ const Profile = () => {
         <h2 className="text-3xl font-bold text-center text-white">Profile</h2>
         <div className="flex justify-center">
           <img
-            src={user?.imageUrl || profileImage}
+            src={ profileImage || user?.imageUrl }
             alt="User"
             className="w-32 h-32 rounded-full border-2 border-indigo-500"
           />

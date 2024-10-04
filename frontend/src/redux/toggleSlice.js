@@ -5,7 +5,6 @@ const toggleSlice = createSlice({
   initialState: {
     searchToggle: false,
     loading:false ,
-    top:'7' 
     
   },
   reducers: {
@@ -21,5 +20,5 @@ const toggleSlice = createSlice({
   },
 });
 
-export const { toggleSearch , toggleLoading , setTop } = toggleSlice.actions;
+export const { toggleSearch , toggleLoading  } = toggleSlice.actions;
 export default toggleSlice.reducer;

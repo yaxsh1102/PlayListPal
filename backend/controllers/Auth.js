@@ -15,7 +15,6 @@ exports.sendOTP=async(req, res)=>{
     try {
         let {email}= req.body ;
         email = (email+"").toLowerCase()
-        console.log(email)
 
         const checkUserPresent = await User.findOne({email:email}) ;
 
@@ -69,7 +68,6 @@ exports.signUp = async(req , res)=>{
         const {fullName  , password ,  otp}=req.body ;
         let {email}= req.body ;
         email = (email+"").toLowerCase()
-        console.log(email)
 
 
         if(!fullName || !email  || !password  || !otp  ){
@@ -90,7 +88,6 @@ exports.signUp = async(req , res)=>{
             })
         }
 
-        console.log("this is emiail" , email)
     
         const recentOtp = await OTP.findOne({email:email}).sort({createdAt:-1}).limit(1) ;
         if(!recentOtp){
@@ -556,6 +553,8 @@ exports.getLikedOrHistory = async (req, res) => {
                 message: "No user data found."
             });
         }
+
+      
 
         return res.status(200).json({
             success: true,

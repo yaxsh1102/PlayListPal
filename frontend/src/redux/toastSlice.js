@@ -13,14 +13,14 @@ const toastSlice= createSlice({
           }
             const id = toast(action.payload,{
                 style: {
-                  background: 'linear-gradient(45deg, #000000cf, #282626a9)', // Gradient background
-                  color: 'white', // Text color
-                  padding: '16px', // Padding
-                  borderRadius: '8px', // Rounded corners
-                  fontWeight: 'bold', // Bold text
-                  fontSize: '1rem', // Font size (adjust as needed)
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Optional: shadow for better visibility
-                  zIndex: '50', // Ensure the toast is above other elements
+                  background: 'linear-gradient(45deg, #000000cf, #282626a9)', 
+                  color: 'white', 
+                  padding: '16px',
+                  borderRadius: '8px', 
+                  fontWeight: 'bold', 
+                  fontSize: '1rem', 
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+                  zIndex: '50', 
 
                 
                 }

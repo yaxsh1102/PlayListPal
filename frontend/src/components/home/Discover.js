@@ -63,7 +63,7 @@ const Discover = () => {
         ))}
       </div>
       <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Buzzing Artists </p> 
-      <div className='flex lg:w-[70rem] md:[rem] w-[40rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
+      <div className='flex lg:w-[70rem] w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
         { artists && artists.map((element ,index) => (
           
           <DiscoverCards
@@ -79,7 +79,7 @@ const Discover = () => {
         ))}
       </div>
       <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Hot Picks </p>
-      <div className='flex lg:w-[70rem] md:[60rem] w-[40rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
+      <div className='flex lg:w-[70rem] w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
         {newTracks.map((element) => (
           <DiscoverCards
             key={element.id}
@@ -94,7 +94,7 @@ const Discover = () => {
       </div>
 
       <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4' >Top Playlists </p>
-      <div className='flex lg:w-[70rem] md:[rem] w-[40rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
+      <div className='flex lg:w-[70rem] w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
         {playlists.map((element , index) => (
           <DiscoverCards
             key={index}
