@@ -78,7 +78,7 @@ const DisplayPlaylist = ({ type }) => {
         dispatch(sendToast("Error While Fetching"));
       }
     }
-    likedsongs.length === 0 && history.length === 0 && getLikedOrHistory();
+    likedsongs.length === 0 && history.length === 0  && getLikedOrHistory();
   }, []);
 
   function getCurrentPlaylist(type, name) {
@@ -144,7 +144,7 @@ const DisplayPlaylist = ({ type }) => {
         <div className="w-full flex flex-col justify-center items-start md:pl-24 ">
           <div className="flex w-full border-b-[3px] border-black sticky">
             <h1
-              className="w-full md:text-[2rem] text-[1.5rem] md:text-left text-right text-white mb-1
+              className="w-full md:text-[2rem] text-[1.5rem] md:text-left text-center text-white mb-1
         mt-10"
             >
               {heading}

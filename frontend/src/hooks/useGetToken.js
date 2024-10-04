@@ -12,8 +12,6 @@ const useGetToken = ()=>{
 
     const getToken = async () => {
       try{
-    
-      }catch(err){}
         const response = await fetch(TOKEN_ENDPOINT, {
           method: 'POST',
           headers: {
@@ -24,6 +22,11 @@ const useGetToken = ()=>{
         });
         const data = await response.json();
         localStorage.setItem("token" ,data.access_token)
+    
+      }catch(err){
+        
+      }
+        
        
   
       };

@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { toggleSearch } from '../../redux/toggleSlice';
+import { setTop, toggleSearch } from '../../redux/toggleSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
 
 const Sidebar = ({toggleSearchBarVisibility}) => {
   const dispatch = useDispatch()
   const search = useSelector((store)=>store.toggle.searchToggle)
+  const top = useSelector((store)=>store.toggle.top)
   const [showMenu , setShowMenu] = useState(false)
   const navigate = useNavigate()
 
@@ -17,24 +18,26 @@ const Sidebar = ({toggleSearchBarVisibility}) => {
     }
 
     function clickHandler(){
-      navigate('/home')
+      navigate('home')
+      dispatch(setTop('7'))
       if(search){
        dispatch(toggleSearch())
       }
 
     }
+
   return (
-    <>
-      <p className={` md:hidden flex absolute top-8 left-4 z-40 `} onClick={menuHandler}>
+    <> 
+      <p className={` md:hidden flex absolute left-4 z-40 ${showMenu?('top-12'):(`top-${top}`)}`} onClick={menuHandler}>
         {!showMenu ? ( <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path></svg>
-) : (<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path></svg>)}
+) : (<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z" ></path></svg>)}
        </p>
 
        <div className=' md:flex-col md:block lg:flex-col lg:block hidden h-[100vh] w-60  text-white px-4 py-10 bg-gradient-to-tr from-[#000000] to-[#434343]'>
       <img
         alt=""
-        src="//music.youtube.com/img/ringo2/on_platform_logo_dark.svg"
-        className="w-full h-8 object-contain mt-2"
+        src="sidebarlogo.png"
+        className="w-full md:h-12 lg:h-24 object-contain mt-2"
       />
 
       <div className='flex flex-row my-6 justify-start items-center gap-x-2 ml-[3.2rem] mt-16 cursor-pointer hover:text-gray-600 z-50 '>
@@ -81,12 +84,12 @@ const Sidebar = ({toggleSearchBarVisibility}) => {
       >
          <img
         alt=""
-        src="//music.youtube.com/img/ringo2/on_platform_logo_dark.svg"
-        className="w-full h-8 object-contain mt-2"
+        src="sidebarlogo.png"
+        className="w-full h-16 object-contain mt-1"
       />
 
       <div onClick={()=>{setShowMenu(!showMenu);clickHandler();}} className='flex flex-row my-6 justify-start items-center gap-x-2 ml-[3.2rem] mt-16 cursor-pointer hover:text-gray-600 text-white'>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#f1e9e9" viewBox="0 0 256 256">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#f1e9e9" viewBox="0 0 256 256" className=''>
           <path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z" ></path>
         </svg>
         <p className="text-[0.9rem]" >Home</p>

@@ -3,7 +3,7 @@ const app = express()
 const cors = require("cors");
 require("dotenv").config()
 const { cloudinaryConnect } = require("./config/cloudinary");
-const fileUpload = require('express-fileupload'); // Ensure this import is correct
+const fileUpload = require('express-fileupload'); 
 
 
 

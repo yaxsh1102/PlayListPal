@@ -53,7 +53,7 @@ const Searchitems = ({
       dispatch(addNowPlaying(nowPlayingObj));
       manageHistory();
     } else {
-      navigate(`result/${name}`);
+      navigate(`/result/${name}`);
     }
   };
 
@@ -151,7 +151,7 @@ const Searchitems = ({
 
       const resp = await data.json();
     } catch (err) {
-      
+
     }
   }
 

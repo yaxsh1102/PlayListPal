@@ -2,11 +2,13 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addAlbums, addTracks } from "../../redux/resultsSlice";
 import { useEffect, useRef } from "react";
+import { setTop } from "../../redux/toggleSlice";
 
 const SEARCH_ENDPOINT = process.env.REACT_APP_SEARCH_ENDPOINT;
 
 const Searchbar = () => {
   const dispatch = useDispatch();
+
 
   const input = useRef(null);
 
@@ -48,7 +50,7 @@ const Searchbar = () => {
             } catch (err) {}
           })
         );
-
+        dispatch(setTop('8'))
         dispatch(addTracks(response.data.tracks.items));
         dispatch(addAlbums({ albumsWithTracks }));
       }
@@ -58,6 +60,7 @@ const Searchbar = () => {
   useEffect(() => {
     input.current.value = "Best of Bollywood";
     handleSearch();
+
   }, []);
 
   return (
