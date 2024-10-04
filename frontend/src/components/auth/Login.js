@@ -15,7 +15,7 @@ const Login = () => {
   const [error, setError] = useState('');
 
   if (isLoggedIn) {
-    navigate("/");
+    navigate("/home");
   }
 
   function loginHandler() {
@@ -156,7 +156,6 @@ const Login = () => {
                 className="w-full flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
-                  {/* Google icon paths */}
                 </svg>
                 Continue with Google
               </button>

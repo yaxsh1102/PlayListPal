@@ -12,7 +12,6 @@ import useGetArtists from '../../hooks/useGetArtists';
 import useGetPlaylist from '../../hooks/useGetPlaylist';
 import useGetPlaying from '../../hooks/useGetPlaying';
 import useGetUser from '../../hooks/useGetUser';
-import { setTop } from '../../redux/toggleSlice';
 
 
 
@@ -72,7 +71,6 @@ useGetUser()
       }
     };
     useEffect(()=>{
-    dispatch(setTop('7'))
 
 
     !lat && !lon && sendLocation()

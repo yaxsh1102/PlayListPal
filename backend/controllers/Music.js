@@ -219,6 +219,7 @@ exports.removeFromLiked = async(req , res)=>{
                 { new: true }
             );
 
+
           
 
 
@@ -406,15 +407,15 @@ exports.renamePlaylist= async (req, res) => {
 
 exports.addToHistory = async(req , res)=>{
     try{
-        const{name , image , preview_url , singer , artist} = req.body ;
+        const{name , image , preview_url  , singer , artist} = req.body ;
       
-        if (!name || !image || !preview_url || !singer || !artist) {
+        if (!name || !image || !preview_url  ||!singer ||  !artist) {
             return res.status(400).json({
                 success: false,
                 message: "Missing required fields",
             });
         }
-        
+         
         const token = req.header('Authorization').split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
@@ -428,7 +429,7 @@ exports.addToHistory = async(req , res)=>{
 
         if(!song){
             try {
-                 song = new Song({ history:true, liked:false, artist, singer, preview_url, image, name });
+                 song = new Song({ artist, singer, preview_url, image, name });
                 await song.save();
                 user.history.unshift(song._id) ;
                 user.save()
@@ -445,13 +446,19 @@ exports.addToHistory = async(req , res)=>{
         } else{
 
         
-        if(song.history){
-        user.history = user.history.filter(songId => !songId.equals(song._id));
-        user.history.unshift(song._id);
-           
-        } else{
-            user.history.unshift(song._id) ;
-        }
+            const songIndex = user.history.findIndex(songId => songId.equals(song._id));
+
+            if (songIndex !== -1) {
+                user.history.splice(songIndex, 1); 
+            }
+            
+            user.history.unshift(song._id);
+
+
+            if (user.history.length > 11) {
+                const song =  user.history.pop(); 
+                
+             }
 
 
 
@@ -460,10 +467,7 @@ exports.addToHistory = async(req , res)=>{
         await song.save() ;
         await user.save() ;
      }
-        if (user.history.length > 11) {
-           const song =  user.history.pop(); 
-           
-        }
+        
 
 
         return res.status(200).json({

@@ -18,7 +18,7 @@ import { sendToast } from "../../redux/toastSlice";
 const Searchitems = ({
   image,
   name,
-  artist,
+  artist, 
   duration,
   singer,
   type,
@@ -77,9 +77,11 @@ const Searchitems = ({
   };
 
   async function manageHistory() {
+    
     if (!localStorage.getItem("db_token")) {
       return;
     }
+    console.log(nowPlayingObj)
 
     try {
       const data = await fetch(
@@ -91,7 +93,7 @@ const Searchitems = ({
             Authorization: `Bearer ${localStorage.getItem("db_token")}`,
           },
           body: JSON.stringify({
-            preview_url: nowPlayingObj.url,
+            preview_url: nowPlayingObj.url ||nowPlayingObj.preview_url ,
             image: nowPlayingObj.image,
             singer: nowPlayingObj.singer,
             artist: nowPlayingObj.artist,
@@ -100,6 +102,7 @@ const Searchitems = ({
         }
       );
       const resp = await data.json();
+      console.log(resp)
       dispatch(updateHistory(nowPlayingObj));
     } catch (err) {
       console.log(err);
