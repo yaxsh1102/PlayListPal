@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { sendToast } from '../../redux/toastSlice';
 import { GoogleLogin } from '@react-oauth/google';
-import { toggleLoggedin } from '../../redux/userSlice';
+import { setUser, toggleLoggedin } from '../../redux/userSlice';
 
 const Signup = () => {
   const [fullName, setFullName] = useState('');
@@ -52,20 +52,21 @@ const Signup = () => {
       });
       const resp = await response.json();
       if (resp.success) {
-        dispatch(sendToast('Google Login Successful'));
+        dispatch(sendToast('Google Signup Successful'));
+        dispatch(setUser(resp.user))
         dispatch(toggleLoggedin(true));
-        navigate('/');
+        navigate('/home');
       } else {
         setError(resp.message);
       }
     } catch (err) {
-      console.log('Google login failed:', err);
+      dispatch(sendToast('Google Signup Error'));
+
     }
   };
 
   const handleGoogleLoginError = (err) => {
-    console.log(err)
-    console.log('Login Failed');
+    dispatch(sendToast('Google Signup Error'));
   };
 
   const submitHandler = async () => {

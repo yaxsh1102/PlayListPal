@@ -273,7 +273,7 @@ exports.verifyGoogleToken = async (req, res) => {
       return res.status(200).json({
         success: true,
         token: authToken,
-        user:{name:existingUser.name , ...existingUser.datingProfile} ,
+        user:{name:existingUser.name ,email:existingUser.email  , ...existingUser.datingProfile} ,
         message: 'User authenticated successfully',
       });
   
