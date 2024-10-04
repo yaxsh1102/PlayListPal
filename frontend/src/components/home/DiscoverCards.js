@@ -13,7 +13,7 @@ const DiscoverCards = ({ name, image, artist, genres , type , url}) => {
     const singer = artist ;
     const nowPlayingObj = {name , image , url ,singer}
     dispatch(addNowPlaying(nowPlayingObj))
-    navigate("play-music") 
+    navigate("/play-music") 
     
   }
 
@@ -36,7 +36,7 @@ const DiscoverCards = ({ name, image, artist, genres , type , url}) => {
         </div>
     </div>
   ) : (
-    <Link to={`/${type}/${name}`} className="lg:w-[14rem] md:w-[12rem] flex-shrink-0 p-2 w-[8rem]"
+    <Link to={`/${type}/${encodeURIComponent(name)}`} className="lg:w-[14rem] md:w-[12rem] flex-shrink-0 p-2 w-[8rem]"
           onClick={type === "tracks" ? handleClick : undefined}>      
           <img src={image} alt='image.png' className="lg:w-[11rem] lg:h-40 md:w-[9rem] md:h-32 w-[6rem] h-[28] object-cover rounded-md" />
           <div className="w-full lg:py-4 py-2">

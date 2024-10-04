@@ -51,7 +51,7 @@ const Discover = () => {
     <div className="flex flex-col scrollbar-hide mb-8 w-[80%] " style={{ paddingTop }}>
       <div className='overflow-y-scroll md:pt-[26rem] overflow-x-hidden'>
       <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Trending Album </p>
-      <div className='flex lg:w-[70rem] md:[rem] w-[40rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar '>
+      <div className='flex lg:w-[70rem]  w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar '>
         {albums.map((element , index) => (
           <DiscoverCards
             key={index} 

@@ -12,6 +12,7 @@ import useGetArtists from '../../hooks/useGetArtists';
 import useGetPlaylist from '../../hooks/useGetPlaylist';
 import useGetPlaying from '../../hooks/useGetPlaying';
 import useGetUser from '../../hooks/useGetUser';
+import { setTop } from '../../redux/toggleSlice';
 
 
 
@@ -21,6 +22,7 @@ const Home = () => {
   if(!localStorage.getItem('db_token')){
     navigate("/login")
 }
+
 
 
 useGetPlaylist()
@@ -70,11 +72,14 @@ useGetUser()
       }
     };
     useEffect(()=>{
+    dispatch(setTop('7'))
+
 
     !lat && !lon && sendLocation()
 
     },[])
-    getLocation()
+    getLocation() 
+
 
     return ( 
       <>

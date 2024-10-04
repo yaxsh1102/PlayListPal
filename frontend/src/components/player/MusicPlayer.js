@@ -123,7 +123,7 @@ const MusicPlayer = ({ nowPlaying }) => {
       addLike()
 
     }
-    dispatch(!isLiked ? sendToast('Added to Liked gvvv Songs') : sendToast ('Removed from Liked Songs'))
+    dispatch(!isLiked ? sendToast('Added to Liked  Songs') : sendToast ('Removed from Liked Songs'))
   }
 
   function adddToQueueHandler() {

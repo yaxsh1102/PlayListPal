@@ -10,7 +10,7 @@ const MusicContainer = () => {
         <div>
             <img src={nowPlaying.image} alt="1212.png" className="xl:w-[32rem] xl:h-[32rem] lg:w-[28rem] lg:h-[27rem] md:w-[32rem] md:h-[32rem] sm:w-[28rem] sm:h-[28rem] h-[18rem] w-[18rem] lg:pl-6"></img>
         </div>
-        <div className=" flex flex-col xl:h-[37rem] lg:w-[28rem] md:h-[40rem]  items-center py-6 overflow-y-scroll no-scrollbar">
+        <div className=" flex flex-col xl:h-[35rem] lg:w-[28rem] md:h-[32rem]  items-center py-6 overflow-y-scroll no-scrollbar">
           
                 <div className='xl:h-[8rem]  lg:h-[6rem] lg:flex hidden text-white justify-start items-center w-full'>
                     <p className="lg:text-2xl md:text-1xl">Playing Next</p>
