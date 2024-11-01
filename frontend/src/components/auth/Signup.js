@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { sendToast } from '../../redux/toastSlice';
 import { GoogleLogin } from '@react-oauth/google';
 import { setUser, toggleLoggedin } from '../../redux/userSlice';
+import LoadingButton from '../layout/LoadingButton';
 
 const Signup = () => {
   const [fullName, setFullName] = useState('');
@@ -11,8 +12,12 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
+  const[loading , setLoading] = useState(false)
+  const[otpLoading , setOtpLoading] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch(); 
+
+ 
 
   const getOTPHandler = async () => {
     if (!fullName || !email || !password) {
@@ -21,6 +26,7 @@ const Signup = () => {
     }
     try {
       setError('');
+      setOtpLoading(true)
       const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/sendOTP', {
         method: 'POST',
         headers: {
@@ -36,6 +42,8 @@ const Signup = () => {
       }
     } catch (err) {
       console.log(err);
+    }finally{
+      setOtpLoading(false)
     }
   };
 
@@ -63,6 +71,8 @@ const Signup = () => {
     } catch (err) {
       dispatch(sendToast('Google Signup Error'));
 
+    } finally{
+
     }
   };
 
@@ -79,6 +89,7 @@ const Signup = () => {
     const requestBody = { fullName, email, password, otp };
     try {
       setError('');
+      setLoading(true)
       const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/signup', {
         method: 'POST',
         headers: {
@@ -95,6 +106,8 @@ const Signup = () => {
       }
     } catch (err) {
       console.log(err);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -117,7 +130,7 @@ const Signup = () => {
               type="text"
               required
               placeholder="Enter your full name"
-              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -131,7 +144,7 @@ const Signup = () => {
               type="email"
               required
               placeholder="Enter your email"
-              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -145,7 +158,7 @@ const Signup = () => {
               type="password"
               required
               placeholder="Enter your password"
-              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -153,17 +166,18 @@ const Signup = () => {
           <div className="grid grid-cols-3 gap-2 items-center">
             <button
               type="button"
-              className="col-span-1 px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="col-span-1 px-4 py-2 font-semibold text-white bg-indigo-600 rounded-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               onClick={getOTPHandler}
+              disabled={loading || otpLoading}
             >
-              Get OTP
+            {otpLoading ? <LoadingButton></LoadingButton> :"Get Otp"}
             </button>
             <input
               id="otp"
               type="text"
               required
               placeholder="Enter OTP"
-              className="col-span-2 px-3 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="col-span-2 px-3 py-2 text-white bg-gray-700 border border-gray-600 rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />
@@ -171,10 +185,11 @@ const Signup = () => {
         </div>
         <div>
           <button
-            className="w-full px-4 py-2 mt-4 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+            className="w-full px-4 py-2 mt-4 font-semibold text-white bg-indigo-600 rounded-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
             onClick={submitHandler}
+            disabled={loading || otpLoading}
           >
-            Sign Up
+            {loading ? <LoadingButton></LoadingButton> :"Sign Up"}
           </button>
         </div>
         <div className="relative my-6">
@@ -190,7 +205,8 @@ const Signup = () => {
             render={(renderProps) => (
               <button
                 onClick={renderProps.onClick}
-                className="w-full flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex items-center justify-center px-4 py-2 border border-gray-600 rounded-sm shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading || otpLoading}
               >
                 <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                 </svg>
@@ -204,7 +220,7 @@ const Signup = () => {
         <div className="mt-6 text-center text-gray-400">
           <p>
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300">
+            <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300" >
               Login
             </Link>
           </p>

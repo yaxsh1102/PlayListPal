@@ -12,9 +12,13 @@ import { FiUserCheck } from "react-icons/fi";
 import { sendToast } from "../../redux/toastSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { moveCurrentProfile, setReqandFriends } from "../../redux/userSlice";
+import LoadingButton from "../layout/LoadingButton";
 
 const MatchCard = ({ selectedOption, index }) => {
   const [showOverlay, setShowOverlay] = useState(false);
+  const[firstLoader , setFirstLoader] = useState(false)
+  const[secondLoader , setsecondLoader] = useState(false)
+
   const [currentProfile, setCurrentProfile] = useState();
   const dispatch = useDispatch();
 
@@ -37,6 +41,7 @@ const MatchCard = ({ selectedOption, index }) => {
   };
 
   async function sendRequest() {
+    setFirstLoader(true)
     try {
       const data = await fetch(
         "https://playlistpal.onrender.com/api/v1/match/sendRequest",
@@ -52,16 +57,20 @@ const MatchCard = ({ selectedOption, index }) => {
       const resp = await data.json();
       if (resp.success) {
         dispatch(moveCurrentProfile("find-match"));
+        setShowOverlay(false)
         dispatch(sendToast("Request Sent"));
       } else {
         dispatch(sendToast(resp.message));
       }
     } catch (err) {
       dispatch("Error Occured");
+    }finally{
+      setFirstLoader(false)
     }
   }
 
   async function acceptRequest() {
+    setFirstLoader(true)
     try {
       const data = await fetch(
         "https://playlistpal.onrender.com/api/v1/match/acceptRequest",
@@ -80,11 +89,15 @@ const MatchCard = ({ selectedOption, index }) => {
         dispatch(moveCurrentProfile("requests"));
         dispatch(setReqandFriends({ requests: null, friends: resp.friends }));
         dispatch(sendToast("Request Accepted"));
+        setShowOverlay(false)
+
       } else {
         dispatch(sendToast(resp.message));
       }
     } catch (err) {
       dispatch(sendToast("Couldn't Accept Request"));
+    }finally{
+      setFirstLoader(false)
     }
   }
 
@@ -112,6 +125,7 @@ const MatchCard = ({ selectedOption, index }) => {
   }
 
   async function rejectReqHandler() {
+    setsecondLoader(true)
     try {
       const data = await fetch(
         "https://playlistpal.onrender.com/api/v1/match/rejectRequest",
@@ -128,7 +142,7 @@ const MatchCard = ({ selectedOption, index }) => {
 
       if (resp.success) {
         dispatch(moveCurrentProfile("requests"));
-
+        setShowOverlay(false)
         dispatch(setReqandFriends({ requests: resp.requests, friends: null }));
         dispatch(sendToast("Request Rejected"));
       } else {
@@ -136,10 +150,13 @@ const MatchCard = ({ selectedOption, index }) => {
       }
     } catch (err) {
       dispatch(sendToast("Couldn't Reject"));
+    }finally{
+      setsecondLoader(false)
     }
   }
 
   async function removeFriend() {
+    setsecondLoader(true)
     try {
       const data = await fetch(
         "https://playlistpal.onrender.com/api/v1/match/removeFriend",
@@ -156,6 +173,8 @@ const MatchCard = ({ selectedOption, index }) => {
       const resp = await data.json();
       if (resp.success) {
         dispatch(moveCurrentProfile("friends"));
+        setShowOverlay(false)
+
         dispatch(setReqandFriends({ friends: resp.friends, requests: null }));
         dispatch(sendToast("Removed"));
       } else {
@@ -163,6 +182,8 @@ const MatchCard = ({ selectedOption, index }) => {
       }
     } catch (err) {
       dispatch(sendToast("Couldn't Remove Friend"));
+    }finally{
+      setsecondLoader(false)
     }
   }
 
@@ -304,8 +325,8 @@ const MatchCard = ({ selectedOption, index }) => {
               >
                 <RxCross2 size={28}></RxCross2>
               </button>
-              <button className="" onClick={sendRequest}>
-                <SlUserFollow size={28}></SlUserFollow>
+              <button className="" onClick={sendRequest} disabled={firstLoader}>
+               {firstLoader ? <LoadingButton></LoadingButton> : <SlUserFollow size={28}></SlUserFollow>}
               </button>
             </div>
           )}
@@ -315,22 +336,25 @@ const MatchCard = ({ selectedOption, index }) => {
               <button
                 className=" text-white text-xl  rounded-sm"
                 onClick={rejectReqHandler}
+                disabled={secondLoader || firstLoader}
               >
-                <RxCross2 size={28}></RxCross2>
+               {secondLoader ? <LoadingButton></LoadingButton> : <RxCross2 size={28}></RxCross2>}
               </button>
               <button
                 className=" text-white text-xl rounded-sm"
                 onClick={acceptRequest}
+                disabled={secondLoader || firstLoader}
+
               >
-                <FiUserCheck size={28}></FiUserCheck>
+               {firstLoader ?<LoadingButton/> : <FiUserCheck size={28}></FiUserCheck>}
               </button>
             </div>
           )}
 
           {selectedOption === "friends" && (
             <div className="md:w-[384px] w-full flex justify-evenly mt-4 px-4">
-              <button className="" onClick={removeFriend}>
-                <SlUserUnfollow size={28}></SlUserUnfollow>
+              <button className="" onClick={removeFriend} disabled={secondLoader}>
+              { secondLoader ? <LoadingButton></LoadingButton> : <SlUserUnfollow size={28}></SlUserUnfollow>}
               </button>
             </div>
           )}

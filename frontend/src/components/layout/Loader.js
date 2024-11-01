@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Loader = () => {
+const Loader = ({text=''}) => {
   return (
-    <div className='w-full h-full flex justify-center items-center'>
+    <div className='w-full h-full flex flex-col justify-center items-center'>
     <div className="loader lg:w-[10rem] w-[6rem]   aspect-[1/1]"  ></div>
-    <p className='text-4xl text-white'></p>
+    <p className='text-sm text-white'>{text}</p>
     </div>
   )
 }

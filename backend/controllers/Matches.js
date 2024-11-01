@@ -82,6 +82,9 @@ exports.getMatches = async(req , res)=>{
                         });
                     });
                 }
+
+
+                //condition of minimum number of songs and percentages can be added or modified
         
                 if (user.playLists) {
                     user.playLists.forEach(playlist => {

@@ -27,6 +27,22 @@ app.use("/api/v1/auth" , userRoutes)
 app.use("/api/v1/music" , musicRoutes)
 app.use("/api/v1/match" , matchRoutes)
 
+//to awake the server
+
+app.get("/awake-server" , async(req , res)=>{
+  try{
+    return res.status(200).json({
+      success:true ,
+      message:"Server Awake"
+    })
+  }catch(err){
+    return res.status(500).json({
+      success:false ,
+      message:"Error Occured"
+    })
+  }
+})
+
 
 app.listen(process.env.PORT, () => {
 	console.log('App is running');

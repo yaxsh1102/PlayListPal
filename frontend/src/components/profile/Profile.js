@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../redux/userSlice";
 import { sendToast } from "../../redux/toastSlice";
 import Loader from "./../layout/Loader";
+import LoadingButton from "../layout/LoadingButton";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
+  const[updateProfileLoading , setupdateProfileLoading] = useState(false  )
 
   useEffect(() => {
     async function fetchProfile() {
@@ -31,7 +33,7 @@ const Profile = () => {
         }
       } catch (err) {
         dispatch(sendToast("Couldn.t Fetch Profile"));
-      }
+      } 
     }
 
     fetchProfile();
@@ -93,6 +95,7 @@ const Profile = () => {
     formData.append("snapchat", formRefs.current.snapchat.value);
     formData.append("telegram", formRefs.current.telegram.value);
     try {
+      setupdateProfileLoading(true)
       const response = await fetch(
         "https://playlistpal.onrender.com/api/v1/auth/updateProfile",
         {
@@ -111,7 +114,13 @@ const Profile = () => {
       } else {
         dispatch(sendToast(respData.message));
       }
-    } catch (error) {}
+    } catch (error) {
+
+      dispatch(sendToast("Error Occured"));
+
+    }finally{
+      setupdateProfileLoading(false)
+    }
   };
 
   if (loading) {
@@ -296,10 +305,11 @@ const Profile = () => {
         </div>
         <div className="flex justify-center">
           <button
-            className="px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:ring focus:ring-indigo-400"
+            className=" w-40 px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:ring focus:ring-indigo-400"
             onClick={handleFormSubmit}
+            disabled={updateProfileLoading}
           >
-            Update Profile
+         { updateProfileLoading ? <LoadingButton></LoadingButton> : "Update Profile"}
           </button>
         </div>
       </div>

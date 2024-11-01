@@ -48,6 +48,12 @@ const MatchLanding = ({ setsetSelectedOption }) => {
     if (!isProfileCompleted) {
       dispatch(sendToast("Incomplete Profile"));
       return;
+    } 
+
+
+    if((!ref.current["likedSongs"].checked && !ref.current["playLists"].checked) || !ref.current['radius'].value){
+      dispatch(sendToast("Incomplete Fields"))
+      return 
     }
 
     setLoading(true);
@@ -64,7 +70,7 @@ const MatchLanding = ({ setsetSelectedOption }) => {
           body: JSON.stringify({
             playLists: ref.current["playLists"].checked,
             likedSongs: ref.current["likedSongs"].checked,
-            radius: ref.current["radius"].valueOf,
+            radius: ref.current["radius"].value,
             lat: lat,
             lon: lon,
           }),
