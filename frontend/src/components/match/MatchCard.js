@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { moveCurrentProfile, setReqandFriends } from "../../redux/userSlice";
 import LoadingButton from "../layout/LoadingButton";
 
-const MatchCard = ({ selectedOption, index }) => {
+const MatchCard = ({ selectedOption, index  , setShowProfile , setSelectedOption}) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const[firstLoader , setFirstLoader] = useState(false)
   const[secondLoader , setsecondLoader] = useState(false)
@@ -28,9 +28,16 @@ const MatchCard = ({ selectedOption, index }) => {
 
   useEffect(() => {
     if (selectedOption === "requests") {
+      if(index>=reqs.length){
+        setCurrentProfile(reqs[0])
+      }else{
       setCurrentProfile(reqs[index]);
-    } else if (selectedOption === "friends") {
+      }    } else if (selectedOption === "friends") {
+      if(index>=friends.length){
+        setCurrentProfile(friends[0])
+      }else{
       setCurrentProfile(friends[index]);
+      }
     } else if (selectedOption === "find-match") {
       setCurrentProfile(matchResults[0]);
     }
@@ -86,8 +93,10 @@ const MatchCard = ({ selectedOption, index }) => {
       const resp = await data.json();
 
       if (resp.success) {
-        dispatch(moveCurrentProfile("requests"));
-        dispatch(setReqandFriends({ requests: null, friends: resp.friends }));
+        setShowProfile(false)
+        
+
+        dispatch(setReqandFriends({ requests: resp.requests, friends: resp.friends }));
         dispatch(sendToast("Request Accepted"));
         setShowOverlay(false)
 
@@ -141,10 +150,9 @@ const MatchCard = ({ selectedOption, index }) => {
       const resp = await data.json();
 
       if (resp.success) {
-        dispatch(moveCurrentProfile("requests"));
-        setShowOverlay(false)
-        dispatch(setReqandFriends({ requests: resp.requests, friends: null }));
+        dispatch(setReqandFriends({ requests: resp.newRequests, friends: null }));
         dispatch(sendToast("Request Rejected"));
+        setShowProfile(false)
       } else {
         dispatch(sendToast(resp.message));
       }
@@ -172,10 +180,13 @@ const MatchCard = ({ selectedOption, index }) => {
 
       const resp = await data.json();
       if (resp.success) {
-        dispatch(moveCurrentProfile("friends"));
-        setShowOverlay(false)
-
         dispatch(setReqandFriends({ friends: resp.friends, requests: null }));
+        
+        setShowOverlay(false)
+      
+        setShowProfile(false)
+        
+
         dispatch(sendToast("Removed"));
       } else {
         dispatch(sendToast(resp.message));
@@ -356,6 +367,10 @@ const MatchCard = ({ selectedOption, index }) => {
               <button className="" onClick={removeFriend} disabled={secondLoader}>
               { secondLoader ? <LoadingButton></LoadingButton> : <SlUserUnfollow size={28}></SlUserUnfollow>}
               </button>
+              <p className="hover:cursor-pointer" onClick={()=>{setShowProfile(false)}}>
+              <RxCross2 size={28}></RxCross2>
+              </p>
+
             </div>
           )}
         </div>

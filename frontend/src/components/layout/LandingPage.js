@@ -17,6 +17,7 @@ const LandingPage = () => {
           }
         });
       } catch(err) {
+        
       } finally {
         setLoading(false);
       }

@@ -82,7 +82,8 @@ const MatchLanding = ({ setsetSelectedOption }) => {
         dispatch(setMatchResults(results.data));
         setsetSelectedOption("find-match");
       } else {
-        dispatch(sendToast("Error Occured"));
+        dispatch(sendToast(results.message));
+        
       }
     } catch (error) {
       dispatch(sendToast("Error Occured"));
