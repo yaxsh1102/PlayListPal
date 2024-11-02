@@ -60,7 +60,8 @@ exports.getMatches = async(req , res)=>{
             );
             if (distance > radius) continue;
         
-            if (user.friends.includes(person._id) || user.interactedUser.includes(person._id) || user.requests.includes(person._id)) continue;
+            // if (user.friends.includes(person._id) || user.interactedUser.includes(person._id) || user.requests.includes(person._id)) continue;
+            if (user.friends.includes(person._id)  || user.requests.includes(person._id)) continue;
         
             let intersectionLikedSongs = [];
             if (likedSongs) {
@@ -82,6 +83,9 @@ exports.getMatches = async(req , res)=>{
                         });
                     });
                 }
+
+
+                //condition of minimum number of songs and percentages can be added or modified
         
                 if (user.playLists) {
                     user.playLists.forEach(playlist => {
@@ -237,6 +241,16 @@ exports.rejectRequest = async(req , res)=>{
             }
 
         } ,{new:true})
+        .populate({
+            path: 'requests',
+            select: '-password -email -password -playLists -history -friends -requests -likedSongs',
+            populate: {
+            path: 'datingProfile',
+            model: 'Profile' ,
+            select :'-lat -lon'
+
+            }
+        })
 
         if(!updatedRequests){
             return res.status(400).json({
@@ -324,11 +338,25 @@ exports.acceptRequest = async(req , res)=>{
             select :'-lat -lon'
             }
         })
+        .populate({
+            path: 'requests',
+            select: '-password -email -password -playLists -history -friends -requests -likedSongs',
+            populate: {
+            path: 'datingProfile',
+            model: 'Profile' ,
+            select :'-lat -lon'
+
+            }
+        })
+
+
+
 
          
 
           return res.status(200).json({
             friends:updatedUser.friends,
+            requests:updatedUser.requests,
             success:true ,
             message:"Request Accepted"
           })
@@ -386,9 +414,10 @@ exports.removeFriend= async(req , res)=>{
             populate: {
             path: 'datingProfile',
             model: 'Profile' ,
-            select :'-instagram -telegram -snapchat -lat -lon'
+            select :' -lat -lon'
             }
         })
+       
 
 
 
@@ -397,7 +426,7 @@ exports.removeFriend= async(req , res)=>{
         return res.status(200).json({
             success:true ,
             messsage:"Friend Removed Successfully" ,
-            friends:updatedUser.friends
+            friends:updatedUser.friends ,
         })
 
       }catch(err){

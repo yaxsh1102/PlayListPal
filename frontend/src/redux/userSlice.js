@@ -60,11 +60,12 @@ const userSlice = createSlice({
             }else if(action.payload==="friends"){
             state.friends.shift()
             } else {
-                state.matchResults.shift()
+            state.matchResults.shift()
             }
 
         } ,
         setReqandFriends:(state , action)=>{
+            
             if(action.payload?.requests){
             state.requests=action.payload.requests
             }

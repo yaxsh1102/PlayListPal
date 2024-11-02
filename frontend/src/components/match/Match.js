@@ -121,7 +121,7 @@ const Match = () => {
         )}
 
         {selectedOption === 'find-match' && (
-          <MatchCard  selectedOption={selectedOption} /> 
+          <MatchCard  selectedOption={selectedOption} setsetSelectedOption={setSelectedOption} /> 
         )}
 
         {(selectedOption === 'requests' || selectedOption === 'friends') && (

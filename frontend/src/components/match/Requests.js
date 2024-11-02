@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 const Request = ({ selectedOption }) => {
   const reqs = useSelector((store) => store.user.requests);
   const friends = useSelector((store) => store.user.friends);
+  
 
   useEffect(() => {
     setShowProfile(false);
   }, [selectedOption]);
-
+ 
   const [showProfile, setShowProfile] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -63,7 +64,8 @@ const Request = ({ selectedOption }) => {
                 ))
               ) : (
                 <div className=" text-center text-indigo-500 p-4 ">
-                  It's empty here.
+                  It's empty here..
+                  
                 </div>
               )
             ) : friends && friends.length > 0 ? (
@@ -97,8 +99,8 @@ const Request = ({ selectedOption }) => {
               ))
             ) : (
               <div className="text-indigo-500 text-center ">
-                It's empty here.
-              </div>
+                It's Empty Here.
+             </div>
             )}
           </div>
         </div>

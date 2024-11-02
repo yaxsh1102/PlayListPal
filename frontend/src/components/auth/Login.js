@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoggedin } from '../../redux/userSlice';
 import { setUser } from '../../redux/userSlice';
-;
+import LoadingButton from '../layout/LoadingButton';
+import { sendToast } from '../../redux/toastSlice';
+
 
 const Login = () => {
   
@@ -13,6 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
+  const[loading , setLoading] = useState(false)
 
   if (isLoggedIn) {
     navigate("/home");
@@ -30,8 +33,13 @@ const Login = () => {
     login(email, password);
   }
 
+ 
+
 
   async function login(email, password) {
+    setLoading(true)
+
+
     try {
       const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/login', {
         method: 'post',
@@ -48,12 +56,17 @@ const Login = () => {
         navigate("/home");
         dispatch(toggleLoggedin());
         dispatch(setUser(resp.user))
+        setLoading(false)
+
 
       } else {
         setError(resp.message);
       }
     } catch (err) {
       setError("An error occurred. Please try again.");
+    }finally{
+      setLoading(false)
+
     }
   }
 
@@ -112,7 +125,7 @@ const Login = () => {
               type="email"
               required
               placeholder="Enter your email"
-              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               ref={(el) => (inputRefs.current['email'] = el)}
             />
           </div>
@@ -126,7 +139,7 @@ const Login = () => {
               type="password"
               required
               placeholder="Enter your password"
-              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               ref={(el) => (inputRefs.current['password'] = el)}
             />
           </div>
@@ -134,10 +147,12 @@ const Login = () => {
         </div>
         <div>
           <button
-            className="w-full px-4 py-2 mt-4 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+            className="w-full px-4 py-2 mt-4 font-bold text-white bg-indigo-600 rounded-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
             onClick={loginHandler}
-          >
-            Login
+            disabled={loading}
+          > 
+            
+            {loading ? <LoadingButton></LoadingButton> :"Login"}
           </button>
         </div>
         <div className="relative my-6">
@@ -154,6 +169,7 @@ const Login = () => {
               <button 
                 onClick={renderProps.onClick}
                 className="w-full flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading}
               >
                 <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                 </svg>
