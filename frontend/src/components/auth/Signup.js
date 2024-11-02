@@ -61,6 +61,8 @@ const Signup = () => {
       const resp = await response.json();
       if (resp.success) {
         dispatch(sendToast('Google Signup Successful'));
+        localStorage.setItem('db_token', resp.token);
+
         dispatch(setUser(resp.user))
         dispatch(toggleLoggedin(true));
         localStorage.setItem('db_token' , resp.token)
