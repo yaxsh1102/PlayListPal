@@ -44,7 +44,7 @@ const useGetPlaying = () => {
 
   useEffect(() => {
     const searchHindiSongs = async () => {
-      const query = 'bollywood hits'; // Searching for Hindi songs
+      const query = 'pritam'; // Searching for Hindi songs
 
       try {
         // Perform the search query

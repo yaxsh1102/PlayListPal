@@ -45,13 +45,11 @@ const useGetTracks = () => {
       const access_token = localStorage.getItem("token");
 
       try {
-        const searchUrl = `${SEARCH_ENDPOINT}Bollywood classics`;
+        const searchUrl = `${SEARCH_ENDPOINT} arijit singh`;
 
-        // Fetch search results
         const response = await fetch(searchUrl);
         const text = await response.text();
 
-        // Modify text as needed, similar to your pattern
         const pattern = /\(From "([^"]+)"\)/g;
         const modifiedText = text.replace(pattern, (match, p1) => `(From '${p1}')`);
         const decodedText = modifiedText.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
@@ -61,6 +59,7 @@ const useGetTracks = () => {
 
         // Extract IDs from search results
         const songIds = songResponse.map((song) => song.id).join(',');
+        console.log(songIds)
 
         // Fetch song details for each ID
         const songDetails = await fetchSongDetails(songIds);
