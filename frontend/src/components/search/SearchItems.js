@@ -25,7 +25,7 @@ const Searchitems = ({
   url,
   isAlbum,
 }) => {
-  const dur = (duration / (60 * 1000)).toFixed(2);
+  const dur = (duration / (60)).toFixed(2);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
@@ -43,6 +43,7 @@ const Searchitems = ({
   if (currentUrl[1] === "userplaylists") {
     options.push({ label: "Remove from this playlist" });
   }
+
 
   if (likedSongs.some((song) => song.name === name) !== liked) {
     setLiked(likedSongs.some((song) => song.name === name));

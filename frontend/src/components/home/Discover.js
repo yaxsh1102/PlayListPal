@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import DiscoverCards from "./DiscoverCards";
 import "../../App.css"
 import Loader from '../layout/Loader';
+import decryptUrl from '../../utils/decrypturl';
 
 const Discover = () => {
   const newAlbums = useSelector((store) => store.discover.albums);
@@ -34,17 +35,18 @@ const Discover = () => {
     };
 
     updatePadding();
+
     window.addEventListener('resize', updatePadding);
     return () => window.removeEventListener('resize', updatePadding);
   }, []);
 
-  if (newTracks.length === 0 || albums.length === 0 || artists.length === 0 || playlists.length === 0) {
-    return (
-      <div className='w-full md:pr-[16rem]'>
-        <Loader></Loader>
-      </div>
-    );
-  }
+  // if (newTracks.length === 0 || albums.length === 0 || artists.length === 0 ) {
+  //   return (
+  //     <div className='w-full md:pr-[16rem]'>
+  //       <Loader></Loader>
+  //     </div>
+  //   );
+  // }
  
 
   return (
@@ -62,8 +64,8 @@ const Discover = () => {
           />
         ))}
       </div>
-      <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Buzzing Artists </p> 
-      <div className='flex lg:w-[70rem] w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
+      {/* <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Buzzing Artists </p>  */}
+      {/* <div className='flex lg:w-[70rem] w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
         { artists && artists.map((element ,index) => (
           
           <DiscoverCards
@@ -77,18 +79,18 @@ const Discover = () => {
            
           />
         ))}
-      </div>
-      <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Hot Picks </p>
+      </div> */}
+      <p className='text-slate-200 lg:text-3xl  md:text-2xl text-1xl pb-4'>Bollywood Classics </p>
       <div className='flex lg:w-[70rem] w-[30rem] lg:space-x-2 md:space-x-4 space-x-1   overflow-x-auto  no-scrollbar'>
         {newTracks.map((element) => (
           <DiscoverCards
             key={element.id}
             name={element.name}
-            image={element.album.images[0].url}
+            image={element.image}
             type={"tracks"}
           
-            artist={element.artists[0].name}
-            url = {element.preview_url}
+            artist={element.artist}
+            url = {element.url} 
           />
         ))}
       </div>

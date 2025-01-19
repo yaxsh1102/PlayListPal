@@ -2,9 +2,10 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addAlbums, addTracks } from "../../redux/resultsSlice";
 import { useEffect, useRef } from "react";
+import decryptUrl from "../../utils/decrypturl";
 
-const SEARCH_ENDPOINT = process.env.REACT_APP_SEARCH_ENDPOINT;
-
+ const SEARCH_ENDPOINT = 'https://www.jiosaavn.com/api.php?__call=autocomplete.get&_format=json&_marker=0&cc=in&includeMetaTags=1&query=';
+ const SONG_DETAILS_ENDPOINT = 'https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids='
 const Searchbar = () => {
   const dispatch = useDispatch();
 
@@ -17,42 +18,74 @@ const Searchbar = () => {
     }
   };
 
+
+  const fetchSongDetails = async (songIds) => {
+    try {
+      const detailsUrl = `${SONG_DETAILS_ENDPOINT}${songIds}`;
+      const response = await fetch(detailsUrl);
+      const text = await response.text();
+      
+      const pattern = /\(From "([^"]+)"\)/g;
+      const modifiedText = text.replace(pattern, (match, p1) => `(From '${p1}')`);
+      const decodedText = modifiedText.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
+      
+      const jsonResponse = JSON.parse(decodedText);
+      
+      const songsArray = Object.values(jsonResponse);
+      songsArray.forEach(song => {
+        if (song.encrypted_media_url) {
+          song.media_url = decryptUrl(song.encrypted_media_url);
+        }
+        if(song.singers){
+          song.singer =song?.singers?.split(',')[0] 
+
+        }
+      });
+      console.log(songsArray)
+      return songsArray;
+    } catch (err) {
+        console.error('Error fetching song details:', err);
+        return null;
+    }
+};
+
   const handleSearch = async () => {
 
-    const access_token = localStorage.getItem("token");
 
-    try {
-      if (access_token) {
-        const response = await axios.get(SEARCH_ENDPOINT, {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-          params: {
-            q: `${input.current.value}`,
-            type: "album,track",
-            limit: 6,
-          },
-        });
 
-        const albumsWithTracks = await Promise.all(
-          response.data.albums.items.map(async (album) => {
-            try {
-              const tracks = await axios.get(
-                `https://api.spotify.com/v1/albums/${album.id}/tracks`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${access_token}`,
-                  },
-                }
-              );
-              return { album, tracks: tracks.data.items };
-            } catch (err) {}
-          })
-        );
-        dispatch(addTracks(response.data.tracks.items));
-        dispatch(addAlbums({ albumsWithTracks }));
-      }
-    } catch (error) {}
+      try {
+        const searchUrl = `${SEARCH_ENDPOINT}${input.current.value}`;
+        console.log(searchUrl);
+
+        // Fetch and get response text
+        const response = await fetch(searchUrl);
+        const text = await response.text();
+        
+        const pattern = /\(From "([^"]+)"\)/g;
+        const modifiedText = text.replace(pattern, (match, p1) => `(From '${p1}')`);
+        const decodedText = modifiedText.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
+        
+        const jsonResponse = JSON.parse(decodedText);
+        const songResponse = jsonResponse.songs.data;
+        
+        // Extract IDs from search results
+        const songIds = songResponse.map(song => song.id).join(',');
+        
+        // Fetch details for all songs
+        const songDetails = await fetchSongDetails(songIds);
+        console.log('Song Details:', songDetails);
+        
+        // You can dispatch the song details to your Redux store here
+        // dispatch(setSongDetails(songDetails));
+        
+        dispatch(addTracks(songDetails)) ;
+
+    } catch (err) {
+        console.error('Error fetching search results:', err);
+        // Log the actual response text for debugging
+        return null;
+    }
+  
   };
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import decryptUrl from './../utils/decrypturl';
 
 const discoverSlice = createSlice({
     name:"discover" ,
@@ -12,17 +13,19 @@ const discoverSlice = createSlice({
     ,
     reducers:{
         addNewAlbums: (state, action) => {
-            action.payload.albumsWithTracks.forEach(({ album, tracks }) => {
+          console.log(action.payload.albumData , "hii")
+            action.payload.albumData.forEach(({ album, tracks }) => {
               const name = album.name;
-              const artist = album.artists[0].name;
-              const image = album.images[0].url;
+              const artist = album.artist;
+              const image = album.image;
               const songs = tracks.map((track) => ({
-                name: track.name,
-                url: track.preview_url,
-                image: image,
-                singer: track.artists[0].name,
-                artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
-                duration : track.duration_ms
+                image:track?.image ,
+                name:track?.song ,
+                artist:track?.music?.split(',')[0] ,
+                duration:track?.duration ,
+                singer: track?.singers?.split(',')[0] ,
+                url:decryptUrl(track.encrypted_media_url)
+
               }));
       
               state.albums[name] = {
@@ -64,21 +67,30 @@ const discoverSlice = createSlice({
               
           },
         addNewTracks:(state , action)=>{
-            state.tracks = action.payload ;
+            state.tracks = action.payload.map((track) => ({
+              image: track?.image,
+              name: track?.song,
+              artist: track?.music?.split(',')[0],
+              duration: track?.duration,
+              singer: track?.singers?.split(',')[0],
+              url: decryptUrl(track.encrypted_media_url)
+            }));
 
         },
         addNewPlaylist :(state , action)=>{
 
             action.payload.playlistsWithTracks.forEach(({ playlist, tracks }) => {
                 const name = playlist.name;
-                const image = playlist.images[0].url;
+                const image = playlist.image;
                 const songs = tracks.map((track) => ({
-                  name: track.name,
-                  url: track.preview_url,
-                  image: track.album.images[0]?.url,
-                  singer: track.artists[0].name,
-                  artist: track.artists.length > 1 ? track.artists[1].name : 'Solo',
-                  duration : track.duration_ms
+                 
+
+                  image:track?.image ,
+                  name:track?.song ,
+                  artist:track?.music?.split(',')[0] ,
+                  duration:track?.duration ,
+                  singer: track?.singers?.split(',')[0] ,
+                  url:decryptUrl(track.encrypted_media_url)
 
                 }));
         

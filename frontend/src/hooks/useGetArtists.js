@@ -11,7 +11,7 @@ const useGetArtists = () => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     return alphabet[Math.floor(Math.random() * alphabet.length)];
   };
-
+//https://jiosaavnapi-0w6h.onrender.com
   useEffect(() => {
     const getNewArtists = async () => {
       const access_token = localStorage.getItem("token");

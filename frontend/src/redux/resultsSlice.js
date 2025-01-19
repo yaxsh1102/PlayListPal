@@ -8,6 +8,7 @@ const resultSlice = createSlice({
     }
     ,reducers:{
     addTracks:(state , action)=>{
+      console.log(action.payload)
         state.tracks = action.payload 
     } , 
 

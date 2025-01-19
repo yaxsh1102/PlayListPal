@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch , useSelector} from "react-redux";
 import { addNewAlbums } from "../redux/discoverSlice";
+import {getAlbumId} from "../utils/extractUrl";
 
 const useNewRelease = () => {
   const dispatch = useDispatch();
@@ -11,33 +12,52 @@ const useNewRelease = () => {
 
   useEffect(() => {
     const getNewReleases = async () => {
+
+
+      const albumUrls = [
+        "https://www.jiosaavn.com/album/kabir-singh/kLG-OKbVmvM_",
+        "https://www.jiosaavn.com/album/love-aaj-kal/1rzXD7NU,fI_",
+        "https://www.jiosaavn.com/album/aashiqui-2/-iNdCmFNV9o_",
+        "https://www.jiosaavn.com/album/recovery/nsOYc1E5Cgc_",
+        "https://www.jiosaavn.com/album/stree-2/VCjKuSJcwxs_"
+      ];
+      
       const access_token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-          params: {
-            limit: 6,  
-          }
+        // const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
+
+        //   headers: {
+        //     Authorization: `Bearer ${access_token}`,
+        //   },
+        //   params: {
+        //     limit: 6,  
+        //   }
         
-        });
+        // });
 
-        const albumsWithTracks = await Promise.all(
-          response.data.albums.items.map(async (album) => {
-            const tracks = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
-              headers: {
-                Authorization: `Bearer ${access_token}`,
-              },
-             
-            });
 
-            return { album, tracks: tracks.data.items };
+        const albumData = await Promise.all(
+          albumUrls.map(async (link) => {
+            const albumId =  await getAlbumId(link)
+            console.log(albumId)
+
+            const jiosaavnResponse = await axios.get(`https://www.jiosaavn.com/api.php?__call=content.getAlbumDetails&_format=json&cc=in&_marker=0%3F_marker%3D0&albumid=${albumId}`);
+
+
+            console.log(jiosaavnResponse)
+
+            const albums =  {name:jiosaavnResponse.data.name , image:jiosaavnResponse.data.image , artist:jiosaavnResponse.data.primary_artists.split(',')[0] }
+            return { album:albums, tracks:jiosaavnResponse.data.songs };
+
+
           })
         );
 
-        dispatch(addNewAlbums({albumsWithTracks}))
+       
+
+
+        dispatch(addNewAlbums({albumData}))
 
       } catch (err) {
       }

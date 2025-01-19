@@ -30,12 +30,12 @@ const SearchResults = () => {
         {tracks.slice(0, songsCount).map((track, index) => ( 
           <Searchitems
             key={index}
-            image={track.album?.images[0]?.url}
-            name={track.name}
-            artist={track.artists[0]?.name}
-            duration={track.duration_ms}
-            singer={track?.artists[1]?.name}
-            url={track?.preview_url}
+            image={track?.image}
+            name={ track?.song}
+            artist={ track?.music?.split(',')[0]} 
+            duration={track?.duration}
+            singer={ track?.singer?.split(',')[0]}
+            url={track?.media_url}
           />
         ))}
         {songsCount < tracks.length && (
@@ -50,7 +50,7 @@ const SearchResults = () => {
         )}
       </div>
 
-      <div className="w-full flex flex-col justify-center items-start md:pl-24 md:w-[67%]">
+      {/* <div className="w-full flex flex-col justify-center items-start md:pl-24 md:w-[67%]">
         <p className="justify-self-start md:w-8/12 w-11/12 text-white py-4 font-semibold md:text-3xl pl-4 md:pl-0 text-2xl">
           Albums
         </p>
@@ -77,7 +77,7 @@ const SearchResults = () => {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

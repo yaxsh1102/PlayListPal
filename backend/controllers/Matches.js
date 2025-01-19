@@ -60,7 +60,7 @@ exports.getMatches = async(req , res)=>{
             );
             if (distance > radius) continue;
         
-            // if (user.friends.includes(person._id) || user.interactedUser.includes(person._id) || user.requests.includes(person._id)) continue;
+            if (user.friends.includes(person._id) || user.interactedUser.includes(person._id) || user.requests.includes(person._id)) continue;
             if (user.friends.includes(person._id)  || user.requests.includes(person._id)) continue;
         
             let intersectionLikedSongs = [];
