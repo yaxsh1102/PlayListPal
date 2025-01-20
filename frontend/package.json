@@ -15,6 +15,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "react": "^18.3.1",
     "react-crop-image": "^1.0.0",

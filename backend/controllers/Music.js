@@ -408,6 +408,7 @@ exports.renamePlaylist= async (req, res) => {
 exports.addToHistory = async(req , res)=>{
     try{
         const{name , image , preview_url  , singer , artist} = req.body ;
+        console.log({name , image , preview_url  , singer , artist})
       
         if (!name || !image || !preview_url  ||!singer ||  !artist) {
             return res.status(400).json({

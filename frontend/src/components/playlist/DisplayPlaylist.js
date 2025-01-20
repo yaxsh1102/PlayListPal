@@ -187,9 +187,9 @@ const DisplayPlaylist = ({ type }) => {
                   key={index}
                   image={song.image}
                   name={song.name}
-                  artist={song.artist}
+                  artist={song?.artist?.split(',')[0]}
                   duration={song.duration}
-                  singer={song.singer}
+                  singer={song?.singer?.split(',')[0]}
                   type={null}
                   url={song.url}
                 />
