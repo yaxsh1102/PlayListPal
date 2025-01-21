@@ -82,7 +82,7 @@ const Searchitems = ({
     if (!localStorage.getItem("db_token")) {
       return;
     }
-    console.log(nowPlayingObj)
+   
 
     try {
       const data = await fetch(
@@ -103,10 +103,10 @@ const Searchitems = ({
         }
       );
       const resp = await data.json();
-      console.log(resp)
+     
       dispatch(updateHistory(nowPlayingObj));
     } catch (err) {
-      console.log(err);
+     
     }
   }
 

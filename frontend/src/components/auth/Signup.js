@@ -41,7 +41,7 @@ const Signup = () => {
         dispatch(sendToast('OTP Sent Successfully'));
       }
     } catch (err) {
-      console.log(err);
+     
     }finally{
       setOtpLoading(false)
     }
@@ -107,7 +107,7 @@ const Signup = () => {
         setError(resp.message);
       }
     } catch (err) {
-      console.log(err);
+     
     }finally{
       setLoading(false)
     }

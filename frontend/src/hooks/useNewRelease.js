@@ -39,13 +39,12 @@ const useNewRelease = () => {
 
         const albumData = await Promise.all(
           albumUrls.map(async (link) => {
-            const albumId =  await getAlbumId(link)
-            console.log(albumId)
+         
 
-            const jiosaavnResponse = await axios.get(`https://www.jiosaavn.com/api.php?__call=content.getAlbumDetails&_format=json&cc=in&_marker=0%3F_marker%3D0&albumid=${albumId}`);
+            const jiosaavnResponse = await axios.get(`https://jiosaavnapi-0w6h.onrender.com/result/?query=${link}`);
 
 
-            console.log(jiosaavnResponse)
+           
 
             const albums =  {name:jiosaavnResponse.data.name , image:jiosaavnResponse.data.image , artist:jiosaavnResponse.data.primary_artists.split(',')[0] }
             return { album:albums, tracks:jiosaavnResponse.data.songs };
