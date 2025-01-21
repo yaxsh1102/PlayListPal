@@ -17,7 +17,7 @@ const extractPlaylistId = async (inputUrl) => {
       const relevantPart = text.slice(startIndex + marker.length);
       const playlistId = relevantPart.split('"')[0];
   
-      console.log('Extracted Playlist ID:', playlistId);
+     
       return playlistId;
     } catch (err) {
       console.error('Error extracting playlist ID:', err);
@@ -27,7 +27,7 @@ const extractPlaylistId = async (inputUrl) => {
   
   const getAlbumId = async (inputUrl) => {
     try {
-      console.log('Fetching URL:', inputUrl);
+     
   
       // Make a GET request to the URL using fetch
       const response = await fetch(inputUrl);
@@ -37,7 +37,7 @@ const extractPlaylistId = async (inputUrl) => {
       const albumIdMatch = text.match(/"album_id":"([^"]+)"/);
       if (albumIdMatch && albumIdMatch[1]) {
         const albumId = albumIdMatch[1];
-        console.log('Extracted Album ID:', albumId);
+       
         return albumId;
       } else {
         throw new Error('Album ID not found in the response');

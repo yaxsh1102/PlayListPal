@@ -61,7 +61,7 @@ const CreatePlaylistPopup = ({ onClose, edit, old, del }) => {
       );
   
       const resp = await data.json();
-      console.log(resp);
+     
       if (!resp.success) {
         // dispatch(sendToast("Couldn't delete  Playlist "+ playlistName.toUpperCase()))
       }
@@ -88,7 +88,7 @@ const CreatePlaylistPopup = ({ onClose, edit, old, del }) => {
     );
 
     const resp = await data.json();
-    console.log(resp);
+   
     if (!resp.success) {
       dispatch(
         sendToast("Couldn't Create  Playlist " + playlistName.toUpperCase())

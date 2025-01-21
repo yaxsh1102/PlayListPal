@@ -13,7 +13,7 @@ const discoverSlice = createSlice({
     ,
     reducers:{
         addNewAlbums: (state, action) => {
-          console.log(action.payload.albumData , "hii")
+         
             action.payload.albumData.forEach(({ album, tracks }) => {
               const name = album.name;
               const artist = album.artist;

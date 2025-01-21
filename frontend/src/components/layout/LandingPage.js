@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingButton from './LoadingButton';
+import axios from 'axios';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,13 @@ const LandingPage = () => {
     }
     awakeServer();
   }, []);
+
+  useEffect(()=>{
+    async function awakeServer() {
+      const jiosaavnResponse = await axios.get(`https://jiosaavnapi-0w6h.onrender.com/result/?query=server-awake`);
+    }
+    awakeServer();
+  }, [])
 
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-tr from-[#000000] to-[#434343] overflow-y-auto text-white">

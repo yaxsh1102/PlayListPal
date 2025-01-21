@@ -24,13 +24,12 @@ const useGetPlaylist = () => {
       try {
         const playlistData = await Promise.all(
           links.map(async (link) => {
-            const playlistId =  await extractPlaylistId(link)
-            console.log('yo' , playlistId)
+           
 
-            const jiosaavnResponse = await axios.get(`https://www.jiosaavn.com/api.php?__call=playlist.getDetails&_format=json&cc=in&_marker=0%3F_marker%3D0&listid=${playlistId}`);
+            const jiosaavnResponse = await axios.get(`https://jiosaavnapi-0w6h.onrender.com/result/?query=${link}`);
 
 
-            console.log(jiosaavnResponse)
+           
 
             const playlist =  {name:jiosaavnResponse.data.listname , image:jiosaavnResponse.data.image }
             return { playlist, tracks:jiosaavnResponse.data.songs };

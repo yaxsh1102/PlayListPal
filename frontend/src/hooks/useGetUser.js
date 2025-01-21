@@ -22,7 +22,7 @@ const useGetUser = ()=>{
             })
     
             const response = await data.json() ;
-            console.log(response)
+           
             if(response.success){
             dispatch(setUser({name:response.data.name , email:response.data.email , ...response.data.datingProfile}))
             dispatch(toggleLoggedin(true))

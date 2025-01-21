@@ -4,7 +4,7 @@ import { addAlbums, addTracks } from "../../redux/resultsSlice";
 import { useEffect, useRef } from "react";
 import decryptUrl from "../../utils/decrypturl";
 
- const SEARCH_ENDPOINT = 'https://www.jiosaavn.com/api.php?__call=autocomplete.get&_format=json&_marker=0&cc=in&includeMetaTags=1&query=';
+ const SEARCH_ENDPOINT = `https://jiosaavnapi-0w6h.onrender.com/result/?query=`
  const SONG_DETAILS_ENDPOINT = 'https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids='
 const Searchbar = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const Searchbar = () => {
 
         }
       });
-      console.log(songsArray)
+     
       return songsArray;
     } catch (err) {
         console.error('Error fetching song details:', err);
@@ -49,44 +49,50 @@ const Searchbar = () => {
     }
 };
 
-  const handleSearch = async () => {
 
-
-
-      try {
-        const searchUrl = `${SEARCH_ENDPOINT}${input.current.value}`;
-        console.log(searchUrl);
-
-        // Fetch and get response text
-        const response = await fetch(searchUrl);
-        const text = await response.text();
-        
-        const pattern = /\(From "([^"]+)"\)/g;
-        const modifiedText = text.replace(pattern, (match, p1) => `(From '${p1}')`);
-        const decodedText = modifiedText.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
-        
-        const jsonResponse = JSON.parse(decodedText);
-        const songResponse = jsonResponse.songs.data;
-        
-        // Extract IDs from search results
-        const songIds = songResponse.map(song => song.id).join(',');
-        
-        // Fetch details for all songs
-        const songDetails = await fetchSongDetails(songIds);
-        console.log('Song Details:', songDetails);
-        
-        // You can dispatch the song details to your Redux store here
-        // dispatch(setSongDetails(songDetails));
-        
-        dispatch(addTracks(songDetails)) ;
-
-    } catch (err) {
-        console.error('Error fetching search results:', err);
-        // Log the actual response text for debugging
-        return null;
+const handleSearch = async () => {
+  try {
+    const query = input.current.value.trim(); // Trim extra spaces from the input
+    if (!query) {
+      console.warn("Search query is empty");
+      return;
     }
-  
-  };
+
+    const searchUrl = `${SEARCH_ENDPOINT}${query}`;
+   
+
+    // Fetch the search results
+    const response = await fetch(searchUrl);
+
+    const jsonResponse = await response.json();
+
+    // Assuming the API provides all necessary song details in the response
+    const songResponse = jsonResponse;
+
+    if (!songResponse || songResponse.length === 0) {
+      return;
+    }
+
+   
+
+    
+
+    const songDetails = songResponse.map(song => {
+      if (song.singers) {
+        song.singer = song?.singers?.split(',')[0];
+      }
+      return song;
+    });
+   
+
+
+    dispatch(addTracks(songDetails));
+  } catch (err) {
+    console.error("Error fetching search results:", err);
+  }
+};
+
+
 
   useEffect(() => {
     input.current.value = "Best of Bollywood";

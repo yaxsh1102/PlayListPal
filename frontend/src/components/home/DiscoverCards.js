@@ -12,7 +12,7 @@ const DiscoverCards = ({ name, image, artist, genres , type , url}) => {
   function handleClick(){
     const singer = artist ;
     const nowPlayingObj = {name , image , url ,singer}
-    console.log(nowPlayingObj)
+   
     dispatch(addNowPlaying(nowPlayingObj))
     navigate("/play-music") 
     
