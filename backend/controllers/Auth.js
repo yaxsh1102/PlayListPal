@@ -482,6 +482,7 @@ exports.fetchProfile = async(req , res)=>{
         }
 
         const id = req.user.userId || req.user.id;
+        console.log(id)
 
         const data = await Profile.findOne({user:id})
                                                 .populate({
