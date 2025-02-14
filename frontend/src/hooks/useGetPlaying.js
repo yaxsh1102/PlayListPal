@@ -4,7 +4,7 @@ import { initiateQueue } from "../redux/playerSlice";
 
 const useGetPlaying = () => {
   const dispatch = useDispatch();
-  const SEARCH_ENDPOINT = "https://jiosaavnapi-0w6h.onrender.com/result/?query=";
+  const SEARCH_ENDPOINT = "http://127.0.0.1:5100//result/?query=";
 
   useEffect(() => {
     const searchHindiSongs = async () => {

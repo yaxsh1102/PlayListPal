@@ -45,10 +45,10 @@ const MatchLanding = ({ setsetSelectedOption }) => {
       return;
     }
 
-    if (!isProfileCompleted) {
-      dispatch(sendToast("Incomplete Profile"));
-      return;
-    } 
+    // if (!isProfileCompleted) {
+    //   dispatch(sendToast("Incomplete Profile"));
+    //   return;
+    // } 
 
 
     if((!ref.current["likedSongs"].checked && !ref.current["playLists"].checked) || !ref.current['radius'].value){
