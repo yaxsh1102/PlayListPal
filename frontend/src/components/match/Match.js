@@ -15,7 +15,7 @@ const Match = () => {
   useEffect(() => {
     async function getDetails() {
       try {
-        const data = await fetch('https://playlistpal.onrender.com/api/v1/match/getInfo', {
+        const data = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/match/getInfo', {
           method: "POST",
           headers: {
             'content-type': 'application/json',
@@ -47,7 +47,7 @@ const Match = () => {
             dispatch(setCoordinates({ latitude, longitude }));
             
             try {
-              await fetch('https://playlistpal.onrender.com/api/v1/auth/addLocation', {
+              await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/addLocation', {
                 method: "POST",
                 headers: {
                   'content-type': 'application/json',

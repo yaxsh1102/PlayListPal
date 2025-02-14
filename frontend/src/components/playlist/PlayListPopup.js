@@ -64,7 +64,7 @@ const PlayListPopup = ({
       const { url, image, singer, artist, name } = selectedSong;
 
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/music/addToPlaylist",
+        "https://playlist-pal.duckdns.org/backend/api/v1/music/addToPlaylist",
         {
           method: "post",
           headers: {

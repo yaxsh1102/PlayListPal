@@ -23,7 +23,7 @@ const OptionPopup = ({
   async function removefromPlaylist(name, playlist) {
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/music/removeFromPlaylist",
+        "https://playlist-pal.duckdns.org/backend/api/v1/music/removeFromPlaylist",
         {
           method: "post",
           headers: {

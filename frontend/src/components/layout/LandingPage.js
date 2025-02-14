@@ -11,7 +11,7 @@ const LandingPage = () => {
     async function awakeServer() {
       setLoading(true);
       try {
-        await fetch('https://playlistpal.onrender.com/awake-server', {
+        await fetch('https://playlist-pal.duckdns.org/backend/awake-server', {
           method: "GET",
           headers: {
             'content-type': 'application/json'
@@ -28,7 +28,7 @@ const LandingPage = () => {
 
   useEffect(()=>{
     async function awakeServer() {
-      const jiosaavnResponse = await axios.get(`http://127.0.0.1:5100//result/?query=server-awake`);
+      const jiosaavnResponse = await axios.get(`https://playlist-pal.duckdns.org/streaming//result/?query=server-awake`);
     }
     awakeServer();
   }, [])

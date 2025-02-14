@@ -5,7 +5,7 @@ import { addNewTracks } from "../redux/discoverSlice";
 const useGetTracks = () => {
   const dispatch = useDispatch();
   const tracks = useSelector((store) => store.discover.tracks);
-  const SEARCH_ENDPOINT = "http://127.0.0.1:5100//result/?query=";
+  const SEARCH_ENDPOINT = "https://playlist-pal.duckdns.org/streaming/result/?query=";
 
   useEffect(() => {
     const getBollywoodClassics = async () => {

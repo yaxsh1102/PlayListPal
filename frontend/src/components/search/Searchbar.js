@@ -4,7 +4,7 @@ import { addAlbums, addTracks } from "../../redux/resultsSlice";
 import { useEffect, useRef } from "react";
 import decryptUrl from "../../utils/decrypturl";
 
- const SEARCH_ENDPOINT = `http://127.0.0.1:5100//result/?query=`
+ const SEARCH_ENDPOINT = `https://playlist-pal.duckdns.org/streaming/result/?query=`
  const SONG_DETAILS_ENDPOINT = 'https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids='
 const Searchbar = () => {
   const dispatch = useDispatch();
