@@ -25,7 +25,7 @@ const useGetPlaylist = () => {
           links.map(async (link) => {
            
 
-            const jiosaavnResponse = await axios.get(`http://127.0.0.1:5100/result/?query=${link}`);
+            const jiosaavnResponse = await axios.get(`https://playlist-pal.duckdns.org/streaming/result/?query=${link}`);
             console.log(jiosaavnResponse)
 
 

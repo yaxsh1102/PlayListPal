@@ -38,7 +38,7 @@ useGetUser()
     }
 
     try{
-    const data = await fetch('https://playlistpal.onrender.com/api/v1/auth/addLocation' ,{
+    const data = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/addLocation' ,{
       method:"POST" ,
       headers:
       {

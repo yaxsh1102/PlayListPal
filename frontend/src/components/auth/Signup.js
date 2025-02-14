@@ -27,7 +27,7 @@ const Signup = () => {
     try {
       setError('');
       setOtpLoading(true)
-      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/sendOTP', {
+      const response = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/sendOTP', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const Signup = () => {
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
-      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/google/token', {
+      const response = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/google/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const Signup = () => {
     try {
       setError('');
       setLoading(true)
-      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/signup', {
+      const response = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

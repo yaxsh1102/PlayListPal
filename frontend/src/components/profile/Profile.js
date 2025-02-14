@@ -14,7 +14,7 @@ const Profile = () => {
       try {
         setLoading(true);
         const data = await fetch(
-          "https://playlistpal.onrender.com/api/v1/auth/fetchProfile",
+          "https://playlist-pal.duckdns.org/backend/api/v1/auth/fetchProfile",
           {
             method: "GET",
             headers: {
@@ -97,7 +97,7 @@ const Profile = () => {
     try {
       setupdateProfileLoading(true)
       const response = await fetch(
-        "https://playlistpal.onrender.com/api/v1/auth/updateProfile",
+        "https://playlist-pal.duckdns.org/backend/api/v1/auth/updateProfile",
         {
           method: "POST",
           headers: {

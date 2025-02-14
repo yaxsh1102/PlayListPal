@@ -51,7 +51,7 @@ const DisplayPlaylist = ({ type }) => {
 
       try {
         const data = await fetch(
-          "https://playlistpal.onrender.com/api/v1/auth/getLikedOrHistory",
+          "https://playlist-pal.duckdns.org/backend/api/v1/auth/getLikedOrHistory",
           {
             method: "GET",
             headers: {

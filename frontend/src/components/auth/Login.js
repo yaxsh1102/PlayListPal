@@ -41,7 +41,7 @@ const Login = () => {
 
 
     try {
-      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/login', {
+      const response = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/login', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const Login = () => {
     try {
       const { credential } = credentialResponse;
       
-      const response = await fetch('https://playlistpal.onrender.com/api/v1/auth/google/token', {
+      const response = await fetch('https://playlist-pal.duckdns.org/backend/api/v1/auth/google/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

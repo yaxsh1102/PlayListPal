@@ -86,7 +86,7 @@ const Searchitems = ({
 
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/music/updateHistory",
+        "https://playlist-pal.duckdns.org/backend/api/v1/music/updateHistory",
         {
           method: "post",
           headers: {
@@ -118,7 +118,7 @@ const Searchitems = ({
   async function addLike() {
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/music/addToLiked",
+        "https://playlist-pal.duckdns.org/backend/api/v1/music/addToLiked",
         {
           method: "post",
           headers: {
@@ -142,7 +142,7 @@ const Searchitems = ({
   async function removeLike() {
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/music/removeFromLiked",
+        "https://playlist-pal.duckdns.org/backend/api/v1/music/removeFromLiked",
         {
           method: "post",
           headers: {

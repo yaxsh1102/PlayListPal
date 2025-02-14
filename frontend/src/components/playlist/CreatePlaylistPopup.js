@@ -49,7 +49,7 @@ const CreatePlaylistPopup = ({ onClose, edit, old, del }) => {
   async function deleteplaylist(old) {
     try{
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/music/deletePlaylist",
+        "https://playlist-pal.duckdns.org/backend/api/v1/music/deletePlaylist",
         {
           method: "delete",
           headers: {
@@ -76,7 +76,7 @@ const CreatePlaylistPopup = ({ onClose, edit, old, del }) => {
 
     try{
     const data = await fetch(
-      "https://playlistpal.onrender.com/api/v1/music/createPlaylist",
+      "https://playlist-pal.duckdns.org/backend/api/v1/music/createPlaylist",
       {
         method: "post",
         headers: {
@@ -103,7 +103,7 @@ const CreatePlaylistPopup = ({ onClose, edit, old, del }) => {
 
     try{
     const data = await fetch(
-      "https://playlistpal.onrender.com/api/v1/music/renamePlaylist",
+      "https://playlist-pal.duckdns.org/backend/api/v1/music/renamePlaylist",
       {
         method: "post",
         headers: {

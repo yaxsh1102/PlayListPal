@@ -51,7 +51,7 @@ const MatchCard = ({ selectedOption, index  , setShowProfile , setSelectedOption
     setFirstLoader(true)
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/match/sendRequest",
+        "https://playlist-pal.duckdns.org/backend/api/v1/match/sendRequest",
         {
           method: "POST",
           headers: {
@@ -80,7 +80,7 @@ const MatchCard = ({ selectedOption, index  , setShowProfile , setSelectedOption
     setFirstLoader(true)
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/match/acceptRequest",
+        "https://playlist-pal.duckdns.org/backend/api/v1/match/acceptRequest",
         {
           method: "POST",
           headers: {
@@ -137,7 +137,7 @@ const MatchCard = ({ selectedOption, index  , setShowProfile , setSelectedOption
     setsecondLoader(true)
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/match/rejectRequest",
+        "https://playlist-pal.duckdns.org/backend/api/v1/match/rejectRequest",
         {
           method: "POST",
           headers: {
@@ -167,7 +167,7 @@ const MatchCard = ({ selectedOption, index  , setShowProfile , setSelectedOption
     setsecondLoader(true)
     try {
       const data = await fetch(
-        "https://playlistpal.onrender.com/api/v1/match/removeFriend",
+        "https://playlist-pal.duckdns.org/backend/api/v1/match/removeFriend",
         {
           method: "POST",
           headers: {

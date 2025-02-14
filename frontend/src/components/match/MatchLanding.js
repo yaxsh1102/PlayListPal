@@ -60,7 +60,7 @@ const MatchLanding = ({ setsetSelectedOption }) => {
 
     try {
       const response = await fetch(
-        "https://playlistpal.onrender.com/api/v1/match/getMatches",
+        "https://playlist-pal.duckdns.org/backend/api/v1/match/getMatches",
         {
           method: "POST",
           headers: {
