@@ -27,6 +27,7 @@ const Profile = () => {
         const response = await data.json();
         if (response.success) {
           dispatch(setUser(response.data));
+          setProfileImage(response.data.imageUrl)
           setLoading(false);
         } else {
           dispatch(sendToast(response.message));
